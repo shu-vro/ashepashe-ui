@@ -7,16 +7,21 @@ import {
     DropdownMenu,
     DropdownItem,
     Button,
+    ButtonProps,
 } from "@nextui-org/react";
 import { useTheme } from "next-themes";
-import { IoMoonOutline } from "react-icons/io5";
+import { PiMoonThin } from "react-icons/pi";
 import { RxSun } from "react-icons/rx";
 import { PiDeviceMobileCamera } from "react-icons/pi";
 
-export default function ThemeButton() {
+export default function ThemeButton({ ...props }: ButtonProps) {
     const { theme, setTheme } = useTheme();
     const [selectedKeys, setSelectedKeys] = React.useState(
-        new Set([localStorage.theme || theme || "system"])
+        new Set([
+            typeof window !== "undefined"
+                ? localStorage?.theme
+                : theme || "system",
+        ])
     );
 
     return (
@@ -26,9 +31,10 @@ export default function ThemeButton() {
                     color="primary"
                     isIconOnly
                     variant="flat"
-                    className="text-2xl">
+                    className="text-2xl"
+                    {...props}>
                     {theme === "dark" && <RxSun />}
-                    {theme === "light" && <IoMoonOutline />}
+                    {theme === "light" && <PiMoonThin />}
                     {theme === "system" && <PiDeviceMobileCamera />}
                 </Button>
             </DropdownTrigger>

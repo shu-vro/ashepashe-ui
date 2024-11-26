@@ -1,11 +1,17 @@
 import React from "react";
 import { Company } from "../page";
 
-export default async function Page({
-    params: { company },
-}: {
-    params: { company: string };
-}) {
+export default async function Page(
+    props: {
+        params: Promise<{ company: string }>;
+    }
+) {
+    const params = await props.params;
+
+    const {
+        company
+    } = params;
+
     const companyData = await getCompany(company);
     return <div>{JSON.stringify(companyData)}</div>;
 }

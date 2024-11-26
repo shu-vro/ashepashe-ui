@@ -6,6 +6,7 @@ import {
     CardBody,
     CardFooter,
     CardHeader,
+    CardProps,
     Chip,
     Divider,
     Image,
@@ -15,6 +16,7 @@ import React from "react";
 import { CiBookmark } from "react-icons/ci";
 import { Rating } from "@smastrom/react-rating";
 import "@smastrom/react-rating/style.css";
+import { cn } from "@/lib/utils";
 
 interface ProductCardProps {
     name: string;
@@ -23,26 +25,30 @@ interface ProductCardProps {
     seller: string;
     sellerAvatar: string;
     rating: number;
-    url: string;
+    imageUrl: string;
+    description?: string;
 }
 
 export function ProductCard({
     name,
-    url,
+    imageUrl,
     actualPrice,
     discountPrice,
     seller,
     sellerAvatar,
     rating,
-}: ProductCardProps) {
+    description,
+    ...rest
+}: ProductCardProps & CardProps) {
     return (
         <Card
             shadow="sm"
             // shadow="none"
             isPressable
             as={"div"}
-            className="w-48 md:w-72"
-            onClick={() => console.log("item pressed")}>
+            onClick={() => console.log("item pressed")}
+            {...rest}
+            className={cn("w-48 md:w-72", rest?.className || "")}>
             <CardBody className="overflow-visible p-4">
                 <Image
                     shadow="sm"
@@ -50,20 +56,27 @@ export function ProductCard({
                     isZoomed
                     alt={name}
                     className="w-full aspect-[4/3] object-cover"
-                    src={url}
+                    src={imageUrl}
                     isBlurred
                 />
             </CardBody>
             <CardFooter className="p-4 pt-0 text-start flex-col">
-                <b className="capitalize">
-                    {name}{" "}
-                    <Chip
-                        color="success"
-                        variant="bordered"
-                        className="rounded-[6px] md:hidden">
-                        {((discountPrice / actualPrice) * 100).toFixed(0)}%
-                    </Chip>
-                </b>
+                <div className="flex flex-col items-start w-full">
+                    <em className="capitalize not-italic font-bold text-xl">
+                        {name}{" "}
+                        <Chip
+                            color="success"
+                            variant="bordered"
+                            className="rounded-[6px] md:hidden">
+                            {((discountPrice / actualPrice) * 100).toFixed(0)}%
+                        </Chip>
+                    </em>
+                    {description && (
+                        <span className="text-neutral-500 text-sm">
+                            {description}
+                        </span>
+                    )}
+                </div>
                 <Divider className="my-4" />
                 <div className="flex flex-wrap justify-between items-center w-full">
                     <div>

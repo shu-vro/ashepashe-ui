@@ -63,7 +63,6 @@ export default function Header() {
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
     const [searchOpen, setSearchOpen] = useState(false);
 
-    console.log(searchOpen);
     return (
         <Navbar
             isBordered

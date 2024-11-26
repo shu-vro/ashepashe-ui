@@ -4,6 +4,7 @@ import CompanyTile from "@/app/all-companies/components/CompanyTile";
 import React, { useState } from "react";
 import { Company } from "../page";
 import { Pagination } from "@nextui-org/react";
+import { paginate } from "@/lib/utils";
 
 export default function ViewCompanies({
     allCompanies,
@@ -11,12 +12,7 @@ export default function ViewCompanies({
     allCompanies: Company[];
 }) {
     const [currentPage, setCurrentPage] = useState(1);
-    const selectedCompanies = paginate(
-        allCompanies,
-        currentPage,
-        12,
-        setCurrentPage
-    );
+    const selectedCompanies = paginate(allCompanies, currentPage, 12);
 
     return (
         <>
@@ -27,7 +23,10 @@ export default function ViewCompanies({
                         name={company.name}
                         where={company.city}
                         description={company.description}
-                        imageUrl={company.image}
+                        // imageUrl={company.image}
+                        imageUrl={`https://nextui.org/images/fruit-${
+                            Math.floor(Math.random() * 7) + 1
+                        }.jpeg`}
                     />
                 ))}
             </div>
@@ -46,16 +45,4 @@ export default function ViewCompanies({
             </div>
         </>
     );
-}
-
-function paginate(
-    array: any[],
-    page = 1,
-    count = 12,
-    setCurrentPage: React.Dispatch<React.SetStateAction<number>>
-) {
-    const start = (page - 1) * count;
-    const end = start + count;
-    const chunk = array.slice(start, end);
-    return chunk;
 }

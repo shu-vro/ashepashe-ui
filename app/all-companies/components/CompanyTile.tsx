@@ -31,11 +31,8 @@ export default function CompanyTile({
                     isZoomed
                     alt={name}
                     className="w-full aspect-[4/3] object-cover"
-                    // src={imageUrl}
+                    src={imageUrl}
                     isBlurred
-                    src={`https://nextui.org/images/fruit-${
-                        Math.floor(Math.random() * 7) + 1
-                    }.jpeg`}
                 />
             </CardBody>
             <CardFooter className="p-4 pt-0 text-start flex-col justify-start w-full items-start">

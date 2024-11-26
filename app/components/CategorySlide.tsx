@@ -30,7 +30,7 @@ export default function CategorySlide() {
                     <SwiperSlide key={index} className="w-fit p-4">
                         <ProductCard
                             name="Apple Watch Series 7 Space Gray"
-                            url={`https://nextui.org/images/fruit-${
+                            imageUrl={`https://nextui.org/images/fruit-${
                                 (index % 8) + 1
                             }.jpeg`}
                             discountPrice={200}

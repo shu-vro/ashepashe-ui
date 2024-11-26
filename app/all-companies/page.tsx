@@ -20,7 +20,11 @@ export interface Company {
     fb_page: string;
 }
 
-export const metadata = {};
+export const metadata = {
+    title: "Companies",
+    description: "All companies",
+    keywords: "companies, all companies",
+};
 
 export default async function Restaurant() {
     const allCompanies = await getAllCompanies();

@@ -1,5 +1,3 @@
-"use client";
-
 import {
     Sidebar,
     SidebarContent,
@@ -12,8 +10,7 @@ import {
 } from "@/components/ui/sidebar";
 import AppSidebarItems, { AppSidebarItemsProps } from "./AppSidebarItems";
 import Link from "next/link";
-import { Image } from "@nextui-org/react";
-import AppIcon from "@/assets/she.png";
+import Logo from "./Sidebar/Logo";
 
 const items: AppSidebarItemsProps["item"][] = [
     {
@@ -58,17 +55,20 @@ const items: AppSidebarItemsProps["item"][] = [
     },
 ];
 
-export function AppSidebar() {
+interface Category {
+    id: number;
+    name: string;
+    created_at: string;
+    updated_at: string;
+}
+
+export async function AppSidebar() {
+    const sidebarItems = await getSidebarItems();
     return (
         <Sidebar>
             <SidebarHeader className="my-1 text-center font-bold">
                 <Link href="/">
-                    <Image
-                        src={AppIcon.src}
-                        alt="AsePashe"
-                        className="block mx-auto object-cover h-16"
-                        removeWrapper
-                    />
+                    <Logo />
                 </Link>
             </SidebarHeader>
             <SidebarContent>
@@ -76,7 +76,46 @@ export function AppSidebar() {
                     <SidebarGroupContent>
                         <SidebarMenuItem className="list-none">
                             <SidebarMenuButton className="text-xl">
+                                All Items
+                            </SidebarMenuButton>
+                            <SidebarMenuSub>
+                                <AppSidebarItems
+                                    item={{
+                                        title: "All companies",
+                                        url: `/all-companies`,
+                                    }}
+                                />
+                                <AppSidebarItems
+                                    item={{
+                                        title: "All Products",
+                                        url: `/all-products`,
+                                    }}
+                                />
+                            </SidebarMenuSub>
+                        </SidebarMenuItem>
+                        <SidebarMenuItem className="list-none">
+                            <SidebarMenuButton className="text-xl">
                                 Categories
+                            </SidebarMenuButton>
+                            <SidebarMenuSub>
+                                {sidebarItems.map((item) => (
+                                    <AppSidebarItems
+                                        key={item.id}
+                                        item={{
+                                            title: item.name,
+                                            url: `/category/${item.name
+                                                .split(" ")
+                                                .join("-")}`,
+                                        }}
+                                    />
+                                ))}
+                            </SidebarMenuSub>
+                        </SidebarMenuItem>
+                    </SidebarGroupContent>
+                    {/* <SidebarGroupContent>
+                        <SidebarMenuItem className="list-none">
+                            <SidebarMenuButton className="text-xl">
+                                Static Categories
                             </SidebarMenuButton>
                             <SidebarMenuSub>
                                 {items.map((item) => (
@@ -87,9 +126,15 @@ export function AppSidebar() {
                                 ))}
                             </SidebarMenuSub>
                         </SidebarMenuItem>
-                    </SidebarGroupContent>
+                    </SidebarGroupContent> */}
                 </SidebarGroup>
             </SidebarContent>
         </Sidebar>
     );
+}
+
+async function getSidebarItems() {
+    const response = await fetch("https://asepashe.com/api/categories");
+    const data: Category[] = await response.json();
+    return data;
 }

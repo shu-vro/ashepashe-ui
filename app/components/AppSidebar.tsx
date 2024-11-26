@@ -65,7 +65,7 @@ export function AppSidebar() {
                 <Link href="/">
                     <Image
                         src={AppIcon.src}
-                        alt="AshePashe"
+                        alt="AsePashe"
                         className="block mx-auto object-cover h-16"
                         removeWrapper
                     />

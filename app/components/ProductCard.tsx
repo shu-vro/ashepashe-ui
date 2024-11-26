@@ -178,5 +178,3 @@ export function SideCard({}: {}) {
         </Card>
     );
 }
-
-export function CompanyTile({}: {}) {}

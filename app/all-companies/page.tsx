@@ -20,6 +20,8 @@ export interface Company {
     fb_page: string;
 }
 
+export const metadata = {};
+
 export default async function Restaurant() {
     const allCompanies = await getAllCompanies();
     return (

@@ -22,7 +22,7 @@ export default function CompanyTile({
             isPressable
             as={Link}
             href={`/all-companies/${name.split(" ").join("-")}`}
-            className="w-full"
+            className="w-full min-h-[450px]"
             onClick={() => console.log("item pressed")}>
             <CardBody className="overflow-visible p-4">
                 <Image
@@ -43,7 +43,7 @@ export default function CompanyTile({
                     <GrLocation className="text-xl" /> {where}
                 </div>
                 <b className="capitalize">{name}</b>
-                <div className="capitalize flex flex-row items-start text-neutral-500">
+                <div className="text-neutral-500 line-clamp-2">
                     {description}
                 </div>
             </CardFooter>

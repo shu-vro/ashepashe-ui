@@ -23,7 +23,6 @@ export default function CategorySlide() {
                 spaceBetween={0}
                 mousewheel={true}
                 grabCursor={true}
-                loop
                 navigation={true}
                 modules={[Navigation, Mousewheel]}
                 className="mySwiper !mx-0">

@@ -72,7 +72,11 @@ export default function RootLayout({
     return (
         <html lang="en" className="scroll-smooth">
             <body className={`${font.className} antialiased`}>
-                <ThemeProvider>
+                <ThemeProvider
+                    attribute="class"
+                    defaultTheme="system"
+                    enableSystem
+                    disableTransitionOnChange>
                     <SidebarProvider>
                         <AppSidebar />
                         <main className="w-full">

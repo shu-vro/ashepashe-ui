@@ -2,14 +2,20 @@
 
 import CategorySlide from "./components/CategorySlide";
 import { Tabs, Tab } from "@nextui-org/tabs";
-import { BigCard } from "./components/ProductCard";
+import { BigCard, SideCard } from "./components/ProductCard";
 
 export default function Home() {
     return (
         <>
-            <div>
+            <div className="flex flex-row">
                 <BigCard />
-                <div className="w-1/2"></div>
+                <div className="w-1/2 pt-6">
+                    <div className="w-1/2 flex flex-col gap-3">
+                        <SideCard />
+                        <SideCard />
+                        <SideCard />
+                    </div>
+                </div>
             </div>
             <Tabs className="mt-6 ml-4">
                 <Tab title="Popular" key="Popular"></Tab>
@@ -21,3 +27,5 @@ export default function Home() {
         </>
     );
 }
+
+export const dynamic = "force-dynamic";

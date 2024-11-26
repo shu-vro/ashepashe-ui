@@ -1,3 +1,5 @@
+"use client";
+
 import {
     Sidebar,
     SidebarContent,
@@ -10,6 +12,8 @@ import {
 } from "@/components/ui/sidebar";
 import AppSidebarItems, { AppSidebarItemsProps } from "./AppSidebarItems";
 import Link from "next/link";
+import { Image } from "@nextui-org/react";
+import AppIcon from "@/assets/she.png";
 
 const items: AppSidebarItemsProps["item"][] = [
     {
@@ -57,8 +61,15 @@ const items: AppSidebarItemsProps["item"][] = [
 export function AppSidebar() {
     return (
         <Sidebar>
-            <SidebarHeader className="my-6 text-center font-bold">
-                <Link href="/">ASHEPASHE</Link>
+            <SidebarHeader className="my-1 text-center font-bold">
+                <Link href="/">
+                    <Image
+                        src={AppIcon.src}
+                        alt="AshePashe"
+                        className="block mx-auto object-cover h-16"
+                        removeWrapper
+                    />
+                </Link>
             </SidebarHeader>
             <SidebarContent>
                 <SidebarGroup>

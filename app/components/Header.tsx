@@ -30,6 +30,7 @@ import { cn } from "@/lib/utils";
 import { Rating } from "@smastrom/react-rating";
 import "@smastrom/react-rating/style.css";
 import { AnimatePresence, motion } from "framer-motion";
+import AppIcon from "@/assets/she.png";
 
 const animals = [
     { label: "Cat", value: "cat" },
@@ -70,15 +71,22 @@ export default function Header() {
             onMenuOpenChange={setIsMenuOpen}
             maxWidth="full"
             className="py-3">
-            <NavbarContent justify="start" className="md:hidden">
-                <NavbarItem>
+            <NavbarContent justify="start" className="grow">
+                <NavbarItem className="md:hidden">
                     <SidebarTrigger />
                 </NavbarItem>
-                <CustomDivider />
-            </NavbarContent>
-            <NavbarContent justify="start" className="lg:ml-20 grow">
                 <NavbarBrand className="md:hidden">
-                    <Link href="/">ASHEPASHE</Link>
+                    <Link href="/" className="block">
+                        <Image
+                            src={AppIcon.src}
+                            alt="AshePashe"
+                            className="block mx-auto object-cover h-16"
+                            classNames={{
+                                wrapper: "block w-full h-16",
+                            }}
+                            removeWrapper
+                        />
+                    </Link>
                 </NavbarBrand>
             </NavbarContent>
 

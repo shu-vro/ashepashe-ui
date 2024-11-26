@@ -1,19 +1,23 @@
 "use client";
 
+import * as React from "react";
 import { NextUIProvider } from "@nextui-org/react";
-import { ThemeProvider as NextThemesProvider } from "next-themes";
+const NextThemesProvider = dynamic(
+    () => import("next-themes").then((e) => e.ThemeProvider),
+    {
+        ssr: false,
+    }
+);
+
+// import { type ThemeProviderProps } from 'next-themes/dist/types'
+import dynamic from "next/dynamic";
 
 export default function ThemeProvider({
     children,
-}: {
-    children: React.ReactNode;
-}) {
+    ...props
+}: React.ComponentProps<typeof NextThemesProvider>) {
     return (
-        <NextThemesProvider
-            attribute="class"
-            defaultTheme="light"
-            disableTransitionOnChange
-            enableSystem>
+        <NextThemesProvider {...props}>
             <NextUIProvider>{children}</NextUIProvider>
         </NextThemesProvider>
     );

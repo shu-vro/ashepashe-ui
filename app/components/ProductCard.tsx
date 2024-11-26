@@ -1,3 +1,5 @@
+"use client";
+
 import {
     Button,
     Card,
@@ -40,7 +42,7 @@ export function ProductCard({
             isPressable
             as={"div"}
             className="w-48 md:w-72"
-            onPress={() => console.log("item pressed")}>
+            onClick={() => console.log("item pressed")}>
             <CardBody className="overflow-visible p-4">
                 <Image
                     shadow="sm"
@@ -136,3 +138,45 @@ export function BigCard({}) {
         </Card>
     );
 }
+
+export function SideCard({}: {}) {
+    const actualPrice = 200;
+    const discountPrice = 50;
+    const name = "Apple Watch Series 7 Space Gray";
+    // const seller = "John Doe";
+    // const sellerAvatar = "https://i.pravatar.cc/150?u=a04258114e29026702d";
+    return (
+        <Card isPressable as={"div"} className="w-full" shadow="sm">
+            <CardBody className="p-3 flex-row justify-start gap-4">
+                <div className="overflow-visible">
+                    <Image
+                        isBlurred
+                        isZoomed
+                        src="https://nextui.org/images/fruit-1.jpeg"
+                        alt={name}
+                        className="w-full h-full aspect-square object-cover"
+                        classNames={{
+                            wrapper: "w-24 h-24",
+                        }}
+                    />
+                </div>
+                <div className="my-auto">
+                    <h2 className="font-bold text-xl">{name}</h2>
+                    <div>
+                        <del className="text-default-500">{actualPrice}৳</del>{" "}
+                        <span className="font-bold">{discountPrice + "৳"}</span>
+                    </div>
+                    <Chip
+                        color="warning"
+                        variant="bordered"
+                        size="sm"
+                        className="rounded-[6px] block">
+                        10 days
+                    </Chip>
+                </div>
+            </CardBody>
+        </Card>
+    );
+}
+
+export function CompanyTile({}: {}) {}

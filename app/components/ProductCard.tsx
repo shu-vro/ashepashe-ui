@@ -103,9 +103,6 @@ export function ProductCard({
                             className: "w-8 h-8",
                             src: sellerAvatar,
                         }}
-                        classNames={{
-                            name: "truncate",
-                        }}
                         className="grow-0"
                     />
                     <div className="grow" />

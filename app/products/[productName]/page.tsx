@@ -1,9 +1,11 @@
 import { Company } from "@/app/all-companies/page";
 import { Product } from "@/app/all-products/page";
-import { capitalizeFirstLetter, first_n } from "@/lib/utils";
+import { capitalizeFirstLetter, cn, first_n } from "@/lib/utils";
 import { Metadata, ResolvingMetadata } from "next";
 import React from "react";
 import CompanySide from "./Components/CompanySide";
+import CategorySlide from "@/app/components/CategorySlide";
+import ProductSide from "./Components/ProductSide";
 
 type Props = {
     params: Promise<{ productName: string }>;
@@ -17,16 +19,26 @@ export default async function ProductPage({ params }: Props) {
     );
     return (
         <>
-            <div className="grid w-full grid-areas-productLayoutNoLap grid-cols-productLayoutNoLap lap:grid-areas-productLayoutLap lap:grid-cols-productLayoutLap">
+            <div className="grid grid-areas-productLayoutNoLap grid-cols-productLayoutNoLap lap:grid-areas-productLayoutLap lap:grid-cols-productLayoutLap">
                 <CompanySide company={company} />
-                <div className="product bg-green-500 grid-in-product"></div>
-                <div className="more-product bg-blue-500 grid-in-more"></div>
+                <ProductSide product={productDetails} />
+                {companyProducts.length > 0 && (
+                    <div className="more-product grid-in-more mt-12">
+                        <h2 className="text-2xl font-bold text-default-400 ml-4">
+                            More from {company.name}
+                        </h2>
+                        <CategorySlide
+                            selected={companyProducts}
+                            className={cn("w-[calc(100vw-16rem)] lap:w-full")}
+                        />
+                    </div>
+                )}
             </div>
-            <div className="whitespace-pre break-words">
+            {/* <div className="whitespace-pre break-words">
                 {JSON.stringify(productDetails, null, 4)}
                 {JSON.stringify(company, null, 4)}
                 {JSON.stringify(companyProducts, null, 4)}
-            </div>
+            </div> */}
         </>
     );
 }
@@ -60,8 +72,32 @@ export async function generateMetadata(
     productName = productName.split("-").join(" ");
     productName = capitalizeFirstLetter(productName);
 
+    const response = await fetch(
+        `https://asepashe.com/api/product/${productName}`
+    );
+    const data: Product = await response.json();
+
     return {
         title: productName,
-        description: `${productName}`,
+        description: data.description,
+        keywords: [
+            "product",
+            "company",
+            "asepashe",
+            "bangladesh",
+            productName,
+            data.company_id,
+        ],
+        openGraph: {
+            title: productName,
+            description: data.description,
+            type: "website",
+            url: `https://asepashe.com/products/${productName}`,
+            images: {
+                url: data.image1,
+                alt: productName,
+            },
+            siteName: "AsePashe",
+        },
     };
 }

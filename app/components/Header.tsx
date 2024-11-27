@@ -147,9 +147,8 @@ function SearchItems({ label }: { label: string }) {
                     src="https://nextui.org/images/fruit-5.jpeg"
                     alt={label}
                 />
-                <div>
+                <div className="flex flex-col justify-center">
                     <div className="font-bold">{label}</div>
-                    <div className="text-xl">৳320</div>
                     <Rating style={{ maxWidth: 100 }} readOnly value={4.3} />
                     <div>
                         <del className="text-default-500">{300}৳</del>{" "}

@@ -23,9 +23,9 @@ type Prop = {
 
 export default function CompanySide({ company }: Prop) {
     return (
-        <div className="company grid-in-company">
-            <Card className="h-full overflow-auto p-6 m-4 flex-row lap:flex-col">
-                <CardHeader className="w-[250px]">
+        <div className="company grid-in-company relative">
+            <Card className="sticky top-24 h-min overflow-auto p-6 m-4 flex-col sm:flex-row lap:flex-col">
+                <CardHeader className="w-full max-lap:max-w-[250px] max-sm:max-w-full mx-auto">
                     <Image
                         // src={company.image}
                         src={dynamicFakeImageGenerator()}

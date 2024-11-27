@@ -13,14 +13,20 @@ import { cn } from "@/lib/utils";
 import { Product } from "../all-products/page";
 import Link from "next/link";
 
-export default function CategorySlide({ selected }: { selected: Product[] }) {
+export default function CategorySlide({
+    selected,
+    ...rest
+}: { selected: Product[] } & React.HTMLAttributes<HTMLDivElement>) {
     console.log(selected);
     const { isMobile } = useSidebar();
     return (
         <div
-            className={cn({
-                "w-[calc(100vw-16rem)]": !isMobile,
-            })}>
+            className={cn(
+                {
+                    "w-[calc(100vw-16rem)]": !isMobile,
+                },
+                rest?.className ? rest.className : ""
+            )}>
             <Swiper
                 slidesPerView={"auto"}
                 spaceBetween={0}

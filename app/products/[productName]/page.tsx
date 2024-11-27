@@ -29,7 +29,10 @@ export default async function ProductPage({ params }: Props) {
                         </h2>
                         <CategorySlide
                             selected={companyProducts}
-                            className={cn("w-[calc(100vw-16rem)] lap:w-full")}
+                            className={cn(
+                                // "w-[calc(100vw-16rem)] lap:w-full"
+                                "w-full max-lap:w-[calc(100vw-16rem)] max-[760px]:w-[100vw]"
+                            )}
                         />
                     </div>
                 )}

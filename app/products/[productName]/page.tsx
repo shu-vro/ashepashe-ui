@@ -18,31 +18,23 @@ export default async function ProductPage({ params }: Props) {
         productDetails.company_id.split(" ").join("-")
     );
     return (
-        <>
-            <div className="grid grid-areas-productLayoutNoLap grid-cols-productLayoutNoLap lap:grid-areas-productLayoutLap lap:grid-cols-productLayoutLap">
-                <CompanySide company={company} />
-                <ProductSide product={productDetails} />
-                {companyProducts.length > 0 && (
-                    <div className="more-product grid-in-more mt-12">
-                        <h2 className="text-2xl font-bold text-default-400 ml-4">
-                            More from {company.name}
-                        </h2>
-                        <CategorySlide
-                            selected={companyProducts}
-                            className={cn(
-                                // "w-[calc(100vw-16rem)] lap:w-full"
-                                "w-full max-lap:w-[calc(100vw-16rem)] max-[760px]:w-[100vw]"
-                            )}
-                        />
-                    </div>
-                )}
-            </div>
-            {/* <div className="whitespace-pre break-words">
-                {JSON.stringify(productDetails, null, 4)}
-                {JSON.stringify(company, null, 4)}
-                {JSON.stringify(companyProducts, null, 4)}
-            </div> */}
-        </>
+        <div className="grid grid-areas-productLayoutNoLap grid-cols-productLayoutNoLap lap:grid-areas-productLayoutLap lap:grid-cols-productLayoutLap">
+            <CompanySide company={company} />
+            <ProductSide product={productDetails} />
+            {companyProducts.length > 0 && (
+                <div className="more-product grid-in-more mt-12">
+                    <h2 className="text-2xl font-bold text-default-400 ml-4">
+                        More from {company.name}
+                    </h2>
+                    <CategorySlide
+                        selected={companyProducts}
+                        className={cn(
+                            "w-full max-lap:w-[calc(100vw-16rem)] max-[760px]:w-[100vw]"
+                        )}
+                    />
+                </div>
+            )}
+        </div>
     );
 }
 

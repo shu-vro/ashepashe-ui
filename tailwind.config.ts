@@ -23,6 +23,12 @@ export default {
                     "company    more    more",
                 ],
                 productLayoutNoLap: ["product", "more", "company"],
+                companyLayoutLap: [
+                    "image   image   image",
+                    "company products products",
+                    "company products products",
+                ],
+                companyLayoutNoLap: ["image", "company", "products"],
             },
             gridTemplateColumns: {
                 productLayoutLap: "1fr 1fr 1fr",

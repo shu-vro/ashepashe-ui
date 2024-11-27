@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { Suspense, use, useEffect, useMemo, useState } from "react";
 import {
     Navbar,
     NavbarBrand,
@@ -26,11 +26,14 @@ import ThemeButton from "./ThemeButton";
 import { CiBookmark } from "react-icons/ci";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { cn } from "@/lib/utils";
+import { cn, dynamicFakeImageGenerator } from "@/lib/utils";
 import { Rating } from "@smastrom/react-rating";
 import "@smastrom/react-rating/style.css";
 import { AnimatePresence, motion } from "framer-motion";
 import AppIcon from "@/assets/she.png";
+import { Product } from "../all-products/page";
+import { debounce } from "lodash";
+import { useRouter } from "next/navigation";
 
 const animals = [
     { label: "Cat", value: "cat" },
@@ -59,9 +62,16 @@ const animals = [
     { label: "Zebra", value: "zebra" },
 ];
 
+async function getAllProducts() {
+    const response = await fetch("https://asepashe.com/api/products");
+    const data: Product[] = await response.json();
+    return data;
+}
+
 export default function Header() {
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
-    const [searchOpen, setSearchOpen] = useState(false);
+
+    const productPromise = getAllProducts();
 
     return (
         <Navbar
@@ -93,41 +103,7 @@ export default function Header() {
                 className="hidden sm:flex gap-4 grow"
                 justify="center">
                 <NavbarItem className="w-full">
-                    <div className="relative">
-                        <Input
-                            variant="bordered"
-                            radius="md"
-                            placeholder="Search"
-                            className="max-w-[500px]"
-                            onFocus={() => setSearchOpen(true)}
-                            onBlur={() => setSearchOpen(false)}
-                            endContent={<IoSearchOutline fontSize="1.3rem" />}
-                        />
-                        <AnimatePresence>
-                            {searchOpen && (
-                                <Card
-                                    className="absolute top-[calc(100%+5px)] left-1/2 -translate-x-1/2 z-30"
-                                    as={motion.div}
-                                    exit={{ opacity: 0 }}
-                                    key="search-menu">
-                                    <CardBody className="w-[66vw] text-wrap bg-content2">
-                                        <ScrollShadow className="max-h-[60vh]">
-                                            {Array(15)
-                                                .fill(1)
-                                                .map((_, index) => (
-                                                    <SearchItems
-                                                        key={index}
-                                                        label={
-                                                            animals[index].label
-                                                        }
-                                                    />
-                                                ))}
-                                        </ScrollShadow>
-                                    </CardBody>
-                                </Card>
-                            )}
-                        </AnimatePresence>
-                    </div>
+                    <SearchDesktop productPromise={productPromise} />
                 </NavbarItem>
             </NavbarContent>
 
@@ -138,29 +114,132 @@ export default function Header() {
     );
 }
 
-function SearchItems({ label }: { label: string }) {
+function SearchDesktop({
+    productPromise,
+}: {
+    productPromise: Promise<Product[]>;
+}) {
+    const router = useRouter();
+    const [searchOpen, setSearchOpen] = useState(false);
+    const [value, setValue] = useState("");
+    const products = use(productPromise);
+
+    const selectedProducts = useMemo(() => {
+        if (!value) return products;
+        return products.filter((product) =>
+            product.name.toLowerCase().includes(value.toLowerCase())
+        );
+    }, [value]);
+
+    useEffect(() => {
+        function esc(e: KeyboardEvent) {
+            if (e.key === "Escape") {
+                setSearchOpen(false);
+            }
+        }
+        window.addEventListener("keyup", esc);
+        return () => window.addEventListener("keyup", esc);
+    }, []);
+
+    const onSearchOpen = (value: boolean) => {
+        setSearchOpen(value);
+        value ? router.push("#searching") : router.push("#");
+    };
+
     return (
-        <Card className="mt-4 bg-none w-full" as={Link} href={"/profile/1"}>
-            <CardBody className="flex-row justify-start gap-4 bg-none">
-                <Image
-                    className="w-36 h-36"
-                    src="https://nextui.org/images/fruit-5.jpeg"
-                    alt={label}
+        <Suspense fallback={<div>Loading...</div>}>
+            <div className="relative">
+                <Input
+                    onValueChange={debounce(setValue, 1000)}
+                    variant="bordered"
+                    radius="md"
+                    placeholder="Search"
+                    className="max-w-[500px]"
+                    onFocus={() => onSearchOpen(true)}
+                    // onBlur={() => setSearchOpen(false)}
+                    endContent={<IoSearchOutline fontSize="1.3rem" />}
                 />
+                <AnimatePresence>
+                    {searchOpen && (
+                        <>
+                            <div
+                                className="absolute top-[calc(100%+5px)] left-1/2 -translate-x-1/2 w-screen h-screen z-20"
+                                onClick={() => {
+                                    onSearchOpen(false);
+                                }}></div>
+                            <Card
+                                className="absolute top-[calc(100%+5px)] left-1/2 -translate-x-1/2 z-30"
+                                as={motion.div}
+                                exit={{ opacity: 0 }}
+                                key="search-menu">
+                                <CardBody className="w-[66vw] text-wrap bg-content2">
+                                    <ScrollShadow className="max-h-[60vh]">
+                                        {selectedProducts.map((product) => (
+                                            <SearchItems
+                                                key={product.id}
+                                                label={product.name}
+                                                actualPrice={product.price}
+                                                discountPrice={product.price}
+                                                company_name={
+                                                    product.company_id
+                                                }
+                                                rating={4.56}
+                                                companyAvatar="https://i.pravatar.cc/150?u=a042581f4e29026704d"
+                                                image={dynamicFakeImageGenerator()}
+                                                slug={product.slug}
+                                            />
+                                        ))}
+                                    </ScrollShadow>
+                                </CardBody>
+                            </Card>
+                        </>
+                    )}
+                </AnimatePresence>
+            </div>
+        </Suspense>
+    );
+}
+
+function SearchItems({
+    label,
+    actualPrice,
+    discountPrice,
+    company_name,
+    companyAvatar,
+    rating,
+    image,
+    slug,
+}: {
+    label: string;
+    actualPrice: number;
+    discountPrice: number;
+    company_name: string;
+    companyAvatar: string;
+    rating: number;
+    image: string;
+    slug: string;
+}) {
+    return (
+        <Card
+            className="mt-4 bg-none w-full"
+            as={Link}
+            href={`/products/${slug}`}>
+            <CardBody className="flex-row justify-start gap-4 bg-none">
+                <Image className="w-36 h-36" src={image} alt={label} />
                 <div className="flex flex-col justify-center">
                     <div className="font-bold">{label}</div>
-                    <Rating style={{ maxWidth: 100 }} readOnly value={4.3} />
+                    <Rating style={{ maxWidth: 100 }} readOnly value={rating} />
                     <div>
-                        <del className="text-default-500">{300}৳</del>{" "}
-                        <span className="text-2xl font-bold">{200 + "৳"}</span>
+                        <del className="text-default-500">{actualPrice}৳</del>{" "}
+                        <span className="text-2xl font-bold">
+                            {discountPrice + "৳"}
+                        </span>
                     </div>
                     <User
-                        // as={Link}
-                        // href={"/profile/1"}
-                        name={"John Doe"}
+                        name={company_name}
                         avatarProps={{
                             className: "w-8 h-8",
-                            src: "https://i.pravatar.cc/150?u=a04258114e29026702d",
+                            src: companyAvatar,
                         }}
                         classNames={{
                             name: "truncate w-48 text-lg italic",

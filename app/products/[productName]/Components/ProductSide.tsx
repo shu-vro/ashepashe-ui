@@ -14,7 +14,9 @@ type Prop = {
 export default function ProductSide({ product }: Prop) {
     return (
         <div className="product grid-in-product">
-            <Card className="h-full overflow-auto p-6 m-4 lap:ml-0 flex-col min-[898px]:flex-row lap:flex-col">
+            <Card
+                className="h-full overflow-auto p-6 m-4 lap:ml-0 flex-col min-[898px]:flex-row lap:flex-col"
+                shadow="sm">
                 <CardHeader className="w-full max-lap:max-w-[250px] max-[898px]:max-w-full mx-auto">
                     <Link
                         href={dynamicFakeImageGenerator()}

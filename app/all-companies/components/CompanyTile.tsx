@@ -1,5 +1,6 @@
 "use client";
 
+import { removeTags } from "@/lib/utils";
 import { Card, CardBody, CardFooter, Image } from "@nextui-org/react";
 import Link from "next/link";
 import React from "react";
@@ -43,7 +44,7 @@ export default function CompanyTile({
                 </div>
                 <b className="capitalize">{name}</b>
                 <div className="text-neutral-500 line-clamp-2">
-                    {description}
+                    {removeTags(description || "")}
                 </div>
             </CardFooter>
         </Card>

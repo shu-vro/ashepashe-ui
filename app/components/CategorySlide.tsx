@@ -17,7 +17,6 @@ export default function CategorySlide({
     selected,
     ...rest
 }: { selected: Product[] } & React.HTMLAttributes<HTMLDivElement>) {
-    console.log(selected);
     const { isMobile } = useSidebar();
     return (
         <div

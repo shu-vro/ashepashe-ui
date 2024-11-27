@@ -24,11 +24,11 @@ export default {
                 ],
                 productLayoutNoLap: ["product", "more", "company"],
                 companyLayoutLap: [
-                    "image   image   image",
-                    "company products products",
-                    "company products products",
+                    "image   image    company",
+                    "name    name     name",
+                    "product product  product",
                 ],
-                companyLayoutNoLap: ["image", "company", "products"],
+                companyLayoutNoLap: ["image", "name", "company", "product"],
             },
             gridTemplateColumns: {
                 productLayoutLap: "1fr 1fr 1fr",

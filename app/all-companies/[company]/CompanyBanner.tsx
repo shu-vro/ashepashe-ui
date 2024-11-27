@@ -7,11 +7,9 @@ import { useIsMobile } from "@/hooks/use-mobile";
 
 type Prop = {
     src: string;
-    description: string;
-    name: string;
 };
 
-export default function CompanyBanner({ src, name, description }: Prop) {
+export default function CompanyBanner({ src }: Prop) {
     const isMobile = useIsMobile();
     const dummyImage = dynamicFakeImageGenerator();
     return (
@@ -24,14 +22,9 @@ export default function CompanyBanner({ src, name, description }: Prop) {
                         "w-[calc(100vw-3rem-16rem)]": !isMobile,
                     }
                 )}
-                removeWrapper
+                isBlurred
+                // removeWrapper
             />
-            <div className="text-center">
-                <h2 className="text-5xl font-bold my-3">{name}</h2>
-                <p className="italic text-neutral-500 w-7/12 mx-auto">
-                    {removeTags(description)}
-                </p>
-            </div>
         </div>
     );
 }

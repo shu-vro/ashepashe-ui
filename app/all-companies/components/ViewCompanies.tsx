@@ -4,15 +4,31 @@ import CompanyTile from "@/app/all-companies/components/CompanyTile";
 import React, { useState } from "react";
 import { Company } from "../page";
 import { Pagination } from "@nextui-org/react";
-import { paginate } from "@/lib/utils";
+import { dynamicFakeImageGenerator, paginate } from "@/lib/utils";
+import { useRouter } from "next/navigation";
+
+export function inBound(page: number, upperBound: number) {
+    if (page < 1) {
+        return 1;
+    }
+    if (page > upperBound) {
+        return upperBound;
+    }
+    return page;
+}
 
 export default function ViewCompanies({
     allCompanies,
+    initialPage,
 }: {
     allCompanies: Company[];
+    initialPage: number;
 }) {
-    const [currentPage, setCurrentPage] = useState(1);
+    const [currentPage, setCurrentPage] = useState(
+        inBound(initialPage, Math.ceil(allCompanies.length / 12))
+    );
     const selectedCompanies = paginate(allCompanies, currentPage, 12);
+    const router = useRouter();
 
     return (
         <>
@@ -21,12 +37,11 @@ export default function ViewCompanies({
                     <CompanyTile
                         key={index}
                         name={company.name}
+                        slug={company.slug}
                         where={company.city}
                         description={company.description}
                         // imageUrl={company.image}
-                        imageUrl={`https://nextui.org/images/fruit-${
-                            Math.floor(Math.random() * 7) + 1
-                        }.jpeg`}
+                        imageUrl={dynamicFakeImageGenerator()}
                     />
                 ))}
             </div>
@@ -39,6 +54,7 @@ export default function ViewCompanies({
                     onChange={(value) => {
                         setCurrentPage(value);
                         window.scrollTo(0, 0);
+                        router.push(`?page=${value}`);
                     }}
                     className="mx-auto w-fit"
                 />

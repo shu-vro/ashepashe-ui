@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Montserrat } from "next/font/google";
 import localFont from "next/font/local";
+import "@smastrom/react-rating/style.css";
 import "./globals.css";
 import ThemeProvider from "@/contexts/theme-provider";
 import Header from "./components/Header";
@@ -21,7 +22,7 @@ const font = Montserrat({
 
 const APP_NAME = "AsePashe";
 const APP_DEFAULT_TITLE = "AsePashe";
-const APP_TITLE_TEMPLATE = "%s - AsePashe";
+const APP_TITLE_TEMPLATE = "%s • AsePashe";
 const APP_DESCRIPTION = "Best app in the world!";
 
 export const metadata: Metadata = {

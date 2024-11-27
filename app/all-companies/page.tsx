@@ -21,16 +21,24 @@ export interface Company {
 }
 
 export const metadata = {
-    title: "Companies",
+    title: "All Companies",
     description: "All companies",
     keywords: "companies, all companies",
 };
 
-export default async function Restaurant() {
+export default async function Restaurant({
+    searchParams,
+}: {
+    searchParams: Promise<{ [key: string]: string | undefined }>;
+}) {
+    const { page } = await searchParams;
     const allCompanies = await getAllCompanies();
     return (
         <div className="my-4">
-            <ViewCompanies allCompanies={allCompanies} />
+            <ViewCompanies
+                allCompanies={allCompanies}
+                initialPage={parseInt(page || "1")}
+            />
         </div>
     );
 }

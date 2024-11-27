@@ -1,5 +1,6 @@
 import React from "react";
 import ViewProducts from "./components/ViewProducts";
+import { Metadata } from "next";
 
 export interface Product {
     id: number;
@@ -16,11 +17,25 @@ export interface Product {
     section_id: number;
 }
 
-export default async function AllProducts() {
+export const metadata: Metadata = {
+    title: "All Products",
+    description: "All products",
+    keywords: "products, all products",
+};
+
+export default async function AllProducts({
+    searchParams,
+}: {
+    searchParams: Promise<{ [key: string]: string | undefined }>;
+}) {
+    const { page } = await searchParams;
     const allCompanies = await getAllProducts();
     return (
         <div className="my-4">
-            <ViewProducts allProducts={allCompanies} />
+            <ViewProducts
+                allProducts={allCompanies}
+                initialPage={parseInt(page || "1")}
+            />
         </div>
     );
 }

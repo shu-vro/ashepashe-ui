@@ -1,6 +1,8 @@
 import { nextui } from "@nextui-org/theme";
 import type { Config } from "tailwindcss";
 import tailwindcss_animate from "tailwindcss-animate";
+// @ts-ignore
+import tailwind_grid_areas from "@savvywombat/tailwindcss-grid-areas";
 
 export default {
     content: [
@@ -12,7 +14,19 @@ export default {
     theme: {
         extend: {
             screens: {
+                lap: "1200px",
                 mob: "450px",
+            },
+            gridTemplateAreas: {
+                productLayoutLap: [
+                    "company product product",
+                    "company    more    more",
+                ],
+                productLayoutNoLap: ["product", "more", "company"],
+            },
+            gridTemplateColumns: {
+                productLayoutLap: "1fr 1fr 1fr",
+                productLayoutNoLap: "1fr",
             },
             colors: {
                 background: "hsl(var(--background))",
@@ -75,6 +89,6 @@ export default {
             },
         },
     },
-    plugins: [tailwindcss_animate, nextui()],
+    plugins: [tailwindcss_animate, nextui(), tailwind_grid_areas],
     darkMode: ["class", "class"],
 } satisfies Config;

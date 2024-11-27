@@ -3,17 +3,26 @@
 import { Pagination } from "@nextui-org/react";
 import React, { useState } from "react";
 import { Product } from "../page";
-import { paginate } from "@/lib/utils";
+import { dynamicFakeImageGenerator, paginate } from "@/lib/utils";
 import { ProductCard } from "@/app/components/ProductCard";
 import Link from "next/link";
+import { inBound } from "@/app/all-companies/components/ViewCompanies";
+import { useRouter } from "next/navigation";
+
+const PER_PAGE = 12;
 
 export default function ViewProducts({
     allProducts,
+    initialPage,
 }: {
     allProducts: Product[];
+    initialPage: number;
 }) {
-    const [currentPage, setCurrentPage] = useState(1);
-    const selectedProducts = paginate(allProducts, currentPage, 12);
+    const [currentPage, setCurrentPage] = useState(
+        inBound(initialPage, Math.ceil(allProducts.length / PER_PAGE))
+    );
+    const selectedProducts = paginate(allProducts, currentPage, PER_PAGE);
+    const router = useRouter();
     console.log(allProducts);
     return (
         <>
@@ -23,19 +32,16 @@ export default function ViewProducts({
                         key={product.id}
                         name={product.name}
                         discountPrice={product.price}
-                        actualPrice={product.price}
+                        actualPrice={500}
                         seller={product.company_id}
                         // imageUrl={product.slug}
-
-                        imageUrl={`https://nextui.org/images/fruit-${
-                            Math.floor(Math.random() * 7) + 1
-                        }.jpeg`}
+                        imageUrl={dynamicFakeImageGenerator()}
                         rating={4.56}
                         sellerAvatar="https://i.pravatar.cc/150?u=a04258114e29026702d"
                         as={Link}
                         // @ts-expect-error
                         href={`/products/${product.slug}`}
-                        className="!w-full"
+                        className="!w-full min-h-[520px]"
                         description={product.description}
                     />
                 ))}
@@ -44,11 +50,12 @@ export default function ViewProducts({
                 <Pagination
                     showControls
                     isCompact
-                    total={Math.ceil(allProducts.length / 12)}
+                    total={Math.ceil(allProducts.length / PER_PAGE)}
                     page={currentPage}
                     onChange={(value) => {
                         setCurrentPage(value);
                         window.scrollTo(0, 0);
+                        router.push(`?page=${value}`);
                     }}
                     className="mx-auto w-fit"
                 />

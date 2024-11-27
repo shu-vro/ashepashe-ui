@@ -1,13 +1,12 @@
-"use client";
-
-import CategorySlide from "./components/CategorySlide";
-import { Tabs, Tab } from "@nextui-org/tabs";
 import { BigCard, SideCard } from "./components/ProductCard";
+import FilterHomeProducts from "./components/FilterHomeProducts";
+import { Product } from "./all-products/page";
 
-export default function Home() {
+export default async function Home() {
+    const products = await getAllProducts();
     return (
         <>
-            <div className="flex flex-row">
+            <div className="flex flex-row gap-4">
                 <BigCard />
                 <div className="w-1/2 pt-6">
                     <div className="w-1/2 flex flex-col gap-3">
@@ -17,15 +16,15 @@ export default function Home() {
                     </div>
                 </div>
             </div>
-            <Tabs className="mt-6 ml-4">
-                <Tab title="Popular" key="Popular"></Tab>
-                <Tab title="Cheap" key="Cheap"></Tab>
-                <Tab title="Expensive" key="Expensive"></Tab>
-                <Tab title="Discount" key="Discount"></Tab>
-            </Tabs>
-            <CategorySlide />
+            <FilterHomeProducts products={products} />
         </>
     );
 }
 
 export const dynamic = "force-dynamic";
+
+async function getAllProducts() {
+    const response = await fetch("https://asepashe.com/api/products");
+    const data: Product[] = await response.json();
+    return data;
+}

@@ -16,7 +16,7 @@ import React from "react";
 import { CiBookmark } from "react-icons/ci";
 import { Rating } from "@smastrom/react-rating";
 import "@smastrom/react-rating/style.css";
-import { cn } from "@/lib/utils";
+import { cn, removeTags } from "@/lib/utils";
 
 interface ProductCardProps {
     name: string;
@@ -40,6 +40,7 @@ export function ProductCard({
     description,
     ...rest
 }: ProductCardProps & CardProps) {
+    const discountPercent = ((discountPrice / actualPrice) * 100).toFixed(0);
     return (
         <Card
             shadow="sm"
@@ -67,20 +68,27 @@ export function ProductCard({
                         <Chip
                             color="success"
                             variant="bordered"
-                            className="rounded-[6px] md:hidden">
-                            {((discountPrice / actualPrice) * 100).toFixed(0)}%
+                            className={cn(
+                                "rounded-[6px] md:hidden",
+                                discountPercent === "100" ? "!hidden" : "flex"
+                            )}>
+                            {discountPercent}%
                         </Chip>
                     </em>
                     {description && (
-                        <span className="text-neutral-500 text-sm">
-                            {description}
+                        <span className="text-neutral-500 text-sm line-clamp-2">
+                            {removeTags(description)}
                         </span>
                     )}
                 </div>
                 <Divider className="my-4" />
                 <div className="flex flex-wrap justify-between items-center w-full">
                     <div>
-                        <del className="text-default-500">{actualPrice}৳</del>{" "}
+                        {discountPercent !== "100" && (
+                            <del className="text-default-500">
+                                {actualPrice}৳
+                            </del>
+                        )}{" "}
                         <span className="text-2xl font-bold">
                             {discountPrice + "৳"}
                         </span>
@@ -88,7 +96,7 @@ export function ProductCard({
                     <Rating style={{ maxWidth: 100 }} readOnly value={rating} />
                 </div>
                 <Divider className="my-4" />
-                <div className="flex flex-row justify-start items-center gap-1">
+                <div className="flex flex-row justify-between items-center gap-1 w-full">
                     <User
                         name={seller}
                         avatarProps={{
@@ -96,7 +104,7 @@ export function ProductCard({
                             src: sellerAvatar,
                         }}
                         classNames={{
-                            name: "truncate w-24",
+                            name: "truncate",
                         }}
                         className="grow-0"
                     />
@@ -111,8 +119,13 @@ export function ProductCard({
                     <Chip
                         color="success"
                         variant="bordered"
-                        className="rounded-[6px] hidden md:flex">
-                        {((discountPrice / actualPrice) * 100).toFixed(0)}%
+                        className={cn(
+                            "rounded-[6px]",
+                            discountPercent === "100"
+                                ? "hidden"
+                                : "hidden md:flex"
+                        )}>
+                        {discountPercent}%
                     </Chip>
                 </div>
             </CardFooter>

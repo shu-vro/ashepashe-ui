@@ -48,7 +48,9 @@ export default function ProductSide({ product }: Prop) {
                         <Button
                             color="secondary"
                             as={Link}
-                            href={`/all-companies/${product.slug}`}
+                            href={`/all-companies/${(product.company_id || "")
+                                .split(" ")
+                                .join("-")}`}
                             className="w-full">
                             Go To Store
                         </Button>

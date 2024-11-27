@@ -30,7 +30,7 @@ export function dynamicFakeImageGenerator() {
     }.jpeg`;
 }
 
-export function removeTags(string: string) {
+export function removeTags(string = "") {
     const re =
         /(<script(\s|\S)*?<\/script>)|(<style(\s|\S)*?<\/style>)|(<!--(\s|\S)*?-->)|(<\/?(\s|\S)*?>)/g;
 

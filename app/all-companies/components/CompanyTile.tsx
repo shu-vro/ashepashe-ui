@@ -32,7 +32,6 @@ export default function CompanyTile({
             isPressable
             as={Link}
             href={`/all-companies/${slug}`}
-            onClick={() => console.log("item pressed")}
             {...rest}
             className={cn("w-full max-h-[420px]", rest?.className || "")}>
             <CardBody className="overflow-visible p-4">

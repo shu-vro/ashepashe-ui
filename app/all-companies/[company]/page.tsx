@@ -24,7 +24,6 @@ export default async function Page(props: Props) {
     const companyProducts = company.products as unknown as Product["product"][];
 
     const group = Object.groupBy(companyProducts, (item) => item.section_id);
-    console.log(group);
     return (
         <div className="grid grid-areas-companyLayoutNoLap grid-cols-productLayoutNoLap lap:grid-cols-productLayoutLap lap:grid-areas-companyLayoutLap gap-4">
             <CompanyBanner src={company.image} />
@@ -36,19 +35,32 @@ export default async function Page(props: Props) {
                 </p>
             </div>
             {companyProducts.length > 0 && (
-                <div className="grid-in-product mt-12">
-                    <h2 className="text-2xl font-bold text-default-400 ml-4">
-                        More from {company.name}
-                    </h2>
-                    <CategorySlide
-                        selected={companyProducts}
-                        companyName={company.name}
-                        companyImage={company.image}
-                        companySlug={company.slug}
-                        className={cn(
-                            "w-full max-lap:w-[calc(100vw-16rem)] max-[760px]:w-[100vw]"
-                        )}
-                    />
+                <div className="grid-in-product">
+                    {Object.entries(group).map(([key, value]) => {
+                        console.log(key, value);
+                        const section = sections.find(
+                            (section) => section.id === Number(key)
+                        );
+                        if (!section || !value) return null;
+                        return (
+                            <div
+                                key={section.id}
+                                className="more-product grid-in-more mt-6">
+                                <h2 className="text-2xl font-bold text-default-400 ml-4">
+                                    {section.name} ({value.length})
+                                </h2>
+                                <CategorySlide
+                                    selected={value}
+                                    companyName={company.name}
+                                    companyImage={company.image}
+                                    companySlug={company.slug}
+                                    className={cn(
+                                        "w-full max-lap:w-[calc(100vw-16rem)] max-[760px]:w-[100vw]"
+                                    )}
+                                />
+                            </div>
+                        );
+                    })}
                 </div>
             )}
         </div>

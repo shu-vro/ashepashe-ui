@@ -20,7 +20,7 @@ export function capitalizeFirstLetter(sentence: string): string {
         .join(" ");
 }
 
-export function first_n(products: Product[], n = 8) {
+export function first_n(products: Product["product"][], n = 8) {
     return products.slice(0, n);
 }
 

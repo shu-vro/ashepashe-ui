@@ -8,6 +8,7 @@ import { Rating } from "@smastrom/react-rating";
 import { IoLocationOutline } from "react-icons/io5";
 import { MdOutlineCall } from "react-icons/md";
 import { PiFacebookLogoBold } from "react-icons/pi";
+import { removeTags } from "@/lib/utils";
 
 export default function CompanyCard({ company }: { company: Company }) {
     return (
@@ -17,7 +18,9 @@ export default function CompanyCard({ company }: { company: Company }) {
             <CardBody className="overflow-visible gap-4">
                 <div className="max-lap:hidden">
                     <h1 className="text-2xl font-bold">{company.name}</h1>
-                    <p className="text-neutral-500">{company.description}</p>
+                    <p className="text-neutral-500 italic">
+                        {removeTags(company.description)}
+                    </p>
                 </div>
                 <FieldWithIcon Icon={IoLocationOutline} value={company.map} />
                 <FieldWithIcon

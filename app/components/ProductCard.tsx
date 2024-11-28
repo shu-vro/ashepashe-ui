@@ -51,7 +51,6 @@ export function ProductCard({
             // shadow="none"
             isPressable
             as={"div"}
-            onClick={() => console.log("item pressed")}
             {...rest}
             className={cn("w-48 md:w-72", rest?.className || "")}>
             <CardBody className="overflow-visible p-4">
@@ -67,7 +66,7 @@ export function ProductCard({
             </CardBody>
             <CardFooter className="p-4 pt-0 text-start flex-col">
                 <div className="flex flex-col items-start w-full">
-                    <em className="capitalize not-italic font-bold text-xl line-clamp-2">
+                    <em className="capitalize not-italic font-bold text-xl line-clamp-2 h-16">
                         {name}{" "}
                         <Chip
                             color="success"
@@ -147,7 +146,7 @@ export function ProductCard({
 
 export function BigCard({}) {
     return (
-        <Card isPressable as={"div"} className="w-1/2" shadow="none">
+        <Card isPressable as={"div"} shadow="none">
             <CardHeader className="p-6 overflow-visible">
                 <Image
                     isBlurred
@@ -184,7 +183,7 @@ export function SideCard({}: {}) {
     // const seller = "John Doe";
     // const sellerAvatar = "https://i.pravatar.cc/150?u=a04258114e29026702d";
     return (
-        <Card isPressable as={"div"} className="w-full" shadow="sm">
+        <Card isPressable as={"div"} shadow="sm">
             <CardBody className="p-3 flex-row justify-start gap-4">
                 <div className="overflow-visible">
                     <Image

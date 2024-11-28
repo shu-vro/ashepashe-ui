@@ -10,7 +10,10 @@ import { first_n } from "@/lib/utils";
 const keys = ["Recent", "Popular", "Cheap", "Expensive", "Discount"] as const;
 type KeyType = (typeof keys)[number];
 
-const resolver: Record<KeyType, (products: Product[]) => Product[]> = {
+const resolver: Record<
+    KeyType,
+    (products: Product["product"][]) => Product["product"][]
+> = {
     Recent: (products) => {
         const recent = products.sort((a, b) => {
             return (
@@ -43,7 +46,7 @@ const resolver: Record<KeyType, (products: Product[]) => Product[]> = {
 export default function FilterHomeProducts({
     products,
 }: {
-    products: Product[];
+    products: Product["product"][];
 }) {
     const [selectedTab, setSelectedTab] = useState<KeyType>(keys[0]);
 
@@ -62,7 +65,12 @@ export default function FilterHomeProducts({
                     <Tab title={key} key={key}></Tab>
                 ))}
             </Tabs>
-            <CategorySlide selected={selected} />
+            <CategorySlide
+                selected={selected}
+                companyImage={""}
+                companyName=""
+                companySlug=""
+            />
         </Suspense>
     );
 }

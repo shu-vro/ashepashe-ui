@@ -49,8 +49,8 @@ export default function CompanyTile({
                 <div className="capitalize flex flex-row items-center text-secondary">
                     <GrLocation className="text-xl" /> {where}
                 </div>
-                <b className="capitalize line-clamp-2">{name}</b>
-                <div className="text-neutral-500 line-clamp-2">
+                <b className="capitalize line-clamp-2 h-14">{name}</b>
+                <div className="text-neutral-500 line-clamp-2 h-12">
                     {removeTags(description || "")}
                 </div>
             </CardFooter>

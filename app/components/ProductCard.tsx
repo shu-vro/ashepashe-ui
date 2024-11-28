@@ -68,7 +68,7 @@ export function ProductCard({
                 <div className="flex flex-col items-start w-full">
                     <em className="capitalize not-italic font-bold text-xl line-clamp-2 h-16">
                         {name}{" "}
-                        <Chip
+                        {/* <Chip
                             color="success"
                             variant="bordered"
                             className={cn(
@@ -76,7 +76,7 @@ export function ProductCard({
                                 discountPercent === "100" ? "!hidden" : "flex"
                             )}>
                             {discountPercent}%
-                        </Chip>
+                        </Chip> */}
                     </em>
                     {description && (
                         <span className="text-neutral-500 text-sm line-clamp-2">
@@ -140,78 +140,6 @@ export function ProductCard({
                     </Chip>
                 </div>
             </CardFooter>
-        </Card>
-    );
-}
-
-export function BigCard({}) {
-    return (
-        <Card isPressable as={"div"} shadow="none">
-            <CardHeader className="p-6 overflow-visible">
-                <Image
-                    isBlurred
-                    src="https://nextui.org/images/fruit-1.jpeg"
-                    alt="name"
-                    shadow="sm"
-                    className="w-full aspect-[4/3] object-cover"
-                    removeWrapper
-                />
-            </CardHeader>
-            <CardBody className="p-6 flex-row justify-between">
-                <div>
-                    <h2 className="font-bold text-3xl">Best Discounts</h2>
-                    <span className="text-neutral-500">1234 items</span>
-                </div>
-                <div>
-                    <span className="text-neutral-500">Left</span>
-                    <Chip
-                        color="warning"
-                        variant="bordered"
-                        className="rounded-[6px] block">
-                        10 days
-                    </Chip>
-                </div>
-            </CardBody>
-        </Card>
-    );
-}
-
-export function SideCard({}: {}) {
-    const actualPrice = 200;
-    const discountPrice = 50;
-    const name = "Apple Watch Series 7 Space Gray";
-    // const seller = "John Doe";
-    // const sellerAvatar = "https://i.pravatar.cc/150?u=a04258114e29026702d";
-    return (
-        <Card isPressable as={"div"} shadow="sm">
-            <CardBody className="p-3 flex-row justify-start gap-4">
-                <div className="overflow-visible">
-                    <Image
-                        isBlurred
-                        isZoomed
-                        src="https://nextui.org/images/fruit-1.jpeg"
-                        alt={name}
-                        className="w-full h-full aspect-square object-cover"
-                        classNames={{
-                            wrapper: "w-24 h-24",
-                        }}
-                    />
-                </div>
-                <div className="my-auto">
-                    <h2 className="font-bold text-xl">{name}</h2>
-                    <div>
-                        <del className="text-default-500">{actualPrice}৳</del>{" "}
-                        <span className="font-bold">{discountPrice + "৳"}</span>
-                    </div>
-                    <Chip
-                        color="warning"
-                        variant="bordered"
-                        size="sm"
-                        className="rounded-[6px] block">
-                        10 days
-                    </Chip>
-                </div>
-            </CardBody>
         </Card>
     );
 }

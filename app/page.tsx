@@ -1,26 +1,21 @@
-import { BigCard, SideCard } from "./components/ProductCard";
 import FilterHomeProducts from "./components/FilterHomeProducts";
 import { Product } from "./all-products/page";
+import { Company } from "./all-companies/page";
+import CompanySlide from "./components/CompanySlide";
 
 export default async function Home() {
-    const products = await getAllProducts();
+    const { products, companies } = await getAllProducts();
     return (
-        <>
-            <div className="grid grid-cols-3 gap-4 mx-8 mt-4">
-                <BigCard />
-                <div className="flex flex-col gap-3 justify-stretch h-full">
-                    <SideCard />
-                    <SideCard />
-                    <SideCard />
-                </div>
-                <div className="flex flex-col gap-3">
-                    <SideCard />
-                    <SideCard />
-                    <SideCard />
-                </div>
-            </div>
+        <div className="my-4">
+            <h2 className="text-2xl font-bold text-default-400 ml-4">
+                Products
+            </h2>
             <FilterHomeProducts products={products} />
-        </>
+            <h2 className="text-2xl font-bold text-default-400 ml-4">
+                Restaurants
+            </h2>
+            <CompanySlide companies={companies} />
+        </div>
     );
 }
 
@@ -28,6 +23,8 @@ export const dynamic = "force-dynamic";
 
 async function getAllProducts() {
     const response = await fetch("https://asepashe.com/api/products");
-    const data: Product["product"][] = await response.json();
-    return data;
+    const products: Product["product"][] = await response.json();
+    const response2 = await fetch("https://asepashe.com/api/companies/8");
+    const companies: Company[] = await response2.json();
+    return { products, companies };
 }

@@ -6,7 +6,7 @@ export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
 }
 
-export function paginate(array: any[], page = 1, count = 12) {
+export function paginate<T>(array: T[], page = 1, count = 12): T[] {
     const start = (page - 1) * count;
     const end = start + count;
     const chunk = array.slice(start, end);
@@ -20,7 +20,7 @@ export function capitalizeFirstLetter(sentence: string): string {
         .join(" ");
 }
 
-export function first_n(products: Product[], n = 8) {
+export function first_n(products: Product["product"][], n = 8) {
     return products.slice(0, n);
 }
 

@@ -1,11 +1,12 @@
 import React from "react";
 import ViewCompanies from "./components/ViewCompanies";
+import { Product } from "../all-products/page";
 
 export interface Company {
     id: number;
     user_id: string;
     name: string;
-    category: string | null;
+    category: string;
     description: string;
     division: string;
     city: string;
@@ -16,8 +17,9 @@ export interface Company {
     updated_at: string;
     slug: string;
     status: number;
-    phone: string;
-    fb_page: string;
+    phone: string | null;
+    fb_page: string | null;
+    products: Product[];
 }
 
 export const metadata = {

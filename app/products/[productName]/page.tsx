@@ -14,13 +14,16 @@ type Props = {
 export default async function ProductPage({ params }: Props) {
     const { productName } = await params;
     const productDetails = await getProduct(productName);
-    const { company, companyProducts } = await getCompany(
-        productDetails.company_id.split(" ").join("-")
-    );
+    const product = productDetails.product;
+    const company = product.company;
+
+    const company_full = await getCompanyProducts(company.slug);
+    const companyProducts =
+        company_full.products as unknown as Product["product"][];
     return (
-        <div className="grid grid-areas-productLayoutNoLap grid-cols-productLayoutNoLap lap:grid-areas-productLayoutLap lap:grid-cols-productLayoutLap">
+        <div className="relative grid grid-areas-productLayoutNoLap grid-cols-productLayoutNoLap lap:grid-areas-productLayoutLap lap:grid-cols-productLayoutLap">
             <CompanySide company={company} />
-            <ProductSide product={productDetails} />
+            <ProductSide product={product} />
             {companyProducts.length > 0 && (
                 <div className="more-product grid-in-more mt-12">
                     <h2 className="text-2xl font-bold text-default-400 ml-4">
@@ -38,18 +41,11 @@ export default async function ProductPage({ params }: Props) {
     );
 }
 
-async function getCompany(name: string) {
+async function getCompanyProducts(name: string) {
     const response = await fetch(`https://asepashe.com/api/company/${name}`);
     const company: Company = await response.json();
 
-    const response2 = await fetch("https://asepashe.com/api/products");
-    const products: Product[] = await response2.json();
-
-    let companyProducts = products.filter(
-        (product) => product.company_id === company.name
-    );
-    companyProducts = first_n(companyProducts, 8);
-    return { company, companyProducts };
+    return company;
 }
 
 async function getProduct(name: string): Promise<Product> {
@@ -64,33 +60,36 @@ export async function generateMetadata(
 ): Promise<Metadata> {
     // read route params
     let productName = (await params).productName;
-    productName = productName.split("-").join(" ");
-    productName = capitalizeFirstLetter(productName);
+    // productName = productName.split("-").join(" ");
+    // productName = capitalizeFirstLetter(productName);
 
     const response = await fetch(
         `https://asepashe.com/api/product/${productName}`
     );
     const data: Product = await response.json();
 
+    const product = data.product;
+    const company = product.company;
+
     return {
-        title: productName,
-        description: data.description,
+        title: product.name,
+        description: product.description,
         keywords: [
             "product",
             "company",
             "asepashe",
             "bangladesh",
-            productName,
-            data.company_id,
+            product.name,
+            company.name,
         ],
         openGraph: {
             title: productName,
-            description: data.description,
+            description: product.description,
             type: "website",
             url: `https://asepashe.com/products/${productName}`,
             images: {
-                url: data.image1,
-                alt: productName,
+                url: product.image1!,
+                alt: product.name,
             },
             siteName: "AsePashe",
         },

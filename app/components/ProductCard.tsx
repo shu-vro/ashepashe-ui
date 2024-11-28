@@ -17,6 +17,9 @@ import { CiBookmark } from "react-icons/ci";
 import { Rating } from "@smastrom/react-rating";
 import "@smastrom/react-rating/style.css";
 import { cn, removeTags } from "@/lib/utils";
+import { BsCart3 } from "react-icons/bs";
+import { CiShoppingCart } from "react-icons/ci";
+import Link from "next/link";
 
 interface ProductCardProps {
     name: string;
@@ -24,9 +27,12 @@ interface ProductCardProps {
     discountPrice: number;
     seller: string;
     sellerAvatar: string;
-    rating: number;
+    // rating: number;
     imageUrl: string;
     description?: string;
+    disableCompany?: boolean;
+    link: string;
+    sellerLink?: string;
 }
 
 export function ProductCard({
@@ -36,8 +42,11 @@ export function ProductCard({
     discountPrice,
     seller,
     sellerAvatar,
-    rating,
+    // rating,
     description,
+    link,
+    disableCompany = false,
+    sellerLink = "#",
     ...rest
 }: ProductCardProps & CardProps) {
     const discountPercent = ((discountPrice / actualPrice) * 100).toFixed(0);
@@ -47,10 +56,9 @@ export function ProductCard({
             // shadow="none"
             isPressable
             as={"div"}
-            onClick={() => console.log("item pressed")}
             {...rest}
             className={cn("w-48 md:w-72", rest?.className || "")}>
-            <CardBody className="overflow-visible p-4">
+            <CardBody className="overflow-visible p-4" as={Link} href={link}>
                 <Image
                     shadow="sm"
                     radius="lg"
@@ -63,9 +71,9 @@ export function ProductCard({
             </CardBody>
             <CardFooter className="p-4 pt-0 text-start flex-col">
                 <div className="flex flex-col items-start w-full">
-                    <em className="capitalize not-italic font-bold text-xl">
+                    <em className="capitalize not-italic font-bold text-xl line-clamp-2 h-16">
                         {name}{" "}
-                        <Chip
+                        {/* <Chip
                             color="success"
                             variant="bordered"
                             className={cn(
@@ -73,7 +81,7 @@ export function ProductCard({
                                 discountPercent === "100" ? "!hidden" : "flex"
                             )}>
                             {discountPercent}%
-                        </Chip>
+                        </Chip> */}
                     </em>
                     {description && (
                         <span className="text-neutral-500 text-sm line-clamp-2">
@@ -81,7 +89,7 @@ export function ProductCard({
                         </span>
                     )}
                 </div>
-                <Divider className="my-4" />
+                <CustomDivider />
                 <div className="flex flex-wrap justify-between items-center w-full">
                     <div>
                         {discountPercent !== "100" && (
@@ -93,25 +101,23 @@ export function ProductCard({
                             {discountPrice + "৳"}
                         </span>
                     </div>
-                    <Rating style={{ maxWidth: 100 }} readOnly value={rating} />
+                    {/* <Rating style={{ maxWidth: 100 }} readOnly value={rating} /> */}
                 </div>
-                <Divider className="my-4" />
+                <CustomDivider />
                 <div className="flex flex-row justify-between items-center gap-1 w-full">
-                    <User
-                        name={seller}
-                        avatarProps={{
-                            className: "w-8 h-8",
-                            src: sellerAvatar,
-                        }}
-                        className="grow-0"
-                    />
-                    <div className="grow" />
                     <Button
                         isIconOnly
                         variant="light"
                         className="text-xl"
                         size="sm">
                         <CiBookmark />
+                    </Button>
+                    <Button
+                        isIconOnly
+                        variant="light"
+                        className="text-xl"
+                        size="sm">
+                        <CiShoppingCart />
                     </Button>
                     <Chip
                         color="success"
@@ -125,79 +131,28 @@ export function ProductCard({
                         {discountPercent}%
                     </Chip>
                 </div>
+                <div className="w-full">
+                    {!disableCompany && (
+                        <>
+                            <CustomDivider />
+                            <User
+                                name={seller}
+                                avatarProps={{
+                                    className: "w-8 h-8",
+                                    src: sellerAvatar,
+                                }}
+                                className="grow-0"
+                                as={Link}
+                                href={sellerLink}
+                            />
+                        </>
+                    )}
+                </div>
             </CardFooter>
         </Card>
     );
 }
 
-export function BigCard({}) {
-    return (
-        <Card isPressable as={"div"} className="w-1/2" shadow="none">
-            <CardHeader className="p-6 overflow-visible">
-                <Image
-                    isBlurred
-                    src="https://nextui.org/images/fruit-1.jpeg"
-                    alt="name"
-                    shadow="sm"
-                    className="w-full aspect-[4/3] object-cover"
-                    removeWrapper
-                />
-            </CardHeader>
-            <CardBody className="p-6 flex-row justify-between">
-                <div>
-                    <h2 className="font-bold text-3xl">Best Discounts</h2>
-                    <span className="text-neutral-500">1234 items</span>
-                </div>
-                <div>
-                    <span className="text-neutral-500">Left</span>
-                    <Chip
-                        color="warning"
-                        variant="bordered"
-                        className="rounded-[6px] block">
-                        10 days
-                    </Chip>
-                </div>
-            </CardBody>
-        </Card>
-    );
-}
-
-export function SideCard({}: {}) {
-    const actualPrice = 200;
-    const discountPrice = 50;
-    const name = "Apple Watch Series 7 Space Gray";
-    // const seller = "John Doe";
-    // const sellerAvatar = "https://i.pravatar.cc/150?u=a04258114e29026702d";
-    return (
-        <Card isPressable as={"div"} className="w-full" shadow="sm">
-            <CardBody className="p-3 flex-row justify-start gap-4">
-                <div className="overflow-visible">
-                    <Image
-                        isBlurred
-                        isZoomed
-                        src="https://nextui.org/images/fruit-1.jpeg"
-                        alt={name}
-                        className="w-full h-full aspect-square object-cover"
-                        classNames={{
-                            wrapper: "w-24 h-24",
-                        }}
-                    />
-                </div>
-                <div className="my-auto">
-                    <h2 className="font-bold text-xl">{name}</h2>
-                    <div>
-                        <del className="text-default-500">{actualPrice}৳</del>{" "}
-                        <span className="font-bold">{discountPrice + "৳"}</span>
-                    </div>
-                    <Chip
-                        color="warning"
-                        variant="bordered"
-                        size="sm"
-                        className="rounded-[6px] block">
-                        10 days
-                    </Chip>
-                </div>
-            </CardBody>
-        </Card>
-    );
+function CustomDivider() {
+    return <Divider className="my-3" />;
 }

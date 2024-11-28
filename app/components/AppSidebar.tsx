@@ -12,49 +12,6 @@ import AppSidebarItems, { AppSidebarItemsProps } from "./AppSidebarItems";
 import Link from "next/link";
 import Logo from "./Sidebar/Logo";
 
-const items: AppSidebarItemsProps["item"][] = [
-    {
-        title: "food",
-        url: "#",
-    },
-    {
-        title: "Medicines",
-        url: "#",
-    },
-    {
-        title: "groceries",
-        url: "#",
-    },
-    {
-        title: "electronics",
-        url: "#",
-    },
-    {
-        title: "clothes",
-        url: "#",
-    },
-    {
-        title: "furniture",
-        url: "#",
-    },
-    {
-        title: "books",
-        url: "#",
-    },
-    {
-        title: "stationary",
-        url: "#",
-    },
-    {
-        title: "services",
-        url: "#",
-    },
-    {
-        title: "others",
-        url: "#",
-    },
-];
-
 interface Category {
     id: number;
     name: string;
@@ -112,21 +69,6 @@ export async function AppSidebar() {
                             </SidebarMenuSub>
                         </SidebarMenuItem>
                     </SidebarGroupContent>
-                    {/* <SidebarGroupContent>
-                        <SidebarMenuItem className="list-none">
-                            <SidebarMenuButton className="text-xl">
-                                Static Categories
-                            </SidebarMenuButton>
-                            <SidebarMenuSub>
-                                {items.map((item) => (
-                                    <AppSidebarItems
-                                        key={item.title}
-                                        item={item}
-                                    />
-                                ))}
-                            </SidebarMenuSub>
-                        </SidebarMenuItem>
-                    </SidebarGroupContent> */}
                 </SidebarGroup>
             </SidebarContent>
         </Sidebar>

@@ -1,20 +1,24 @@
 import React from "react";
 import ViewProducts from "./components/ViewProducts";
 import { Metadata } from "next";
+import { Company } from "../all-companies/page";
 
 export interface Product {
-    id: number;
-    company_id: string;
-    name: string;
-    description: string;
-    price: number;
-    image1: string;
-    image2: string | null;
-    image3: string | null;
-    created_at: string;
-    updated_at: string;
-    slug: string;
-    section_id: number;
+    product: {
+        id: number;
+        company_id: number;
+        name: string;
+        description: string;
+        price: number;
+        image1: string | null;
+        image2: string | null;
+        image3: string | null;
+        created_at: string;
+        updated_at: string;
+        slug: string;
+        section_id: number;
+        company: Company;
+    };
 }
 
 export const metadata: Metadata = {
@@ -29,11 +33,11 @@ export default async function AllProducts({
     searchParams: Promise<{ [key: string]: string | undefined }>;
 }) {
     const { page } = await searchParams;
-    const allCompanies = await getAllProducts();
+    const allProducts = await getAllProducts();
     return (
         <div className="my-4">
             <ViewProducts
-                allProducts={allCompanies}
+                allProducts={allProducts}
                 initialPage={parseInt(page || "1")}
             />
         </div>
@@ -42,6 +46,6 @@ export default async function AllProducts({
 
 async function getAllProducts() {
     const response = await fetch("https://asepashe.com/api/products");
-    const data: Product[] = await response.json();
+    const data: Product["product"][] = await response.json();
     return data;
 }

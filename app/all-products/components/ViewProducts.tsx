@@ -15,34 +15,35 @@ export default function ViewProducts({
     allProducts,
     initialPage,
 }: {
-    allProducts: Product[];
+    allProducts: Product["product"][];
     initialPage: number;
 }) {
     const [currentPage, setCurrentPage] = useState(
         inBound(initialPage, Math.ceil(allProducts.length / PER_PAGE))
     );
-    const selectedProducts = paginate(allProducts, currentPage, PER_PAGE);
+    const selectedProducts = paginate<Product["product"]>(
+        allProducts,
+        currentPage,
+        PER_PAGE
+    );
     const router = useRouter();
-    console.log(allProducts);
     return (
         <>
-            <div className="grid grid-cols-[repeat(auto-fit,minmax(350px,1fr))] gap-4 p-4 place-items-center">
+            <div className="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] max-sm:grid-cols-2 gap-4 p-4 place-items-center">
                 {selectedProducts.map((product) => (
                     <ProductCard
                         key={product.id}
                         name={product.name}
                         discountPrice={product.price}
                         actualPrice={500}
-                        seller={product.company_id}
+                        seller={product.company.name}
+                        sellerLink={`/all-companies/${product.company.slug}`}
                         // imageUrl={product.slug}
                         imageUrl={dynamicFakeImageGenerator()}
-                        rating={4.56}
+                        // rating={4.56}
                         sellerAvatar="https://i.pravatar.cc/150?u=a04258114e29026702d"
-                        as={Link}
-                        // @ts-expect-error
-                        href={`/products/${product.slug}`}
-                        className="!w-full min-h-[520px]"
-                        description={product.description}
+                        className="!w-full h-fit max-sm:min-h-96"
+                        link={`/products/${product.slug}`}
                     />
                 ))}
             </div>

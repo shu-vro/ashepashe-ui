@@ -44,6 +44,10 @@ export default async function ProductPage({ params }: Props) {
 async function getCompanyProducts(name: string) {
     const response = await fetch(`https://asepashe.com/api/company/${name}`);
     const company: Company = await response.json();
+    company.products = company.products.map((product) => ({
+        ...product,
+        company,
+    }));
 
     return company;
 }

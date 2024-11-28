@@ -154,5 +154,5 @@ export function ProductCard({
 }
 
 function CustomDivider() {
-    return <Divider className="my-4" />;
+    return <Divider className="my-3" />;
 }

@@ -37,14 +37,13 @@ export default function ViewProducts({
                         discountPrice={product.price}
                         actualPrice={500}
                         seller={product.company.name}
+                        sellerLink={`/all-companies/${product.company.slug}`}
                         // imageUrl={product.slug}
                         imageUrl={dynamicFakeImageGenerator()}
                         // rating={4.56}
                         sellerAvatar="https://i.pravatar.cc/150?u=a04258114e29026702d"
-                        as={Link}
-                        // @ts-expect-error
-                        href={`/products/${product.slug}`}
                         className="!w-full h-fit max-sm:min-h-96"
+                        link={`/products/${product.slug}`}
                     />
                 ))}
             </div>

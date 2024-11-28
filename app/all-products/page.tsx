@@ -33,11 +33,11 @@ export default async function AllProducts({
     searchParams: Promise<{ [key: string]: string | undefined }>;
 }) {
     const { page } = await searchParams;
-    const allCompanies = await getAllProducts();
+    const allProducts = await getAllProducts();
     return (
         <div className="my-4">
             <ViewProducts
-                allProducts={allCompanies}
+                allProducts={allProducts}
                 initialPage={parseInt(page || "1")}
             />
         </div>

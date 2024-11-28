@@ -21,7 +21,11 @@ export default async function Page(props: Props) {
     const { company: company_id } = params;
 
     const { company, sections } = await getCompany(company_id);
-    const companyProducts = company.products as unknown as Product["product"][];
+    let companyProducts = company.products as unknown as Product["product"][];
+    companyProducts = companyProducts.map((product) => ({
+        ...product,
+        company,
+    }));
 
     const group = Object.groupBy(companyProducts, (item) => item.section_id);
     return (
@@ -37,7 +41,6 @@ export default async function Page(props: Props) {
             {companyProducts.length > 0 && (
                 <div className="grid-in-product">
                     {Object.entries(group).map(([key, value]) => {
-                        console.log(key, value);
                         const section = sections.find(
                             (section) => section.id === Number(key)
                         );

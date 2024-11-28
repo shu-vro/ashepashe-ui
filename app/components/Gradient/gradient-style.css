@@ -16,6 +16,12 @@
                     transparent
                 ),
                 radial-gradient(
+                    circle at 80% 20%,
+                    rgba(138, 0, 156, 0.13),
+                    transparent,
+                    transparent
+                ),
+                radial-gradient(
                     circle at 80% 90%,
                     rgba(156, 31, 0, 0.1),
                     transparent,
@@ -35,6 +41,12 @@
                 radial-gradient(
                     circle at 20% 70%,
                     rgba(233, 81, 26, 0.15),
+                    transparent,
+                    transparent
+                ),
+                radial-gradient(
+                    circle at 80% 20%,
+                    rgba(138, 0, 156, 0.2),
                     transparent,
                     transparent
                 ),

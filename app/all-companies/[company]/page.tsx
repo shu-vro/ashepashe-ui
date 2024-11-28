@@ -1,19 +1,30 @@
 import React from "react";
 import { Company } from "../page";
 import { Product } from "@/app/all-products/page";
-import CategorySlide from "@/app/components/CategorySlide";
 import { cn, removeTags } from "@/lib/utils";
 import CompanyBanner from "./CompanyBanner";
 import CompanyCard from "./CompanyCard";
-import ViewProducts from "@/app/all-products/components/ViewProducts";
 import { Metadata, ResolvingMetadata } from "next";
+import CategorySlide from "@/app/components/CategorySlide";
+
+export interface Category {
+    id: number;
+    name: string;
+    company_id: number;
+    created_at: string;
+    updated_at: string;
+}
 
 export default async function Page(props: Props) {
     const params = await props.params;
 
     const { company: company_id } = params;
 
-    const { company, companyProducts } = await getCompany(company_id);
+    const { company, sections } = await getCompany(company_id);
+    const companyProducts = company.products as unknown as Product["product"][];
+
+    const group = Object.groupBy(companyProducts, (item) => item.section_id);
+    console.log(group);
     return (
         <div className="grid grid-areas-companyLayoutNoLap grid-cols-productLayoutNoLap lap:grid-cols-productLayoutLap lap:grid-areas-companyLayoutLap gap-4">
             <CompanyBanner src={company.image} />
@@ -29,9 +40,14 @@ export default async function Page(props: Props) {
                     <h2 className="text-2xl font-bold text-default-400 ml-4">
                         More from {company.name}
                     </h2>
-                    <ViewProducts
-                        allProducts={companyProducts}
-                        initialPage={1}
+                    <CategorySlide
+                        selected={companyProducts}
+                        companyName={company.name}
+                        companyImage={company.image}
+                        companySlug={company.slug}
+                        className={cn(
+                            "w-full max-lap:w-[calc(100vw-16rem)] max-[760px]:w-[100vw]"
+                        )}
                     />
                 </div>
             )}
@@ -42,14 +58,9 @@ export default async function Page(props: Props) {
 async function getCompany(name: string) {
     const response = await fetch(`https://asepashe.com/api/company/${name}`);
     const company: Company = await response.json();
-
-    const response2 = await fetch("https://asepashe.com/api/products");
-    const products: Product[] = await response2.json();
-
-    const companyProducts = products.filter(
-        (product) => product.company_id === company.name
-    );
-    return { company, companyProducts };
+    const response2 = await fetch(`https://asepashe.com/api/sections`);
+    const sections: Category[] = await response2.json();
+    return { company, sections };
 }
 
 type Props = {

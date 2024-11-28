@@ -35,36 +35,9 @@ import { Product } from "../all-products/page";
 import { debounce } from "lodash";
 import { useRouter } from "next/navigation";
 
-const animals = [
-    { label: "Cat", value: "cat" },
-    { label: "Dog", value: "dog" },
-    { label: "Elephant", value: "elephant" },
-    { label: "Fox", value: "fox" },
-    { label: "Giraffe", value: "giraffe" },
-    { label: "Horse", value: "horse" },
-    { label: "Iguana", value: "iguana" },
-    { label: "Jaguar", value: "jaguar" },
-    { label: "Kangaroo", value: "kangaroo" },
-    { label: "Lion", value: "lion" },
-    { label: "Monkey", value: "monkey" },
-    { label: "Nightingale", value: "nightingale" },
-    { label: "Owl", value: "owl" },
-    { label: "Penguin", value: "penguin" },
-    { label: "Quail", value: "quail" },
-    { label: "Rabbit", value: "rabbit" },
-    { label: "Snake", value: "snake" },
-    { label: "Tiger", value: "tiger" },
-    { label: "Uakari", value: "uakari" },
-    { label: "Vulture", value: "vulture" },
-    { label: "Wolf", value: "wolf" },
-    { label: "Xerus", value: "xerus" },
-    { label: "Yak", value: "yak" },
-    { label: "Zebra", value: "zebra" },
-];
-
 async function getAllProducts() {
     const response = await fetch("https://asepashe.com/api/products");
-    const data: Product[] = await response.json();
+    const data: Product["product"][] = await response.json();
     return data;
 }
 
@@ -117,7 +90,7 @@ export default function Header() {
 function SearchDesktop({
     productPromise,
 }: {
-    productPromise: Promise<Product[]>;
+    productPromise: Promise<Product["product"][]>;
 }) {
     const router = useRouter();
     const [searchOpen, setSearchOpen] = useState(false);
@@ -181,12 +154,12 @@ function SearchDesktop({
                                                 actualPrice={product.price}
                                                 discountPrice={product.price}
                                                 company_name={
-                                                    product.company_id
+                                                    product.company.name
                                                 }
-                                                rating={4.56}
                                                 companyAvatar="https://i.pravatar.cc/150?u=a042581f4e29026704d"
                                                 image={dynamicFakeImageGenerator()}
                                                 slug={product.slug}
+                                                onSearchOpen={onSearchOpen}
                                             />
                                         ))}
                                     </ScrollShadow>
@@ -209,33 +182,39 @@ function SearchItems({
     rating,
     image,
     slug,
+    onSearchOpen,
 }: {
     label: string;
     actualPrice: number;
     discountPrice: number;
     company_name: string;
     companyAvatar: string;
-    rating: number;
+    rating?: number;
     image: string;
     slug: string;
+    onSearchOpen: (b: boolean) => void;
 }) {
     return (
         <Card
-            className="mt-4 bg-none w-full"
+            className="mt-2 bg-none w-full"
             as={Link}
             href={`/products/${slug}`}>
-            <CardBody className="flex-row justify-start gap-4 bg-none">
-                <Image className="w-36 h-36" src={image} alt={label} />
+            <CardBody
+                className="flex-row justify-start gap-4 bg-none"
+                onClick={() => {
+                    onSearchOpen(false);
+                }}>
+                <Image className="w-20 h-20" src={image} alt={label} />
                 <div className="flex flex-col justify-center">
                     <div className="font-bold">{label}</div>
-                    <Rating style={{ maxWidth: 100 }} readOnly value={rating} />
+                    {/* <Rating style={{ maxWidth: 100 }} readOnly value={rating} /> */}
                     <div>
                         <del className="text-default-500">{actualPrice}৳</del>{" "}
                         <span className="text-2xl font-bold">
                             {discountPrice + "৳"}
                         </span>
                     </div>
-                    <User
+                    {/* <User
                         name={company_name}
                         avatarProps={{
                             className: "w-8 h-8",
@@ -245,7 +224,8 @@ function SearchItems({
                             name: "truncate w-48 text-lg italic",
                         }}
                         className="grow-0"
-                    />
+                    /> */}
+                    <h1>{company_name}</h1>
                 </div>
             </CardBody>
         </Card>

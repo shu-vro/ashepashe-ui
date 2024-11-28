@@ -32,7 +32,7 @@ export default function ViewCompanies({
 
     return (
         <>
-            <div className="grid grid-cols-[repeat(auto-fit,minmax(350px,1fr))] gap-4 p-4 place-items-center">
+            <div className="grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] max-sm:grid-cols-2 gap-4 p-4 place-items-center">
                 {selectedCompanies.map((company, index) => (
                     <CompanyTile
                         key={index}

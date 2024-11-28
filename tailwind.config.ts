@@ -24,9 +24,9 @@ export default {
                 ],
                 productLayoutNoLap: ["product", "more", "company"],
                 companyLayoutLap: [
-                    "image   image    company",
+                    "image   image    image",
                     "name    name     name",
-                    "product product  product",
+                    "company product product",
                 ],
                 companyLayoutNoLap: ["image", "name", "company", "product"],
             },

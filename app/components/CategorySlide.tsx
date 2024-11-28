@@ -15,9 +15,19 @@ import Link from "next/link";
 
 export default function CategorySlide({
     selected,
+    companyName,
+    companyImage,
+    companySlug,
     ...rest
-}: { selected: Product[] } & React.HTMLAttributes<HTMLDivElement>) {
+}: {
+    selected: Product["product"][];
+    companyName: string;
+    companyImage: string;
+    companySlug: string;
+} & React.HTMLAttributes<HTMLDivElement>) {
     const { isMobile } = useSidebar();
+
+    console.log(selected);
     return (
         <div
             className={cn(
@@ -43,13 +53,15 @@ export default function CategorySlide({
                             }.jpeg`}
                             discountPrice={select.price}
                             actualPrice={500}
-                            rating={4.52}
-                            seller={select.company_id}
+                            // rating={4.52}
+                            seller={companyName}
+                            // sellerAvatar={companyImage}
                             sellerAvatar="https://i.pravatar.cc/150?u=a04258114e29026702d"
-                            className="min-h-[450px]"
+                            className="min-h-[370px]"
                             as={Link}
                             // @ts-ignore
                             href={`/products/${select.slug}`}
+                            disableCompany={true}
                         />
                     </SwiperSlide>
                 ))}

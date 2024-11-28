@@ -17,6 +17,8 @@ import { CiBookmark } from "react-icons/ci";
 import { Rating } from "@smastrom/react-rating";
 import "@smastrom/react-rating/style.css";
 import { cn, removeTags } from "@/lib/utils";
+import { BsCart3 } from "react-icons/bs";
+import { CiShoppingCart } from "react-icons/ci";
 
 interface ProductCardProps {
     name: string;
@@ -24,9 +26,10 @@ interface ProductCardProps {
     discountPrice: number;
     seller: string;
     sellerAvatar: string;
-    rating: number;
+    // rating: number;
     imageUrl: string;
     description?: string;
+    disableCompany?: boolean;
 }
 
 export function ProductCard({
@@ -36,8 +39,9 @@ export function ProductCard({
     discountPrice,
     seller,
     sellerAvatar,
-    rating,
+    // rating,
     description,
+    disableCompany = false,
     ...rest
 }: ProductCardProps & CardProps) {
     const discountPercent = ((discountPrice / actualPrice) * 100).toFixed(0);
@@ -63,7 +67,7 @@ export function ProductCard({
             </CardBody>
             <CardFooter className="p-4 pt-0 text-start flex-col">
                 <div className="flex flex-col items-start w-full">
-                    <em className="capitalize not-italic font-bold text-xl">
+                    <em className="capitalize not-italic font-bold text-xl line-clamp-2">
                         {name}{" "}
                         <Chip
                             color="success"
@@ -93,25 +97,36 @@ export function ProductCard({
                             {discountPrice + "৳"}
                         </span>
                     </div>
-                    <Rating style={{ maxWidth: 100 }} readOnly value={rating} />
+                    {/* <Rating style={{ maxWidth: 100 }} readOnly value={rating} /> */}
                 </div>
                 <Divider className="my-4" />
                 <div className="flex flex-row justify-between items-center gap-1 w-full">
-                    <User
-                        name={seller}
-                        avatarProps={{
-                            className: "w-8 h-8",
-                            src: sellerAvatar,
-                        }}
-                        className="grow-0"
-                    />
-                    <div className="grow" />
+                    {!disableCompany && (
+                        <>
+                            <User
+                                name={seller}
+                                avatarProps={{
+                                    className: "w-8 h-8",
+                                    src: sellerAvatar,
+                                }}
+                                className="grow-0"
+                            />
+                            <div className="grow" />
+                        </>
+                    )}
                     <Button
                         isIconOnly
                         variant="light"
                         className="text-xl"
                         size="sm">
                         <CiBookmark />
+                    </Button>
+                    <Button
+                        isIconOnly
+                        variant="light"
+                        className="text-xl"
+                        size="sm">
+                        <CiShoppingCart />
                     </Button>
                     <Chip
                         color="success"

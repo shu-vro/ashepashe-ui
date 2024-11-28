@@ -8,10 +8,11 @@ import { Rating } from "@smastrom/react-rating";
 import { Product } from "@/app/all-products/page";
 
 type Prop = {
-    product: Product;
+    product: Product["product"];
 };
 
 export default function ProductSide({ product }: Prop) {
+    console.log(product);
     return (
         <div className="product grid-in-product">
             <Card
@@ -48,9 +49,7 @@ export default function ProductSide({ product }: Prop) {
                         <Button
                             color="secondary"
                             as={Link}
-                            href={`/all-companies/${(product.company_id || "")
-                                .split(" ")
-                                .join("-")}`}
+                            href={`/all-companies/${product.company.slug}`}
                             className="w-full">
                             Go To Store
                         </Button>

@@ -11,8 +11,14 @@ import { PiFacebookLogoBold } from "react-icons/pi";
 
 export default function CompanyCard({ company }: { company: Company }) {
     return (
-        <Card className="grid-in-company h-min mt-6 ml-6 p-4" shadow="sm">
+        <Card
+            className="static lap:sticky top-24 grid-in-company h-min mt-6 ml-6 max-lap:mr-6 p-4 mb-10"
+            shadow="sm">
             <CardBody className="overflow-visible gap-4">
+                <div className="max-lap:hidden">
+                    <h1 className="text-2xl font-bold">{company.name}</h1>
+                    <p className="text-neutral-500">{company.description}</p>
+                </div>
                 <FieldWithIcon Icon={IoLocationOutline} value={company.map} />
                 <FieldWithIcon
                     Icon={IoLocationOutline}

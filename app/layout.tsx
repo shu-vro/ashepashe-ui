@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from "next";
 import { Montserrat } from "next/font/google";
-import localFont from "next/font/local";
 import "@smastrom/react-rating/style.css";
 import "./globals.css";
 import ThemeProvider from "@/contexts/theme-provider";
@@ -13,12 +12,6 @@ const font = Montserrat({
     subsets: ["latin"],
     weight: ["100", "300", "400", "500", "700", "900"],
 });
-
-// const font = localFont({
-//     src: "./fonts/GeistVF.woff",
-//     variable: "--font-geist-sans",
-//     weight: "100 900",
-// });
 
 const APP_NAME = "AsePashe";
 const APP_DEFAULT_TITLE = "AsePashe";

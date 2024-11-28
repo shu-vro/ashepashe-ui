@@ -15,13 +15,17 @@ export default function ViewProducts({
     allProducts,
     initialPage,
 }: {
-    allProducts: Product[];
+    allProducts: Product["product"][];
     initialPage: number;
 }) {
     const [currentPage, setCurrentPage] = useState(
         inBound(initialPage, Math.ceil(allProducts.length / PER_PAGE))
     );
-    const selectedProducts = paginate(allProducts, currentPage, PER_PAGE);
+    const selectedProducts = paginate<Product["product"]>(
+        allProducts,
+        currentPage,
+        PER_PAGE
+    );
     const router = useRouter();
     return (
         <>
@@ -32,7 +36,7 @@ export default function ViewProducts({
                         name={product.name}
                         discountPrice={product.price}
                         actualPrice={500}
-                        seller={product.company_id}
+                        seller={product.company.name}
                         // imageUrl={product.slug}
                         imageUrl={dynamicFakeImageGenerator()}
                         // rating={4.56}

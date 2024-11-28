@@ -6,7 +6,7 @@ export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
 }
 
-export function paginate(array: any[], page = 1, count = 12) {
+export function paginate<T>(array: T[], page = 1, count = 12): T[] {
     const start = (page - 1) * count;
     const end = start + count;
     const chunk = array.slice(start, end);

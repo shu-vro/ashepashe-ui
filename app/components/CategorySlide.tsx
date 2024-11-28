@@ -11,19 +11,14 @@ import { ProductCard } from "./ProductCard";
 import { useSidebar } from "@/components/ui/sidebar";
 import { cn } from "@/lib/utils";
 import { Product } from "../all-products/page";
-import Link from "next/link";
 
 export default function CategorySlide({
     selected,
-    companyName,
-    companyImage,
-    companySlug,
+    disableCompany = true,
     ...rest
 }: {
     selected: Product["product"][];
-    companyName: string;
-    companyImage: string;
-    companySlug: string;
+    disableCompany?: boolean;
 } & React.HTMLAttributes<HTMLDivElement>) {
     return (
         <SwiperWrapper {...rest}>
@@ -37,14 +32,13 @@ export default function CategorySlide({
                         discountPrice={select.price}
                         actualPrice={500}
                         // rating={4.52}
-                        seller={companyName}
-                        // sellerAvatar={companyImage}
+                        seller={select.company.name}
+                        // sellerAvatar={select.company.image}
                         sellerAvatar="https://i.pravatar.cc/150?u=a04258114e29026702d"
                         className="min-h-[370px]"
-                        as={Link}
-                        // @ts-ignore
-                        href={`/products/${select.slug}`}
-                        disableCompany={true}
+                        link={`/products/${select.slug}`}
+                        sellerLink={`/all-companies/${select.company.slug}`}
+                        disableCompany={disableCompany}
                     />
                 </SwiperSlide>
             ))}

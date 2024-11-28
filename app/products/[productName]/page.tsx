@@ -31,9 +31,6 @@ export default async function ProductPage({ params }: Props) {
                     </h2>
                     <CategorySlide
                         selected={companyProducts}
-                        companyName={company.name}
-                        companyImage={company.image}
-                        companySlug={company.slug}
                         className={cn(
                             "w-full max-lap:w-[calc(100vw-16rem)] max-[760px]:w-[100vw]"
                         )}

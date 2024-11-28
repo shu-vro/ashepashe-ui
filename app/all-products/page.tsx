@@ -46,6 +46,6 @@ export default async function AllProducts({
 
 async function getAllProducts() {
     const response = await fetch("https://asepashe.com/api/products");
-    const data: Product[] = await response.json();
+    const data: Product["product"][] = await response.json();
     return data;
 }

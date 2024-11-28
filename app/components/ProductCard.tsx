@@ -19,6 +19,7 @@ import "@smastrom/react-rating/style.css";
 import { cn, removeTags } from "@/lib/utils";
 import { BsCart3 } from "react-icons/bs";
 import { CiShoppingCart } from "react-icons/ci";
+import Link from "next/link";
 
 interface ProductCardProps {
     name: string;
@@ -30,6 +31,8 @@ interface ProductCardProps {
     imageUrl: string;
     description?: string;
     disableCompany?: boolean;
+    link: string;
+    sellerLink?: string;
 }
 
 export function ProductCard({
@@ -41,7 +44,9 @@ export function ProductCard({
     sellerAvatar,
     // rating,
     description,
+    link,
     disableCompany = false,
+    sellerLink = "#",
     ...rest
 }: ProductCardProps & CardProps) {
     const discountPercent = ((discountPrice / actualPrice) * 100).toFixed(0);
@@ -53,7 +58,7 @@ export function ProductCard({
             as={"div"}
             {...rest}
             className={cn("w-48 md:w-72", rest?.className || "")}>
-            <CardBody className="overflow-visible p-4">
+            <CardBody className="overflow-visible p-4" as={Link} href={link}>
                 <Image
                     shadow="sm"
                     radius="lg"
@@ -84,7 +89,7 @@ export function ProductCard({
                         </span>
                     )}
                 </div>
-                <Divider className="my-4" />
+                <CustomDivider />
                 <div className="flex flex-wrap justify-between items-center w-full">
                     <div>
                         {discountPercent !== "100" && (
@@ -98,21 +103,8 @@ export function ProductCard({
                     </div>
                     {/* <Rating style={{ maxWidth: 100 }} readOnly value={rating} /> */}
                 </div>
-                <Divider className="my-4" />
+                <CustomDivider />
                 <div className="flex flex-row justify-between items-center gap-1 w-full">
-                    {!disableCompany && (
-                        <>
-                            <User
-                                name={seller}
-                                avatarProps={{
-                                    className: "w-8 h-8",
-                                    src: sellerAvatar,
-                                }}
-                                className="grow-0"
-                            />
-                            <div className="grow" />
-                        </>
-                    )}
                     <Button
                         isIconOnly
                         variant="light"
@@ -139,7 +131,28 @@ export function ProductCard({
                         {discountPercent}%
                     </Chip>
                 </div>
+                <div className="w-full">
+                    {!disableCompany && (
+                        <>
+                            <CustomDivider />
+                            <User
+                                name={seller}
+                                avatarProps={{
+                                    className: "w-8 h-8",
+                                    src: sellerAvatar,
+                                }}
+                                className="grow-0"
+                                as={Link}
+                                href={sellerLink}
+                            />
+                        </>
+                    )}
+                </div>
             </CardFooter>
         </Card>
     );
+}
+
+function CustomDivider() {
+    return <Divider className="my-4" />;
 }

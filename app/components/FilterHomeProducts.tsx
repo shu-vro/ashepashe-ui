@@ -65,12 +65,7 @@ export default function FilterHomeProducts({
                     <Tab title={key} key={key}></Tab>
                 ))}
             </Tabs>
-            <CategorySlide
-                selected={selected}
-                companyImage={""}
-                companyName=""
-                companySlug=""
-            />
+            <CategorySlide selected={selected} disableCompany={false} />
         </Suspense>
     );
 }

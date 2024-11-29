@@ -58,7 +58,7 @@ export function ProductCard({
             as={"div"}
             {...rest}
             className={cn("w-48 md:w-72", rest?.className || "")}>
-            <CardBody className="overflow-visible p-4" as={Link} href={link}>
+            <CardHeader className="overflow-visible p-4" as={Link} href={link}>
                 <Image
                     shadow="sm"
                     radius="lg"
@@ -68,10 +68,10 @@ export function ProductCard({
                     src={imageUrl}
                     isBlurred
                 />
-            </CardBody>
-            <CardFooter className="p-4 pt-0 text-start flex-col">
+            </CardHeader>
+            <CardBody className="p-4 pt-0 text-start flex-col">
                 <div className="flex flex-col items-start w-full">
-                    <em className="capitalize not-italic font-bold text-xl line-clamp-2 h-16">
+                    <em className="capitalize not-italic font-bold text-xl line-clamp-2 h-14">
                         {name}{" "}
                         {/* <Chip
                             color="success"
@@ -93,11 +93,11 @@ export function ProductCard({
                 <div className="flex flex-wrap justify-between items-center w-full">
                     <div>
                         {discountPercent !== "100" && (
-                            <del className="text-default-500">
+                            <del className="text-default-500 text-sm">
                                 {actualPrice}৳
                             </del>
                         )}{" "}
-                        <span className="text-2xl font-bold">
+                        <span className="text-xl font-bold">
                             {discountPrice + "৳"}
                         </span>
                     </div>
@@ -122,12 +122,7 @@ export function ProductCard({
                     <Chip
                         color="success"
                         variant="bordered"
-                        className={cn(
-                            "rounded-[6px]",
-                            discountPercent === "100"
-                                ? "hidden"
-                                : "hidden md:flex"
-                        )}>
+                        className={"rounded-[6px]"}>
                         {discountPercent}%
                     </Chip>
                 </div>
@@ -148,7 +143,7 @@ export function ProductCard({
                         </>
                     )}
                 </div>
-            </CardFooter>
+            </CardBody>
         </Card>
     );
 }

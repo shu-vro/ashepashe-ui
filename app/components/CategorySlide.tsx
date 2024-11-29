@@ -35,7 +35,7 @@ export default function CategorySlide({
                         seller={select.company.name}
                         // sellerAvatar={select.company.image}
                         sellerAvatar="https://i.pravatar.cc/150?u=a04258114e29026702d"
-                        className="min-h-[370px]"
+                        // className="min-h-[370px]"
                         link={`/products/${select.slug}`}
                         sellerLink={`/all-companies/${select.company.slug}`}
                         disableCompany={disableCompany}

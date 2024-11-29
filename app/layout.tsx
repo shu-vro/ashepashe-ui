@@ -64,7 +64,7 @@ export default function RootLayout({
     children: React.ReactNode;
 }) {
     return (
-        <html lang="en" className="scroll-smooth">
+        <html lang="en" className="scroll-smooth max-sm:text-[12px]">
             <body className={`${font.className} antialiased`}>
                 <ThemeProvider
                     attribute="class"

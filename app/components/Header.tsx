@@ -127,7 +127,7 @@ function SearchDesktop({
                     variant="bordered"
                     radius="md"
                     placeholder="Search"
-                    className="max-w-[500px]"
+                    className="max-w-[500px] z-40"
                     onFocus={() => onSearchOpen(true)}
                     // onBlur={() => setSearchOpen(false)}
                     endContent={<IoSearchOutline fontSize="1.3rem" />}
@@ -136,12 +136,12 @@ function SearchDesktop({
                     {searchOpen && (
                         <>
                             <div
-                                className="absolute top-[calc(100%+5px)] left-1/2 -translate-x-1/2 w-screen h-screen z-20"
+                                className="fixed top-0 left-0 inset-0 w-screen h-screen z-30 backdrop-blur-sm blur-md bg-white/30"
                                 onClick={() => {
                                     onSearchOpen(false);
                                 }}></div>
                             <Card
-                                className="absolute top-[calc(100%+5px)] left-1/2 -translate-x-1/2 z-30"
+                                className="absolute top-[calc(100%+5px)] left-1/2 -translate-x-1/2 z-40"
                                 as={motion.div}
                                 exit={{ opacity: 0 }}
                                 key="search-menu">
@@ -272,30 +272,30 @@ interface BeforeInstallPromptEvent extends Event {
     prompt(): Promise<void>;
 }
 function ResponsiveButtons({}: {}) {
-    const isMobile = useIsMobile(450);
     const [deferredPrompt, setDeferredPrompt] =
         useState<BeforeInstallPromptEvent>();
     const [isInstallable, setIsInstallable] = useState(true);
 
     const handleInstall = async () => {
         if (!deferredPrompt) return;
-        deferredPrompt.prompt();
+        await deferredPrompt.prompt();
         const { outcome } = await deferredPrompt.userChoice;
         if (outcome === "accepted") {
             setDeferredPrompt(undefined);
             setIsInstallable(false);
         }
-        console.log(outcome);
     };
 
     useEffect(() => {
-        window.addEventListener("beforeinstallprompt", (e) => {
+        const cb = (e: Event) => {
             setDeferredPrompt(e as BeforeInstallPromptEvent);
-            handleInstall();
-        });
+        };
+        window.addEventListener("beforeinstallprompt", cb);
+        return () => {
+            window.removeEventListener("beforeinstallprompt", cb);
+        };
     }, []);
 
-    console.log(isInstallable, deferredPrompt);
     return (
         <>
             <NavbarItem className="sm:hidden">
@@ -305,7 +305,6 @@ function ResponsiveButtons({}: {}) {
                     href="#"
                     variant="flat"
                     isIconOnly
-                    size={isMobile ? "sm" : "md"}
                     className="text-xl mob:text-2xl">
                     <IoSearchOutline />
                 </Button>
@@ -318,14 +317,13 @@ function ResponsiveButtons({}: {}) {
                     href="#"
                     variant="flat"
                     isIconOnly
-                    size={isMobile ? "sm" : "md"}
                     className="text-xl mob:text-2xl">
                     <CiBookmark />
                 </Button>
             </NavbarItem>
             <CustomDivider />
             <NavbarItem>
-                <ThemeButton size={isMobile ? "sm" : "md"} />
+                <ThemeButton />
             </NavbarItem>
             <CustomDivider />
             <NavbarItem>

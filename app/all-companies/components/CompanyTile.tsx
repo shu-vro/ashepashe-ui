@@ -50,7 +50,7 @@ export default function CompanyTile({
                     <GrLocation className="text-xl" /> {where}
                 </div>
                 <b className="capitalize line-clamp-2 h-14">{name}</b>
-                <div className="text-neutral-500 line-clamp-2 h-12">
+                <div className="text-neutral-500 line-clamp-2 h-16">
                     {removeTags(description || "")}
                 </div>
             </CardFooter>

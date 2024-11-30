@@ -25,7 +25,6 @@ import { IoSearchOutline } from "react-icons/io5";
 import ThemeButton from "./ThemeButton";
 import { CiBookmark } from "react-icons/ci";
 import { SidebarTrigger } from "@/components/ui/sidebar";
-import { useIsMobile } from "@/hooks/use-mobile";
 import { cn, dynamicFakeImageGenerator } from "@/lib/utils";
 import { Rating } from "@smastrom/react-rating";
 import "@smastrom/react-rating/style.css";
@@ -34,6 +33,7 @@ import AppIcon from "@/assets/she.png";
 import { Product } from "../all-products/page";
 import { debounce } from "lodash";
 import { useRouter } from "next/navigation";
+import { PiSidebarSimpleLight } from "react-icons/pi";
 
 async function getAllProducts() {
     const response = await fetch("https://asepashe.com/api/products");
@@ -55,9 +55,11 @@ export default function Header() {
             className="py-3">
             <NavbarContent justify="start" className="grow">
                 <NavbarItem className="md:hidden">
-                    <SidebarTrigger />
+                    <SidebarTrigger color="primary" className="text-xl">
+                        <PiSidebarSimpleLight />
+                    </SidebarTrigger>
                 </NavbarItem>
-                <NavbarBrand className="md:hidden">
+                <NavbarBrand>
                     <Link href="/" className="block">
                         <Image
                             src={AppIcon.src}
@@ -80,7 +82,7 @@ export default function Header() {
                 </NavbarItem>
             </NavbarContent>
 
-            <NavbarContent justify="end" className="lg:mr-20">
+            <NavbarContent justify="end">
                 <ResponsiveButtons />
             </NavbarContent>
         </Navbar>

@@ -19,6 +19,7 @@ import {
     TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { VisuallyHidden } from "@nextui-org/react";
+import { Button as ButtonNui } from "@nextui-org/react";
 
 const SIDEBAR_COOKIE_NAME = "sidebar:state";
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7;
@@ -272,26 +273,27 @@ const Sidebar = React.forwardRef<
 Sidebar.displayName = "Sidebar";
 
 const SidebarTrigger = React.forwardRef<
-    React.ElementRef<typeof Button>,
-    React.ComponentProps<typeof Button>
->(({ className, onClick, ...props }, ref) => {
+    React.ElementRef<typeof ButtonNui>,
+    React.ComponentProps<typeof ButtonNui>
+>(({ className, onClick, children, ...props }, ref) => {
     const { toggleSidebar } = useSidebar();
 
     return (
-        <Button
+        <ButtonNui
             ref={ref}
             data-sidebar="trigger"
-            variant="ghost"
-            size="icon"
-            className={cn("h-7 w-7", className)}
+            variant="flat"
+            // size="icon"
+            isIconOnly
+            className={cn(className)}
             onClick={(event) => {
                 onClick?.(event);
                 toggleSidebar();
             }}
             {...props}>
-            <PanelLeft />
+            {!children ? <PanelLeft /> : children}
             <span className="sr-only">Toggle Sidebar</span>
-        </Button>
+        </ButtonNui>
     );
 });
 SidebarTrigger.displayName = "SidebarTrigger";

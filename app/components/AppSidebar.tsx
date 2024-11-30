@@ -8,13 +8,13 @@ import {
     SidebarMenuItem,
     SidebarMenuSub,
 } from "@/components/ui/sidebar";
-import AppSidebarItems, { AppSidebarItemsProps } from "./AppSidebarItems";
+import AppSidebarItems from "./AppSidebarItems";
 import Link from "next/link";
 import Logo from "./Sidebar/Logo";
 import { API_URL } from "@/lib/var";
 
-interface Category {
-    id: number;
+export interface Category {
+    id: number | string;
     name: string;
     created_at: string;
     updated_at: string;
@@ -76,7 +76,7 @@ export async function AppSidebar() {
     );
 }
 
-async function getSidebarItems() {
+export async function getSidebarItems() {
     const response = await fetch(`${API_URL}/categories`);
     const data: Category[] = await response.json();
     return data;

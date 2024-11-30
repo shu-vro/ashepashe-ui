@@ -6,6 +6,7 @@ import React from "react";
 import CompanySide from "./Components/CompanySide";
 import CategorySlide from "@/app/components/CategorySlide";
 import ProductSide from "./Components/ProductSide";
+import { API_URL } from "@/lib/var";
 
 type Props = {
     params: Promise<{ productName: string }>;
@@ -31,9 +32,7 @@ export default async function ProductPage({ params }: Props) {
                     </h2>
                     <CategorySlide
                         selected={companyProducts}
-                        className={cn(
-                            "w-full max-lap:w-[calc(100vw-16rem)] max-[760px]:w-[100vw]"
-                        )}
+                        className={cn("w-full max-lap:w-[100vw]")}
                     />
                 </div>
             )}
@@ -42,7 +41,7 @@ export default async function ProductPage({ params }: Props) {
 }
 
 async function getCompanyProducts(name: string) {
-    const response = await fetch(`https://asepashe.com/api/company/${name}`);
+    const response = await fetch(`${API_URL}/company/${name}`);
     const company: Company = await response.json();
     company.products = company.products.map((product) => ({
         ...product,
@@ -53,7 +52,7 @@ async function getCompanyProducts(name: string) {
 }
 
 async function getProduct(name: string): Promise<Product> {
-    const response = await fetch(`https://asepashe.com/api/product/${name}`);
+    const response = await fetch(`${API_URL}/product/${name}`);
     const data = await response.json();
     return data;
 }
@@ -67,9 +66,7 @@ export async function generateMetadata(
     // productName = productName.split("-").join(" ");
     // productName = capitalizeFirstLetter(productName);
 
-    const response = await fetch(
-        `https://asepashe.com/api/product/${productName}`
-    );
+    const response = await fetch(`${API_URL}/product/${productName}`);
     const data: Product = await response.json();
 
     const product = data.product;

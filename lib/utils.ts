@@ -31,6 +31,9 @@ export function dynamicFakeImageGenerator() {
 }
 
 export function removeTags(string = "") {
+    if (!string) {
+        return "";
+    }
     const re =
         /(<script(\s|\S)*?<\/script>)|(<style(\s|\S)*?<\/style>)|(<!--(\s|\S)*?-->)|(<\/?(\s|\S)*?>)/g;
 

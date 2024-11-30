@@ -1,4 +1,5 @@
 import ViewCompanies from "@/app/all-companies/components/ViewCompanies";
+import { API_URL } from "@/lib/var";
 import { Metadata, ResolvingMetadata } from "next";
 import React from "react";
 
@@ -44,7 +45,7 @@ export async function generateMetadata(
 }
 
 async function getCategoryCompanies(categoryName: string) {
-    const responses = await fetch(`https://asepashe.com/api/companies`);
+    const responses = await fetch(`${API_URL}/companies`);
     const data = await responses.json();
     // console.log(
     //     data

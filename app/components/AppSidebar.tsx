@@ -11,6 +11,7 @@ import {
 import AppSidebarItems, { AppSidebarItemsProps } from "./AppSidebarItems";
 import Link from "next/link";
 import Logo from "./Sidebar/Logo";
+import { API_URL } from "@/lib/var";
 
 interface Category {
     id: number;
@@ -76,7 +77,7 @@ export async function AppSidebar() {
 }
 
 async function getSidebarItems() {
-    const response = await fetch("https://asepashe.com/api/categories");
+    const response = await fetch(`${API_URL}/categories`);
     const data: Category[] = await response.json();
     return data;
 }

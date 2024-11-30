@@ -13,7 +13,6 @@ import {
     CardBody,
     Image,
     ScrollShadow,
-    User,
     Dropdown,
     DropdownTrigger,
     Avatar,
@@ -34,77 +33,96 @@ import { Product } from "../all-products/page";
 import { debounce } from "lodash";
 import { useRouter } from "next/navigation";
 import { PiSidebarSimpleLight } from "react-icons/pi";
+import { API_URL } from "@/lib/var";
+import { useIsMobile } from "@/hooks/use-mobile";
+import {
+    Drawer,
+    DrawerClose,
+    DrawerContent,
+    DrawerFooter,
+    DrawerHeader,
+    DrawerTitle,
+    DrawerTrigger,
+} from "@/components/ui/drawer";
+
+const DEBOUNCE_DELAY = 1000; // ms
 
 async function getAllProducts() {
-    const response = await fetch("https://asepashe.com/api/products");
+    const response = await fetch(`${API_URL}/products`);
     const data: Product["product"][] = await response.json();
     return data;
 }
 
 export default function Header() {
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+    const [products, setProducts] = useState<Product["product"][]>([]);
 
-    const productPromise = getAllProducts();
+    useEffect(() => {
+        getAllProducts().then(setProducts).catch(console.error);
+    }, []);
 
     return (
-        <Navbar
-            isBordered
-            isMenuOpen={isMenuOpen}
-            onMenuOpenChange={setIsMenuOpen}
-            maxWidth="full"
-            className="py-3">
-            <NavbarContent justify="start" className="grow">
-                <NavbarItem className="md:hidden">
-                    <SidebarTrigger color="primary" className="text-xl">
-                        <PiSidebarSimpleLight />
-                    </SidebarTrigger>
-                </NavbarItem>
-                <NavbarBrand>
-                    <Link href="/" className="block">
-                        <Image
-                            src={AppIcon.src}
-                            alt="AsePashe"
-                            className="block mx-auto object-cover h-16"
-                            classNames={{
-                                wrapper: "block w-full h-16",
-                            }}
-                            removeWrapper
-                        />
-                    </Link>
-                </NavbarBrand>
-            </NavbarContent>
+        <>
+            <Navbar
+                isBordered
+                isMenuOpen={isMenuOpen}
+                onMenuOpenChange={setIsMenuOpen}
+                maxWidth="full"
+                className="py-3">
+                <NavbarContent justify="start" className="grow">
+                    <NavbarItem className="md:hidden">
+                        <SidebarTrigger color="primary" className="text-xl">
+                            <PiSidebarSimpleLight />
+                        </SidebarTrigger>
+                    </NavbarItem>
+                    <NavbarBrand>
+                        <Link href="/" className="block">
+                            <Image
+                                src={AppIcon.src}
+                                alt="AsePashe"
+                                className="block mx-auto object-cover h-16"
+                                classNames={{
+                                    wrapper: "block w-full h-16",
+                                }}
+                                removeWrapper
+                            />
+                        </Link>
+                    </NavbarBrand>
+                </NavbarContent>
 
-            <NavbarContent
-                className="hidden sm:flex gap-4 grow"
-                justify="center">
-                <NavbarItem className="w-full">
-                    <SearchDesktop productPromise={productPromise} />
-                </NavbarItem>
-            </NavbarContent>
+                <NavbarContent
+                    className="hidden sm:flex gap-4 grow"
+                    justify="center">
+                    <NavbarItem className="w-full">
+                        <SearchDesktop products={products} />
+                    </NavbarItem>
+                </NavbarContent>
 
-            <NavbarContent justify="end">
-                <ResponsiveButtons />
-            </NavbarContent>
-        </Navbar>
+                <NavbarContent justify="end">
+                    <ResponsiveButtons products={products} />
+                </NavbarContent>
+            </Navbar>
+        </>
     );
 }
 
 function SearchDesktop({
-    productPromise,
+    products,
+    ...rest
 }: {
-    productPromise: Promise<Product["product"][]>;
-}) {
+    products: Product["product"][];
+} & React.HTMLAttributes<HTMLDivElement>) {
     const router = useRouter();
     const [searchOpen, setSearchOpen] = useState(false);
     const [value, setValue] = useState("");
-    const products = use(productPromise);
 
     const selectedProducts = useMemo(() => {
-        if (!value) return products;
+        if (!value) return [];
         return products.filter((product) =>
             product.name.toLowerCase().includes(value.toLowerCase())
         );
     }, [value]);
+    // const selectedProducts = [];
 
     useEffect(() => {
         function esc(e: KeyboardEvent) {
@@ -123,9 +141,9 @@ function SearchDesktop({
 
     return (
         <Suspense fallback={<div>Loading...</div>}>
-            <div className="relative">
+            <div {...rest} className={cn("relative", rest?.className || "")}>
                 <Input
-                    onValueChange={debounce(setValue, 1000)}
+                    onValueChange={debounce(setValue, DEBOUNCE_DELAY)}
                     variant="bordered"
                     radius="md"
                     placeholder="Search"
@@ -135,10 +153,10 @@ function SearchDesktop({
                     endContent={<IoSearchOutline fontSize="1.3rem" />}
                 />
                 <AnimatePresence>
-                    {searchOpen && (
+                    {searchOpen && selectedProducts.length && (
                         <>
                             <div
-                                className="fixed top-0 left-0 inset-0 w-screen h-screen z-30 backdrop-blur-sm blur-md bg-white/30"
+                                className="fixed top-0 left-0 inset-0 w-screen h-screen z-30 bg-neutral-800/25"
                                 onClick={() => {
                                     onSearchOpen(false);
                                 }}></div>
@@ -147,7 +165,7 @@ function SearchDesktop({
                                 as={motion.div}
                                 exit={{ opacity: 0 }}
                                 key="search-menu">
-                                <CardBody className="w-[66vw] text-wrap bg-content2">
+                                <CardBody className="w-[66vw] max-[480px]:w-screen text-wrap bg-content2">
                                     <ScrollShadow className="max-h-[60vh]">
                                         {selectedProducts.map((product) => (
                                             <SearchItems
@@ -172,6 +190,46 @@ function SearchDesktop({
                 </AnimatePresence>
             </div>
         </Suspense>
+    );
+}
+
+function SearchMobile({ products }: { products: Product["product"][] }) {
+    const [value, setValue] = useState("");
+    const selectedProducts = useMemo(() => {
+        if (!value) return products;
+        return products.filter((product) =>
+            product.name.toLowerCase().includes(value.toLowerCase())
+        );
+    }, [value]);
+    return (
+        <>
+            <Input
+                onValueChange={debounce(setValue, DEBOUNCE_DELAY)}
+                variant="bordered"
+                radius="md"
+                placeholder="Search"
+                className="max-w-[500px] z-40"
+                endContent={<IoSearchOutline fontSize="1.3rem" />}
+            />
+            <div className="max-h-[70vh] overflow-y-auto">
+                <ScrollShadow>
+                    {selectedProducts.map((product) => (
+                        <SearchItems
+                            key={product.id}
+                            label={product.name}
+                            actualPrice={product.price}
+                            discountPrice={product.price}
+                            company_name={product.company.name}
+                            companyAvatar="https://i.pravatar.cc/150?u=a042581f4e29026704d"
+                            image={dynamicFakeImageGenerator()}
+                            // image={product.image1 as string}
+                            slug={product.slug}
+                            onSearchOpen={() => {}}
+                        />
+                    ))}
+                </ScrollShadow>
+            </div>
+        </>
     );
 }
 
@@ -273,7 +331,7 @@ interface BeforeInstallPromptEvent extends Event {
      */
     prompt(): Promise<void>;
 }
-function ResponsiveButtons({}: {}) {
+function ResponsiveButtons({ products }: { products: Product["product"][] }) {
     const [deferredPrompt, setDeferredPrompt] =
         useState<BeforeInstallPromptEvent>();
     const [isInstallable, setIsInstallable] = useState(true);
@@ -301,15 +359,30 @@ function ResponsiveButtons({}: {}) {
     return (
         <>
             <NavbarItem className="sm:hidden">
-                <Button
-                    as={Link}
-                    color="primary"
-                    href="#"
-                    variant="flat"
-                    isIconOnly
-                    className="text-xl mob:text-2xl">
-                    <IoSearchOutline />
-                </Button>
+                <Drawer>
+                    <DrawerTrigger asChild>
+                        <Button
+                            as={Link}
+                            color="primary"
+                            href="#"
+                            variant="flat"
+                            isIconOnly
+                            className="text-xl mob:text-2xl">
+                            <IoSearchOutline />
+                        </Button>
+                    </DrawerTrigger>
+                    <DrawerContent className="h-[90vh]">
+                        <DrawerHeader>
+                            <DrawerTitle>Search</DrawerTitle>
+                            <SearchMobile products={products} />
+                        </DrawerHeader>
+                        <DrawerFooter>
+                            <DrawerClose asChild>
+                                <Button variant="faded">Cancel</Button>
+                            </DrawerClose>
+                        </DrawerFooter>
+                    </DrawerContent>
+                </Drawer>
             </NavbarItem>
             <CustomDivider className="md:hidden" />
             <NavbarItem>

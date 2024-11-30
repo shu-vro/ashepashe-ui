@@ -2,6 +2,7 @@ import React from "react";
 import ViewProducts from "./components/ViewProducts";
 import { Metadata } from "next";
 import { Company } from "../all-companies/page";
+import { API_URL } from "@/lib/var";
 
 export interface Product {
     product: {
@@ -45,7 +46,7 @@ export default async function AllProducts({
 }
 
 async function getAllProducts() {
-    const response = await fetch("https://asepashe.com/api/products");
+    const response = await fetch(`${API_URL}/products`);
     const data: Product["product"][] = await response.json();
     return data;
 }

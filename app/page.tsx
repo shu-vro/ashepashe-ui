@@ -2,6 +2,7 @@ import FilterHomeProducts from "./components/FilterHomeProducts";
 import { Product } from "./all-products/page";
 import { Company } from "./all-companies/page";
 import CompanySlide from "./components/CompanySlide";
+import { API_URL } from "@/lib/var";
 
 export default async function Home() {
     const { products, companies } = await getAllProducts();
@@ -22,9 +23,9 @@ export default async function Home() {
 export const dynamic = "force-dynamic";
 
 async function getAllProducts() {
-    const response = await fetch("https://asepashe.com/api/products");
+    const response = await fetch(`${API_URL}/products`);
     const products: Product["product"][] = await response.json();
-    const response2 = await fetch("https://asepashe.com/api/companies/8");
+    const response2 = await fetch(`${API_URL}/companies/8`);
     const companies: Company[] = await response2.json();
     return { products, companies };
 }

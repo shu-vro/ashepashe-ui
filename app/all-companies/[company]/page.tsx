@@ -6,6 +6,7 @@ import CompanyBanner from "./CompanyBanner";
 import CompanyCard from "./CompanyCard";
 import { Metadata, ResolvingMetadata } from "next";
 import CategorySlide from "@/app/components/CategorySlide";
+import { API_URL } from "@/lib/var";
 
 export interface Category {
     id: number;
@@ -68,9 +69,9 @@ export default async function Page(props: Props) {
 }
 
 async function getCompany(name: string) {
-    const response = await fetch(`https://asepashe.com/api/company/${name}`);
+    const response = await fetch(`${API_URL}/company/${name}`);
     const company: Company = await response.json();
-    const response2 = await fetch(`https://asepashe.com/api/sections`);
+    const response2 = await fetch(`${API_URL}/sections`);
     const sections: Category[] = await response2.json();
     return { company, sections };
 }
@@ -86,9 +87,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
     // read route params
     const companyName = (await params).company;
-    const response = await fetch(
-        `https://asepashe.com/api/company/${companyName}`
-    );
+    const response = await fetch(`${API_URL}/company/${companyName}`);
     const company: Company = await response.json();
 
     // fetch data

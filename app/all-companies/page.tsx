@@ -1,6 +1,7 @@
 import React from "react";
 import ViewCompanies from "./components/ViewCompanies";
 import { Product } from "../all-products/page";
+import { API_URL } from "@/lib/var";
 
 export interface Company {
     id: number;
@@ -46,7 +47,7 @@ export default async function Restaurant({
 }
 
 async function getAllCompanies() {
-    const response = await fetch("https://asepashe.com/api/companies");
+    const response = await fetch(`${API_URL}/companies`);
     const data: Company[] = await response.json();
     return data;
 }

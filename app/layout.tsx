@@ -7,6 +7,7 @@ import Header from "./components/Header";
 import Gradient from "./components/Gradient";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "./components/AppSidebar";
+import ConfigComponent from "./components/ConfigComponent";
 
 const font = Montserrat({
     subsets: ["latin"],
@@ -73,10 +74,11 @@ export default function RootLayout({
                     disableTransitionOnChange>
                     <SidebarProvider>
                         <AppSidebar />
-                        <main className="w-full">
+                        <main className="w-full lap:max-w-screen-lap mx-auto">
                             <Header />
                             <Gradient />
                             {children}
+                            <ConfigComponent />
                         </main>
                     </SidebarProvider>
                 </ThemeProvider>

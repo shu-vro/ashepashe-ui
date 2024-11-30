@@ -47,11 +47,18 @@ export default function ProductSide({ product }: Prop) {
                     </span>
                     <div className="flex justify-around items-stretch pt-2 gap-8 max-lap:mt-auto">
                         <Button
-                            color="secondary"
+                            color="warning"
                             as={Link}
                             href={`/all-companies/${product.company.slug}`}
                             className="w-full">
                             Go To Store
+                        </Button>
+                        <Button
+                            color="success"
+                            as={Link}
+                            href={`/all-companies/${product.company.slug}`}
+                            className="w-full">
+                            Add to Cart
                         </Button>
                         <Button
                             as={Link}

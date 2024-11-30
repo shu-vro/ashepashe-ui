@@ -8,7 +8,6 @@ import "swiper/css/navigation";
 
 import { Navigation, Mousewheel } from "swiper/modules";
 import { ProductCard } from "./ProductCard";
-import { useSidebar } from "@/components/ui/sidebar";
 import { cn } from "@/lib/utils";
 import { Product } from "../all-products/page";
 
@@ -50,15 +49,8 @@ export function SwiperWrapper({
     children,
     ...rest
 }: { children: React.ReactNode } & React.HTMLAttributes<HTMLDivElement>) {
-    const { isMobile } = useSidebar();
     return (
-        <div
-            className={cn(
-                {
-                    "w-[calc(100vw-16rem)]": !isMobile,
-                },
-                rest?.className ? rest.className : ""
-            )}>
+        <div className={cn(rest?.className ? rest.className : "")}>
             <Swiper
                 slidesPerView={"auto"}
                 spaceBetween={0}

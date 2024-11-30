@@ -55,7 +55,7 @@ export default async function Page(props: Props) {
                                 <CategorySlide
                                     selected={value}
                                     className={cn(
-                                        "w-full max-lap:w-[calc(100vw-16rem)] max-[760px]:w-[100vw]"
+                                        "w-full max-lap:w-screen max-[760px]:w-[100vw]"
                                     )}
                                 />
                             </div>

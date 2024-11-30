@@ -1,6 +1,6 @@
 import { Company } from "@/app/all-companies/page";
 import { Product } from "@/app/all-products/page";
-import { capitalizeFirstLetter, cn, first_n } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import { Metadata, ResolvingMetadata } from "next";
 import React from "react";
 import CompanySide from "./Components/CompanySide";

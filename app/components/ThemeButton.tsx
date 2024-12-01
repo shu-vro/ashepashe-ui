@@ -45,7 +45,6 @@ export default function ThemeButton({ ...props }: ButtonProps) {
                 selectionMode="single"
                 selectedKeys={selectedKeys}
                 onSelectionChange={(e) => {
-                    console.log(e);
                     setSelectedKeys(new Set(e));
                     setTheme(e.currentKey as string);
                 }}>

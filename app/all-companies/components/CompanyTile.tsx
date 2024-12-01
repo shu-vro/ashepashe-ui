@@ -12,6 +12,7 @@ import {
 import Link from "next/link";
 import React from "react";
 import { GrLocation } from "react-icons/gr";
+import NextImage from "next/image";
 
 export default function CompanyTile({
     name,
@@ -42,9 +43,12 @@ export default function CompanyTile({
                     radius="lg"
                     isZoomed
                     alt={name}
-                    className="w-full aspect-[4/3] object-cover"
+                    className="w-full aspect-[4/3] object-cover !h-auto"
                     src={imageUrl}
                     isBlurred
+                    width={400}
+                    height={300}
+                    as={NextImage}
                 />
             </CardBody>
             <CardFooter className="p-4 pt-0 text-start flex-col justify-start w-full items-start">

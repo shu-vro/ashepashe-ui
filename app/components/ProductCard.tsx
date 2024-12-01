@@ -67,14 +67,14 @@ export function ProductCard({
                     radius="lg"
                     isZoomed
                     alt={name}
-                    className="w-full aspect-[4/3] object-cover"
+                    className="w-full aspect-[4/3] object-cover !h-auto"
                     src={imageUrl}
                     isBlurred
                     // fill={true}
-                    // width={400}
-                    // height={300}
+                    width={400}
+                    height={300}
                     // quality={70}
-                    // as={NextImage}
+                    as={NextImage}
                     fallbackSrc={dynamicFakeImageGenerator()}
                 />
             </CardHeader>

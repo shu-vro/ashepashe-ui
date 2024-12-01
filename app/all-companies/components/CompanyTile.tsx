@@ -2,6 +2,7 @@
 
 import { cn, removeTags } from "@/lib/utils";
 import {
+    Button,
     Card,
     CardBody,
     CardFooter,
@@ -32,6 +33,7 @@ export default function CompanyTile({
             isPressable
             as={Link}
             href={`/all-companies/${slug}`}
+            isFooterBlurred
             {...rest}
             className={cn("w-full max-h-[420px]", rest?.className || "")}>
             <CardBody className="overflow-visible p-4">
@@ -49,11 +51,20 @@ export default function CompanyTile({
                 <div className="capitalize flex flex-row items-center text-secondary">
                     <GrLocation className="text-xl" /> {where}
                 </div>
-                <b className="capitalize line-clamp-2 h-14">{name}</b>
-                <div className="text-neutral-500 line-clamp-2 h-16">
+                <b className="capitalize line-clamp-2 h-[4ch]">{name}</b>
+                <div className="text-neutral-500 line-clamp-2 h-[4ch]">
                     {removeTags(description || "")}
                 </div>
             </CardFooter>
+            {/* <CardFooter className="justify-between before:bg-white/10 border-white/20 border-1 overflow-hidden py-1 absolute before:rounded-xl rounded-large bottom-0 shadow-small z-10 flex-col">
+                <div className="capitalize flex flex-row items-center text-secondary">
+                    <GrLocation className="text-xl" /> {where}
+                </div>
+                <b className="capitalize line-clamp-2 h-[4ch]">{name}</b>
+                <div className="text-black/70 dark:text-white/80 line-clamp-2 h-[4ch]">
+                    {removeTags(description || "")}
+                </div>
+            </CardFooter> */}
         </Card>
     );
 }

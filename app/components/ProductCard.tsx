@@ -16,10 +16,10 @@ import React from "react";
 import { CiBookmark } from "react-icons/ci";
 import { Rating } from "@smastrom/react-rating";
 import "@smastrom/react-rating/style.css";
-import { cn, removeTags } from "@/lib/utils";
-import { BsCart3 } from "react-icons/bs";
+import { cn, dynamicFakeImageGenerator, removeTags } from "@/lib/utils";
 import { CiShoppingCart } from "react-icons/ci";
 import Link from "next/link";
+import NextImage from "next/image";
 
 interface ProductCardProps {
     name: string;
@@ -57,8 +57,11 @@ export function ProductCard({
             isPressable
             as={"div"}
             {...rest}
-            className={cn("w-48 md:w-72", rest?.className || "")}>
-            <CardHeader className="overflow-visible p-4" as={Link} href={link}>
+            className={cn("w-48 md:w-72 mob:p-2", rest?.className || "")}>
+            <CardHeader
+                className="overflow-visible relative"
+                as={Link}
+                href={link}>
                 <Image
                     shadow="sm"
                     radius="lg"
@@ -67,11 +70,17 @@ export function ProductCard({
                     className="w-full aspect-[4/3] object-cover"
                     src={imageUrl}
                     isBlurred
+                    // fill={true}
+                    // width={400}
+                    // height={300}
+                    // quality={70}
+                    // as={NextImage}
+                    fallbackSrc={dynamicFakeImageGenerator()}
                 />
             </CardHeader>
-            <CardBody className="p-4 pt-0 text-start flex-col">
+            <CardBody className="pt-0 text-start flex-col">
                 <div className="flex flex-col items-start w-full">
-                    <em className="capitalize not-italic font-bold text-xl line-clamp-2 h-14">
+                    <em className="capitalize not-italic font-bold text-xl line-clamp-2 h-[4ch]">
                         {name}{" "}
                         {/* <Chip
                             color="success"
@@ -105,18 +114,10 @@ export function ProductCard({
                 </div>
                 <CustomDivider />
                 <div className="flex flex-row justify-between items-center gap-1 w-full">
-                    <Button
-                        isIconOnly
-                        variant="light"
-                        className="text-xl"
-                        size="sm">
+                    <Button isIconOnly variant="light" className="text-xl">
                         <CiBookmark />
                     </Button>
-                    <Button
-                        isIconOnly
-                        variant="light"
-                        className="text-xl"
-                        size="sm">
+                    <Button isIconOnly variant="light" className="text-xl">
                         <CiShoppingCart />
                     </Button>
                     <Chip
@@ -149,5 +150,5 @@ export function ProductCard({
 }
 
 function CustomDivider() {
-    return <Divider className="my-3" />;
+    return <Divider className="my-3 max-mob:my-1" />;
 }

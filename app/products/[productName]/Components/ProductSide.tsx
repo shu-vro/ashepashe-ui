@@ -6,6 +6,7 @@ import React from "react";
 import Link from "next/link";
 import { Rating } from "@smastrom/react-rating";
 import { Product } from "@/app/all-products/page";
+import NextImage from "next/image";
 
 type Prop = {
     product: Product["product"];
@@ -20,13 +21,17 @@ export default function ProductSide({ product }: Prop) {
                 shadow="sm">
                 <CardHeader className="w-full max-lap:max-w-[250px] max-[898px]:max-w-full mx-auto">
                     <Link
-                        href={dynamicFakeImageGenerator()}
+                        href={product.image1!}
                         className="w-full"
                         target="_blank"
                         rel="noopener noreferrer">
                         <Image
-                            // src={product.image}
-                            src={dynamicFakeImageGenerator()}
+                            src={product.image1!}
+                            as={NextImage}
+                            width={500}
+                            height={280}
+                            // src="https://asepashe.com/api/images/1"
+                            fallbackSrc={dynamicFakeImageGenerator()}
                             alt={product.name}
                             removeWrapper
                             className="w-full lap:aspect-video object-cover object-center"

@@ -19,7 +19,7 @@ export default function CompanySlide({ companies }: { companies: Company[] }) {
                         slug={company.slug}
                         // imageUrl={company.image}
                         imageUrl={dynamicFakeImageGenerator()}
-                        className="w-80"
+                        className="w-64 md:w-80"
                     />
                 </SwiperSlide>
             ))}

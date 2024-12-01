@@ -96,5 +96,5 @@ export default {
         },
     },
     plugins: [tailwindcss_animate, nextui(), tailwind_grid_areas],
-    darkMode: ["class", "class"],
+    darkMode: ["class"],
 } satisfies Config;

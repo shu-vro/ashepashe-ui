@@ -38,7 +38,7 @@ export default function ViewProducts({
                         actualPrice={500}
                         seller={product.company.name}
                         sellerLink={`/all-companies/${product.company.slug}`}
-                        // imageUrl={product.slug}
+                        // imageUrl={product.image1!}
                         imageUrl={dynamicFakeImageGenerator()}
                         // rating={4.56}
                         sellerAvatar="https://i.pravatar.cc/150?u=a04258114e29026702d"

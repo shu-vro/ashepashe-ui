@@ -23,7 +23,7 @@ type Prop = {
 
 export default function CompanySide({ company }: Prop) {
     return (
-        <div className="company grid-in-company relative">
+        <div className="company grid-in-company relative max-md:hidden">
             {/* flex-col sm:flex-row md:flex-row lap:flex-col */}
             <Card
                 className="sticky top-24 h-min overflow-auto p-6 m-4 flex-col max-sm:flex-col max-lg:flex-col max-lap:flex-row"

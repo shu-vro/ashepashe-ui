@@ -8,6 +8,7 @@ import Gradient from "./components/Gradient";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "./components/AppSidebar";
 import ConfigComponent from "./components/ConfigComponent";
+import Loader from "./components/Loader";
 
 const font = Montserrat({
     subsets: ["latin"],

@@ -4,7 +4,7 @@ import CompanyTile from "@/app/all-companies/components/CompanyTile";
 import React, { useState } from "react";
 import { Company } from "../page";
 import { Pagination } from "@nextui-org/react";
-import { dynamicFakeImageGenerator, paginate } from "@/lib/utils";
+import { dynamicFakeImageGenerator, paginate, toValidUrl } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 
 export function inBound(page: number, upperBound: number) {
@@ -40,8 +40,8 @@ export default function ViewCompanies({
                         slug={company.slug}
                         where={company.city}
                         description={company.description}
-                        // imageUrl={company.image}
-                        imageUrl={dynamicFakeImageGenerator()}
+                        imageUrl={toValidUrl(company.image)}
+                        // imageUrl={dynamicFakeImageGenerator()}
                     />
                 ))}
             </div>

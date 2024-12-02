@@ -1,6 +1,6 @@
 "use client";
 
-import { cn, removeTags } from "@/lib/utils";
+import { cn, dynamicFakeImageGenerator, removeTags } from "@/lib/utils";
 import {
     Button,
     Card,
@@ -37,7 +37,7 @@ export default function CompanyTile({
             isFooterBlurred
             {...rest}
             className={cn("w-full max-h-[420px]", rest?.className || "")}>
-            <CardBody className="overflow-visible p-4">
+            <CardBody className="overflow-visible">
                 <Image
                     shadow="sm"
                     radius="lg"
@@ -49,9 +49,10 @@ export default function CompanyTile({
                     width={400}
                     height={300}
                     as={NextImage}
+                    fallbackSrc={dynamicFakeImageGenerator()}
                 />
             </CardBody>
-            <CardFooter className="p-4 pt-0 text-start flex-col justify-start w-full items-start">
+            <CardFooter className="text-start flex-col justify-start w-full items-start">
                 <div className="capitalize flex flex-row items-center text-secondary">
                     <GrLocation className="text-xl" /> {where}
                 </div>

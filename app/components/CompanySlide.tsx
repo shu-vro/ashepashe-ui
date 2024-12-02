@@ -5,7 +5,7 @@ import { SwiperWrapper } from "./CategorySlide";
 import { Company } from "../all-companies/page";
 import { SwiperSlide } from "swiper/react";
 import CompanyTile from "../all-companies/components/CompanyTile";
-import { dynamicFakeImageGenerator } from "@/lib/utils";
+import { dynamicFakeImageGenerator, toValidUrl } from "@/lib/utils";
 
 export default function CompanySlide({ companies }: { companies: Company[] }) {
     return (
@@ -17,8 +17,8 @@ export default function CompanySlide({ companies }: { companies: Company[] }) {
                         description={company.description}
                         where={company.city}
                         slug={company.slug}
-                        // imageUrl={company.image}
-                        imageUrl={dynamicFakeImageGenerator()}
+                        imageUrl={toValidUrl(company.image)}
+                        // imageUrl={dynamicFakeImageGenerator()}
                         className="w-64 md:w-80"
                     />
                 </SwiperSlide>

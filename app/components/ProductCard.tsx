@@ -53,12 +53,12 @@ export function ProductCard({
     return (
         <Card
             shadow="sm"
-            // shadow="none"
             isPressable
             as={"div"}
+            isFooterBlurred
             {...rest}
-            className={cn("w-48 md:w-72 mob:p-2", rest?.className || "")}>
-            <CardHeader
+            className={cn("w-48 md:w-72 p-0", rest?.className || "")}>
+            <CardBody
                 className="overflow-visible relative"
                 as={Link}
                 href={link}>
@@ -77,8 +77,8 @@ export function ProductCard({
                     as={NextImage}
                     fallbackSrc={dynamicFakeImageGenerator()}
                 />
-            </CardHeader>
-            <CardBody className="pt-0 text-start flex-col">
+            </CardBody>
+            <CardFooter className="pt-0 text-start flex-col">
                 <div className="flex flex-col items-start w-full">
                     <em className="capitalize not-italic font-bold text-xl line-clamp-2 h-[4ch]">
                         {name}{" "}
@@ -134,7 +134,7 @@ export function ProductCard({
                             <User
                                 name={seller}
                                 avatarProps={{
-                                    className: "w-8 h-8",
+                                    className: "w-8 h-8 grow",
                                     src: sellerAvatar,
                                 }}
                                 className="grow-0"
@@ -144,7 +144,7 @@ export function ProductCard({
                         </>
                     )}
                 </div>
-            </CardBody>
+            </CardFooter>
         </Card>
     );
 }

@@ -8,7 +8,7 @@ import "swiper/css/navigation";
 
 import { Navigation, Mousewheel } from "swiper/modules";
 import { ProductCard } from "./ProductCard";
-import { cn } from "@/lib/utils";
+import { cn, toValidUrl } from "@/lib/utils";
 import { Product } from "../all-products/page";
 
 export default function CategorySlide({
@@ -25,15 +25,16 @@ export default function CategorySlide({
                 <SwiperSlide key={select.id} className="w-fit p-4">
                     <ProductCard
                         name={select.name}
-                        imageUrl={`https://nextui.org/images/fruit-${
-                            (index % 8) + 1
-                        }.jpeg`}
+                        // imageUrl={`https://nextui.org/images/fruit-${
+                        //     (index % 8) + 1
+                        // }.jpeg`}
+                        imageUrl={toValidUrl(select.image1!)}
                         discountPrice={select.price}
                         actualPrice={500}
                         // rating={4.52}
                         seller={select.company.name}
-                        // sellerAvatar={select.company.image}
-                        sellerAvatar="https://i.pravatar.cc/150?u=a04258114e29026702d"
+                        sellerAvatar={toValidUrl(select.company.image)}
+                        // sellerAvatar="https://i.pravatar.cc/150?u=a04258114e29026702d"
                         // className="min-h-[370px]"
                         link={`/products/${select.slug}`}
                         sellerLink={`/all-companies/${select.company.slug}`}

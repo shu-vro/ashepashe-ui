@@ -40,3 +40,13 @@ export function removeTags(string = "") {
     const sanitized = string.replace(re, "");
     return sanitized;
 }
+
+// check if url is valid
+export function toValidUrl(url: string) {
+    try {
+        new URL(url);
+        return url;
+    } catch {
+        return "/" + url;
+    }
+}

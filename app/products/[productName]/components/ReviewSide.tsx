@@ -73,7 +73,8 @@ export default function ReviewSide({ reviews, productId }: Props) {
     const [currentPage, setCurrentPage] = useState(1);
 
     const { selectedReviews, reviewNum } = useMemo(() => {
-        let sortedReviews = sortby(selected as string, reviews);
+        let selectedReviews = reviews.filter((e) => e.product_id === productId);
+        let sortedReviews = sortby(selected as string, selectedReviews);
         let reviewNum = sortedReviews.length;
         sortedReviews = paginate(sortedReviews, currentPage, PER_PAGE);
         return { selectedReviews: sortedReviews, reviewNum };
@@ -89,8 +90,8 @@ export default function ReviewSide({ reviews, productId }: Props) {
 
     const loggedIn = true;
     return (
-        <div className="grid-in-review mt-6 mx-4">
-            <div className="top flex flex-row justify-between items-center gap-4 mb-6">
+        <div className="grid-in-review mt-6 mx-4 flex flex-col gap-6">
+            <div className="top flex flex-row justify-between items-center gap-4">
                 <div className="rating text-center">
                     <h2
                         className={cn(
@@ -135,7 +136,7 @@ export default function ReviewSide({ reviews, productId }: Props) {
                         })}
                 </div>
             </div>
-            <div className="my-6 mx-auto w-fit">
+            <div className="mx-auto w-fit">
                 <Tabs
                     variant="bordered"
                     color="warning"
@@ -144,7 +145,7 @@ export default function ReviewSide({ reviews, productId }: Props) {
                     {(item) => <Tab key={item.key} title={item.title} />}
                 </Tabs>
             </div>
-            <div className="reviews flex flex-col gap-4">
+            <div className="reviews flex flex-col gap-4 mb-6">
                 {selectedReviews.map((review) => (
                     <div key={review.id}>
                         <Card shadow="none" className="bg-content2">
@@ -174,7 +175,7 @@ export default function ReviewSide({ reviews, productId }: Props) {
                 ))}
             </div>
             {reviewNum > PER_PAGE && (
-                <div className="w-full my-4">
+                <div className="w-full mb-6">
                     <Pagination
                         showControls
                         isCompact

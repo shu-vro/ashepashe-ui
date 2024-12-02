@@ -16,7 +16,12 @@ import React from "react";
 import { CiBookmark } from "react-icons/ci";
 import { Rating } from "@smastrom/react-rating";
 import "@smastrom/react-rating/style.css";
-import { cn, dynamicFakeImageGenerator, removeTags } from "@/lib/utils";
+import {
+    cn,
+    dynamicFakeImageGenerator,
+    removeTags,
+    toValidUrl,
+} from "@/lib/utils";
 import { CiShoppingCart } from "react-icons/ci";
 import Link from "next/link";
 import NextImage from "next/image";
@@ -68,7 +73,7 @@ export function ProductCard({
                     isZoomed
                     alt={name}
                     className="w-full aspect-[4/3] object-cover !h-auto"
-                    src={imageUrl}
+                    src={toValidUrl(imageUrl)}
                     isBlurred
                     // fill={true}
                     width={400}

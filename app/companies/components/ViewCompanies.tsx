@@ -17,6 +17,8 @@ export function inBound(page: number, upperBound: number) {
     return page;
 }
 
+const PER_PAGE = 12;
+
 export default function ViewCompanies({
     allCompanies,
     initialPage,
@@ -25,9 +27,9 @@ export default function ViewCompanies({
     initialPage: number;
 }) {
     const [currentPage, setCurrentPage] = useState(
-        inBound(initialPage, Math.ceil(allCompanies.length / 12))
+        inBound(initialPage, Math.ceil(allCompanies.length / PER_PAGE))
     );
-    const selectedCompanies = paginate(allCompanies, currentPage, 12);
+    const selectedCompanies = paginate(allCompanies, currentPage, PER_PAGE);
     const router = useRouter();
 
     return (
@@ -49,7 +51,7 @@ export default function ViewCompanies({
                 <Pagination
                     showControls
                     isCompact
-                    total={Math.ceil(allCompanies.length / 12)}
+                    total={Math.ceil(allCompanies.length / PER_PAGE)}
                     page={currentPage}
                     onChange={(value) => {
                         setCurrentPage(value);

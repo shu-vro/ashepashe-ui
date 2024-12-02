@@ -8,7 +8,9 @@ import Gradient from "./components/Gradient";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "./components/AppSidebar";
 import ConfigComponent from "./components/ConfigComponent";
-import Loader from "./components/Loader";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/zoom";
 
 const font = Montserrat({
     subsets: ["latin"],

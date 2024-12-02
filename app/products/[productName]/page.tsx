@@ -3,10 +3,11 @@ import { Product } from "@/app/products/page";
 import { cn } from "@/lib/utils";
 import { Metadata, ResolvingMetadata } from "next";
 import React from "react";
-import CompanySide from "./Components/CompanySide";
+import CompanySide from "./components/CompanySide";
 import CategorySlide from "@/app/components/CategorySlide";
-import ProductSide from "./Components/ProductSide";
+import ProductSide from "./components/ProductSide";
 import { API_URL } from "@/lib/var";
+import ReviewSide, { Review } from "./components/ReviewSide";
 
 type Props = {
     params: Promise<{ productName: string }>;
@@ -21,6 +22,8 @@ export default async function ProductPage({ params }: Props) {
     const company_full = await getCompanyProducts(company.slug);
     const companyProducts =
         company_full.products as unknown as Product["product"][];
+
+    const reviews = await getReviews();
     return (
         <div className="relative grid grid-areas-productLayoutNoLap grid-cols-productLayoutNoLap lap:grid-areas-productLayoutLap lap:grid-cols-productLayoutLap">
             <CompanySide company={company} />
@@ -36,6 +39,7 @@ export default async function ProductPage({ params }: Props) {
                     />
                 </div>
             )}
+            <ReviewSide reviews={reviews} productId={product.id} />
         </div>
     );
 }
@@ -47,14 +51,20 @@ async function getCompanyProducts(name: string) {
         ...product,
         company,
     }));
-
+    <div>ReviewSide</div>;
     return company;
 }
 
-async function getProduct(name: string): Promise<Product> {
+async function getProduct(name: string) {
     const response = await fetch(`${API_URL}/product/${name}`);
-    const data = await response.json();
+    const data = (await response.json()) as Product;
     return data;
+}
+
+async function getReviews() {
+    const response = await fetch(`${API_URL}/reviews`);
+    const reviews = (await response.json()) as Review[];
+    return reviews;
 }
 
 export async function generateMetadata(

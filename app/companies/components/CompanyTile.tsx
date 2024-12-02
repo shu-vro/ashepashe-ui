@@ -1,6 +1,11 @@
 "use client";
 
-import { cn, dynamicFakeImageGenerator, removeTags } from "@/lib/utils";
+import {
+    cn,
+    dynamicFakeImageGenerator,
+    removeTags,
+    toValidUrl,
+} from "@/lib/utils";
 import {
     Button,
     Card,
@@ -33,7 +38,7 @@ export default function CompanyTile({
             shadow="sm"
             isPressable
             as={Link}
-            href={`/all-companies/${slug}`}
+            href={`/companies/${slug}`}
             isFooterBlurred
             {...rest}
             className={cn("w-full max-h-[420px]", rest?.className || "")}>
@@ -44,7 +49,7 @@ export default function CompanyTile({
                     isZoomed
                     alt={name}
                     className="w-full aspect-[4/3] object-cover !h-auto"
-                    src={imageUrl}
+                    src={toValidUrl(imageUrl)}
                     isBlurred
                     width={400}
                     height={300}

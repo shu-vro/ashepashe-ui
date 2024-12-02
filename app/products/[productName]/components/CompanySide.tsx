@@ -1,21 +1,15 @@
 "use client";
 
 import { Company } from "@/app/companies/page";
-import { dynamicFakeImageGenerator, removeTags } from "@/lib/utils";
-import {
-    Button,
-    Card,
-    CardBody,
-    CardFooter,
-    CardHeader,
-    Image,
-} from "@nextui-org/react";
+import { dynamicFakeImageGenerator, removeTags, toValidUrl } from "@/lib/utils";
+import { Button, Card, CardBody, CardHeader, Image } from "@nextui-org/react";
 import React from "react";
 import { IoLocationOutline } from "react-icons/io5";
 import { MdOutlineCall } from "react-icons/md";
 import { PiFacebookLogoBold } from "react-icons/pi";
 import Link from "next/link";
 import { Rating } from "@smastrom/react-rating";
+import NextImage from "next/image";
 
 type Prop = {
     company: Company;
@@ -26,12 +20,16 @@ export default function CompanySide({ company }: Prop) {
         <div className="company grid-in-company relative max-md:hidden">
             {/* flex-col sm:flex-row md:flex-row lap:flex-col */}
             <Card
-                className="sticky top-24 h-min overflow-auto p-6 m-4 flex-col max-sm:flex-col max-lg:flex-col max-lap:flex-row"
+                className="sticky top-24 h-min overflow-auto p-3 m-4 flex-col max-sm:flex-col max-lg:flex-col max-lap:flex-row"
                 shadow="sm">
                 <CardHeader className="w-full max-lap:max-w-[250px] max-sm:max-w-full mx-auto">
                     <Image
-                        src={company.image}
-                        // src={dynamicFakeImageGenerator()}
+                        src={toValidUrl(company.image)}
+                        fallbackSrc={dynamicFakeImageGenerator()}
+                        as={NextImage}
+                        width={500}
+                        height={280}
+                        className="!h-auto"
                         alt={company.name}
                     />
                 </CardHeader>

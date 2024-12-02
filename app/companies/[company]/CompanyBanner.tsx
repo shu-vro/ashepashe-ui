@@ -2,14 +2,13 @@
 
 import { Image } from "@nextui-org/react";
 import React from "react";
-import { cn, dynamicFakeImageGenerator, toValidUrl } from "@/lib/utils";
+import { cn, toValidUrl } from "@/lib/utils";
 
 type Prop = {
     src: string;
 };
 
 export default function CompanyBanner({ src }: Prop) {
-    const dummyImage = dynamicFakeImageGenerator();
     return (
         <div className="grid-in-image">
             <Image

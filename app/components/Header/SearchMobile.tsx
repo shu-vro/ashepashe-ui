@@ -1,4 +1,4 @@
-import { dynamicFakeImageGenerator } from "@/lib/utils";
+import { dynamicFakeImageGenerator, toValidUrl } from "@/lib/utils";
 import { Input, ScrollShadow } from "@nextui-org/react";
 import { useMemo, useState } from "react";
 import { IoSearchOutline } from "react-icons/io5";
@@ -39,8 +39,8 @@ export default function SearchMobile({
                             discountPrice={product.price}
                             company_name={product.company.name}
                             companyAvatar="https://i.pravatar.cc/150?u=a042581f4e29026704d"
-                            image={dynamicFakeImageGenerator()}
-                            // image={product.image1 as string}
+                            // image={dynamicFakeImageGenerator()}
+                            image={toValidUrl(product.image1!)}
                             slug={product.slug}
                             onSearchOpen={() => {}}
                         />

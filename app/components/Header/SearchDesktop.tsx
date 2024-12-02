@@ -1,7 +1,7 @@
 "use client";
 
 import { Product } from "@/app/products/page";
-import { cn, dynamicFakeImageGenerator } from "@/lib/utils";
+import { cn, dynamicFakeImageGenerator, toValidUrl } from "@/lib/utils";
 import { DEBOUNCE_DELAY } from "@/lib/var";
 import { Card, CardBody, Input, ScrollShadow } from "@nextui-org/react";
 import { AnimatePresence, motion } from "framer-motion";
@@ -82,7 +82,10 @@ export default function SearchDesktop({
                                                     product.company.name
                                                 }
                                                 companyAvatar="https://i.pravatar.cc/150?u=a042581f4e29026704d"
-                                                image={dynamicFakeImageGenerator()}
+                                                // image={dynamicFakeImageGenerator()}
+                                                image={toValidUrl(
+                                                    product.image1!
+                                                )}
                                                 slug={product.slug}
                                                 onSearchOpen={onSearchOpen}
                                             />

@@ -82,11 +82,14 @@ export default function ReviewSide({ reviews, productId }: Props) {
 
     const { rating, groupRating } = useMemo(() => {
         const rating =
-            reviews.reduce((acc, review) => acc + review.rating, 0) /
-                reviews.length || 0;
-        const groupRating = Object.groupBy(reviews, (review) => review.rating);
+            selectedReviews.reduce((acc, review) => acc + review.rating, 0) /
+                selectedReviews.length || 0;
+        const groupRating = Object.groupBy(
+            selectedReviews,
+            (review) => review.rating
+        );
         return { rating, groupRating };
-    }, [reviews]);
+    }, [reviews, selectedReviews]);
 
     const loggedIn = true;
     return (
@@ -101,7 +104,9 @@ export default function ReviewSide({ reviews, productId }: Props) {
                         {rating}
                     </h2>
                     <Rating style={{ maxWidth: 100 }} readOnly value={rating} />
-                    <p>{numeral(reviews.length).format("0a")} reviews</p>
+                    <p>
+                        {numeral(selectedReviews.length).format("0a")} reviews
+                    </p>
                 </div>
                 <div className="bars grow">
                     {Array(5)
@@ -111,8 +116,7 @@ export default function ReviewSide({ reviews, productId }: Props) {
                             if (!selected) {
                                 selected = [];
                             }
-                            const rating_frac =
-                                selected.length / reviews.length;
+                            const rating_frac = selected.length / reviewNum;
                             return (
                                 <Tooltip
                                     key={i}

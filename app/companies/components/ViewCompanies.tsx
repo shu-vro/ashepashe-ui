@@ -1,6 +1,6 @@
 "use client";
 
-import CompanyTile from "@/app/all-companies/components/CompanyTile";
+import CompanyTile from "@/app/companies/components/CompanyTile";
 import React, { useState } from "react";
 import { Company } from "../page";
 import { Pagination } from "@nextui-org/react";

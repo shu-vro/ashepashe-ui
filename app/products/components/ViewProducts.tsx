@@ -6,7 +6,7 @@ import { Product } from "../page";
 import { dynamicFakeImageGenerator, paginate, toValidUrl } from "@/lib/utils";
 import { ProductCard } from "@/app/components/ProductCard";
 import Link from "next/link";
-import { inBound } from "@/app/all-companies/components/ViewCompanies";
+import { inBound } from "@/app/companies/components/ViewCompanies";
 import { useRouter } from "next/navigation";
 
 const PER_PAGE = 12;
@@ -37,7 +37,7 @@ export default function ViewProducts({
                         discountPrice={product.price}
                         actualPrice={500}
                         seller={product.company.name}
-                        sellerLink={`/all-companies/${product.company.slug}`}
+                        sellerLink={`/companies/${product.company.slug}`}
                         imageUrl={toValidUrl(product.image1!)}
                         // imageUrl={dynamicFakeImageGenerator()}
                         // rating={4.56}

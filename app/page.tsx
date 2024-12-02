@@ -1,6 +1,6 @@
 import FilterHomeProducts from "./components/FilterHomeProducts";
-import { Product } from "./all-products/page";
-import { Company } from "./all-companies/page";
+import { Product } from "./products/page";
+import { Company } from "./companies/page";
 import CompanySlide from "./components/CompanySlide";
 import { API_URL } from "@/lib/var";
 

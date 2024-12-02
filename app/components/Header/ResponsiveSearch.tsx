@@ -22,7 +22,7 @@ import {
     DropdownItem,
     Divider,
 } from "@nextui-org/react";
-import { Product } from "@/app/all-products/page";
+import { Product } from "@/app/products/page";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { IoSearchOutline } from "react-icons/io5";

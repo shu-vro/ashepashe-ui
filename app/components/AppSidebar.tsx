@@ -40,13 +40,13 @@ export async function AppSidebar() {
                                 <AppSidebarItems
                                     item={{
                                         title: "All companies",
-                                        url: `/all-companies`,
+                                        url: `/companies`,
                                     }}
                                 />
                                 <AppSidebarItems
                                     item={{
                                         title: "All Products",
-                                        url: `/all-products`,
+                                        url: `/products`,
                                     }}
                                 />
                             </SidebarMenuSub>

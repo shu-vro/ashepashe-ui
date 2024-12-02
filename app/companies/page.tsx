@@ -1,6 +1,6 @@
 import React from "react";
 import ViewCompanies from "./components/ViewCompanies";
-import { Product } from "../all-products/page";
+import { Product } from "../products/page";
 import { API_URL } from "@/lib/var";
 
 export interface Company {

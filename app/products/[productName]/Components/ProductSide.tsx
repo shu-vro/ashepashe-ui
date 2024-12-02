@@ -5,7 +5,7 @@ import { Button, Card, CardBody, CardHeader, Image } from "@nextui-org/react";
 import React from "react";
 import Link from "next/link";
 import { Rating } from "@smastrom/react-rating";
-import { Product } from "@/app/all-products/page";
+import { Product } from "@/app/products/page";
 import NextImage from "next/image";
 
 type Prop = {
@@ -54,20 +54,20 @@ export default function ProductSide({ product }: Prop) {
                         <Button
                             color="warning"
                             as={Link}
-                            href={`/all-companies/${product.company.slug}`}
+                            href={`/companies/${product.company.slug}`}
                             className="w-full">
                             Go To Store
                         </Button>
                         <Button
                             color="success"
                             as={Link}
-                            href={`/all-companies/${product.company.slug}`}
+                            href={`/companies/${product.company.slug}`}
                             className="w-full">
                             Add to Cart
                         </Button>
                         <Button
                             as={Link}
-                            href={`/all-products/${product.slug}`}
+                            href={`/products/${product.slug}`}
                             className="w-full">
                             Bookmark
                         </Button>

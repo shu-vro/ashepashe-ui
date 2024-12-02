@@ -1,4 +1,4 @@
-import ViewCompanies from "@/app/all-companies/components/ViewCompanies";
+import ViewCompanies from "@/app/companies/components/ViewCompanies";
 import { API_URL } from "@/lib/var";
 import { Metadata, ResolvingMetadata } from "next";
 import React from "react";

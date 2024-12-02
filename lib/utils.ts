@@ -1,6 +1,7 @@
-import { Product } from "@/app/all-products/page";
+import { Product } from "@/app/products/page";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { BASE_URL } from "./var";
 
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
@@ -47,6 +48,6 @@ export function toValidUrl(url: string) {
         new URL(url);
         return url;
     } catch {
-        return "/" + url;
+        return BASE_URL + "/" + url;
     }
 }

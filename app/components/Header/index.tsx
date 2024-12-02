@@ -14,12 +14,12 @@ import Link from "next/link";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import "@smastrom/react-rating/style.css";
 import AppIcon from "@/assets/she.png";
-import { Product } from "../../all-products/page";
+import { Product } from "../../products/page";
 import { PiSidebarSimpleLight } from "react-icons/pi";
 import { API_URL } from "@/lib/var";
 import ResponsiveButtons from "./ResponsiveSearch";
 import SearchDesktop from "./SearchDesktop";
-import { Category, getSidebarItems } from "../AppSidebar";
+import { getSidebarItems } from "../AppSidebar";
 import { usePathname } from "next/navigation";
 
 async function getAllProducts() {
@@ -34,8 +34,8 @@ export default function Header() {
     const [products, setProducts] = React.useState<Product["product"][]>([]);
     const [sidebarItems, setSidebarItems] = useState<SidebarItem[]>([
         { id: "/", name: "Home" },
-        { id: "/all-companies", name: "All Companies" },
-        { id: "/all-products", name: "All Products" },
+        { id: "/companies", name: "All Companies" },
+        { id: "/products", name: "All Products" },
     ]);
     const pathName = usePathname();
 

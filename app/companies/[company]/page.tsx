@@ -1,6 +1,6 @@
 import React from "react";
 import { Company } from "../page";
-import { Product } from "@/app/all-products/page";
+import { Product } from "@/app/products/page";
 import { cn, removeTags } from "@/lib/utils";
 import CompanyBanner from "./CompanyBanner";
 import CompanyCard from "./CompanyCard";

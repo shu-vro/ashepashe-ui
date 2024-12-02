@@ -1,6 +1,6 @@
 "use client";
 
-import { Company } from "@/app/all-companies/page";
+import { Company } from "@/app/companies/page";
 import { dynamicFakeImageGenerator, removeTags } from "@/lib/utils";
 import {
     Button,
@@ -30,8 +30,8 @@ export default function CompanySide({ company }: Prop) {
                 shadow="sm">
                 <CardHeader className="w-full max-lap:max-w-[250px] max-sm:max-w-full mx-auto">
                     <Image
-                        // src={company.image}
-                        src={dynamicFakeImageGenerator()}
+                        src={company.image}
+                        // src={dynamicFakeImageGenerator()}
                         alt={company.name}
                     />
                 </CardHeader>
@@ -81,7 +81,7 @@ export default function CompanySide({ company }: Prop) {
                         </Button>
                         <Button
                             as={Link}
-                            href={`/all-companies/${company.slug}`}
+                            href={`/companies/${company.slug}`}
                             className="w-full">
                             Go To Store
                         </Button>

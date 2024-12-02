@@ -1,5 +1,5 @@
-import { Company } from "@/app/all-companies/page";
-import { Product } from "@/app/all-products/page";
+import { Company } from "@/app/companies/page";
+import { Product } from "@/app/products/page";
 import { cn } from "@/lib/utils";
 import { Metadata, ResolvingMetadata } from "next";
 import React from "react";

@@ -1,7 +1,7 @@
 import React from "react";
 import ViewProducts from "./components/ViewProducts";
 import { Metadata } from "next";
-import { Company } from "../all-companies/page";
+import { Company } from "../companies/page";
 import { API_URL } from "@/lib/var";
 
 export interface Product {

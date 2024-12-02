@@ -28,7 +28,7 @@
         "**/*.tsx",
         ".next/types/**/*.ts",
         "next.config.ts",
-        "app/all-companies/index.tsc"
+        "app/companies/index.tsc"
     ],
     "exclude": ["node_modules"]
 }

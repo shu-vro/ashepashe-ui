@@ -9,7 +9,7 @@ import "swiper/css/navigation";
 import { Navigation, Mousewheel } from "swiper/modules";
 import { ProductCard } from "./ProductCard";
 import { cn, toValidUrl } from "@/lib/utils";
-import { Product } from "../all-products/page";
+import { Product } from "../products/page";
 
 export default function CategorySlide({
     selected,
@@ -37,7 +37,7 @@ export default function CategorySlide({
                         // sellerAvatar="https://i.pravatar.cc/150?u=a04258114e29026702d"
                         // className="min-h-[370px]"
                         link={`/products/${select.slug}`}
-                        sellerLink={`/all-companies/${select.company.slug}`}
+                        sellerLink={`/companies/${select.company.slug}`}
                         disableCompany={disableCompany}
                     />
                 </SwiperSlide>

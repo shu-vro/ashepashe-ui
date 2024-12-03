@@ -61,6 +61,12 @@ export function SwiperWrapper({
             <Swiper
                 slidesPerView={"auto"}
                 spaceBetween={0}
+                slidesPerGroup={2}
+                // breakpoints={{
+                //     769: {
+                //         slidesPerGroup: 2,
+                //     },
+                // }}
                 // mousewheel={true}
                 grabCursor={true}
                 navigation={true}

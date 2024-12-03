@@ -73,7 +73,7 @@ export function FieldWithIcon({
     return (
         <div className="flex flex-row items-center gap-1">
             <Icon className="text-2xl flex-shrink-0" />
-            <p>{value}</p>
+            <span>{value}</span>
         </div>
     );
 }

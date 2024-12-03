@@ -1,5 +1,7 @@
 import { Card, CardBody, Image } from "@nextui-org/react";
 import Link from "next/link";
+import NextImage from "next/image";
+import { dynamicFakeImageGenerator } from "@/lib/utils";
 
 export default function SearchItems({
     label,
@@ -23,20 +25,27 @@ export default function SearchItems({
     onSearchOpen: (b: boolean) => void;
 }) {
     return (
-        <Card
-            className="mt-2 bg-none w-full"
-            as={Link}
-            href={`/products/${slug}`}>
+        <Card className="mt-2 w-full" as={Link} href={`/products/${slug}`}>
             <CardBody
-                className="flex-row justify-start gap-4 bg-none"
+                className="flex-row justify-start gap-4 hover:bg-content3 transition-all"
                 onClick={() => {
                     onSearchOpen(false);
                 }}>
-                <Image className="w-20 h-20" src={image} alt={label} />
-                <div className="flex flex-col justify-center">
-                    <div className="font-bold">{label}</div>
-                    {/* <Rating style={{ maxWidth: 100 }} readOnly value={rating} /> */}
+                <Image
+                    src={image}
+                    fallbackSrc={dynamicFakeImageGenerator()}
+                    alt={label}
+                    as={NextImage}
+                    width={56}
+                    height={56}
+                />
+                <div className="grid grid-cols-[repeat(2,1fr)] w-full content-center">
                     <div>
+                        <div className="font-bold">{label}</div>{" "}
+                        <div>{company_name}</div>
+                    </div>
+                    {/* <Rating style={{ maxWidth: 100 }} readOnly value={rating} /> */}
+                    <div className="justify-self-end">
                         <del className="text-default-500">{actualPrice}৳</del>{" "}
                         <span className="text-2xl font-bold">
                             {discountPrice + "৳"}
@@ -53,7 +62,6 @@ export default function SearchItems({
                         }}
                         className="grow-0"
                     /> */}
-                    <h1>{company_name}</h1>
                 </div>
             </CardBody>
         </Card>

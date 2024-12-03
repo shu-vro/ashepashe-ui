@@ -1,36 +1,49 @@
+"use client";
+
 import React, { useEffect, useRef } from "react";
 import mapboxgl, { Map } from "mapbox-gl";
+// import Map from "react-map-gl";
 
 import "mapbox-gl/dist/mapbox-gl.css";
+import { SelectLocationProp } from "./SelectLocation";
 
-const MapboxExample = () => {
+export default function MapboxExample({
+    setLocation,
+    location,
+}: {
+    setLocation: SelectLocationProp["setLocation"];
+    location: SelectLocationProp["location"];
+}) {
     const mapContainerRef = useRef(null);
     const mapRef = useRef<Map>(null);
 
+    console.log(location);
+
     useEffect(() => {
-        mapboxgl.accessToken =
-            "pk.eyJ1Ijoic2h1LXZybyIsImEiOiJjbHpxMWl1NGkxYTUxMmpxdWowZ3Vxajh2In0.X7PJs_zONFMSEf-SIyV8iw";
+        mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_API_TOKEN!;
 
         mapRef.current = new mapboxgl.Map({
             style: "mapbox://styles/mapbox/light-v11",
-            center: [-74.0066, 40.7135],
-            zoom: 15.5,
+            center: [location.long, location.lat],
+            zoom: 18,
             pitch: 45,
             bearing: -17.6,
             container: "map",
             antialias: true,
         });
 
-        mapRef.current.on("style.load", () => {
-            if (!mapRef.current) return;
-            const layers = mapRef.current.getStyle()?.layers;
+        const map = mapRef.current!;
+
+        map.on("style.load", () => {
+            if (!map) return;
+            const layers = map.getStyle()?.layers;
             if (!layers) return;
             const labelLayerId = layers.find(
                 (layer) =>
                     layer?.type === "symbol" && layer.layout?.["text-field"]
             )?.id;
 
-            mapRef.current.addLayer(
+            map.addLayer(
                 {
                     id: "add-3d-buildings",
                     source: "composite",
@@ -65,12 +78,60 @@ const MapboxExample = () => {
             );
         });
 
+        // map.on("click", "add-3d-buildings", (e) => {
+        //     // Query the features at the clicked point
+        //     const features = map.queryRenderedFeatures(e.point, {
+        //         layers: ["add-3d-buildings"],
+        //     });
+
+        //     if (features.length > 0) {
+        //         const feature = features[0];
+
+        //         // Create a popup
+        //         new mapboxgl.Popup()
+        //             .setLngLat(e.lngLat)
+        //             .setHTML(
+        //                 `<h3>Building Height: ${feature.properties?.height}m</h3>`
+        //             )
+        //             .addTo(map);
+        //     }
+        // });
+
+        // Change the cursor to a pointer when hovering over the 3D buildings layer
+        map.on("mouseenter", "add-3d-buildings", () => {
+            map.getCanvas().style.cursor = "pointer";
+        });
+
+        // Change it back to the default cursor when it leaves the 3D buildings layer
+        map.on("mouseleave", "add-3d-buildings", () => {
+            map.getCanvas().style.cursor = "";
+        });
+
+        // Add a marker for "home"
+        const marker = new mapboxgl.Marker()
+            .setLngLat([location.long, location.lat]) // Set the longitude and latitude for your "home" location
+            .addTo(map);
+
+        const selLoc = (e: mapboxgl.MapMouseEvent) => {
+            const lng = e.lngLat.lng;
+            const lat = e.lngLat.lat;
+            marker.setLngLat([lng, lat]);
+            setLocation({ lat, long: lng });
+        };
+
+        map.on("dblclick", selLoc);
+
+        map.on("", selLoc);
+
         return () => mapRef.current?.remove();
     }, []);
 
     return (
-        <div id="map" ref={mapContainerRef} style={{ height: "100%" }}></div>
+        <>
+            <div
+                id="map"
+                className="w-full h-[500px] md:h-[600px] lg:h-[700px]"
+                ref={mapContainerRef}></div>
+        </>
     );
-};
-
-export default MapboxExample;
+}

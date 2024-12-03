@@ -39,6 +39,7 @@ export default function Page() {
         lat: 0,
         long: 0,
     });
+    const [imageFile, setImageFile] = useState<File>();
 
     const districts = useMemo(() => {
         const selectedDistricts =
@@ -51,7 +52,22 @@ export default function Page() {
 
     return (
         <div className="grid grid-areas-companyLayoutNoLap grid-cols-productLayoutNoLap lap:grid-cols-productLayoutLap lap:grid-areas-companyLayoutLap gap-4">
-            <div className="grid-in-image bg-amber-600 h-96"></div>
+            <label
+                className="grid-in-image bg-content3 rounded-3xl h-96 relative grid place-content-center"
+                htmlFor="file_input">
+                <div className="text-[max(5vw,10vh)] text-white/35 text-center w-full">
+                    16 X 7
+                </div>
+                <input
+                    type="file"
+                    id="file_input"
+                    onChange={(e) => {
+                        if (e.target.files) {
+                            setImageFile(e.target.files[0]);
+                        }
+                    }}
+                />
+            </label>
             <div className="grid-in-name text-center">
                 <h1 className="text-5xl font-bold my-3">
                     <WritableField
@@ -201,21 +217,33 @@ export default function Page() {
                             </WritableField>
                         }
                     />
-                    <div className="flex justify-around items-stretch pt-2 gap-8">
+                    <div className="flex justify-center items-center flex-col pt-2 gap-8">
+                        {location.lat !== 0 && location.long !== 0 && (
+                            <iframe
+                                src={`https://maps.google.com/maps?q=${location.lat},${location.long}&hl=es;z=132m&output=embed`}
+                                title="google iframe embed"
+                                className="w-full"
+                                height={400}></iframe>
+                        )}
                         <Button
-                            onClick={() => {
+                            onClick={async () => {
                                 navigator.geolocation.getCurrentPosition(
-                                    (success) => {
+                                    async (success) => {
                                         setLocation({
                                             lat: success.coords.latitude,
                                             long: success.coords.longitude,
                                         });
+                                        // const request = await fetch(
+                                        //     `https://api.mapbox.com/geocoding/v5/mapbox.places/${success.coords.longitude},${success.coords.latitude}.json?access_token=${process.env.NEXT_PUBLIC_MAPBOX_API_TOKEN}`
+                                        // );
+                                        // const data = await request.json();
+                                        // console.log(data);
+                                        onOpen();
                                     },
                                     (error) => {
                                         toast.error(error.message);
                                     }
                                 );
-                                onOpen();
                             }}
                             className="w-full">
                             Select Location
@@ -223,6 +251,8 @@ export default function Page() {
                         <SelectLocation
                             isOpen={isOpen}
                             onOpenChange={onOpenChange}
+                            setLocation={setLocation}
+                            location={location}
                         />
                     </div>
                 </CardBody>

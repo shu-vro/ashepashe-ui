@@ -38,6 +38,7 @@ export default function ViewProducts({
                         seller={product.company.name}
                         sellerLink={`/companies/${product.company.slug}`}
                         imageUrl={toValidUrl(product.image1!)}
+                        description={product.description}
                         // imageUrl={dynamicFakeImageGenerator()}
                         rating={
                             product.rating.reduce((a, b) => a + b.rating, 0) /

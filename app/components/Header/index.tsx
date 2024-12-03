@@ -99,7 +99,7 @@ export default function Header() {
                 isBordered
                 shouldHideOnScroll
                 maxWidth="full"
-                className="overflow-x-auto w-full max-md:hidden top-[5.5rem] opacity-1 data-[hidden=true]:opacity-0 data-[hidden=true]:pointer-events-none transition-all z-30">
+                className="overflow-x-auto w-full top-[5.5rem] opacity-1 data-[hidden=true]:opacity-0 data-[hidden=true]:pointer-events-none transition-all z-30">
                 <NavbarContent justify="center" className="mx-auto">
                     <Tabs
                         aria-label="navigation items"

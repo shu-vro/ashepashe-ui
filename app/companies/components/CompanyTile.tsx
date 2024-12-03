@@ -39,7 +39,6 @@ export default function CompanyTile({
             isPressable
             as={Link}
             href={`/companies/${slug}`}
-            isFooterBlurred
             {...rest}
             className={cn("w-full max-h-[420px]", rest?.className || "")}>
             <CardBody className="overflow-visible">

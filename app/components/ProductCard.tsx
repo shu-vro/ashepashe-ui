@@ -60,7 +60,6 @@ export function ProductCard({
             shadow="sm"
             isPressable
             as={"div"}
-            isFooterBlurred
             {...rest}
             className={cn("w-52 md:w-72 p-0", rest?.className || "")}>
             <CardBody
@@ -85,7 +84,9 @@ export function ProductCard({
             </CardBody>
             <CardFooter className="pt-0 text-start flex-col">
                 <div className="flex flex-col items-start w-full">
-                    <em className="capitalize not-italic font-bold text-xl line-clamp-2 h-[4ch]">
+                    <Link
+                        href={link}
+                        className="capitalize not-italic font-bold text-xl line-clamp-2 h-[4ch]">
                         {name}{" "}
                         {/* <Chip
                             color="success"
@@ -96,12 +97,12 @@ export function ProductCard({
                             )}>
                             {discountPercent}%
                         </Chip> */}
-                    </em>
-                    {description && (
-                        <span className="text-neutral-500 text-sm line-clamp-2">
-                            {removeTags(description)}
-                        </span>
-                    )}
+                    </Link>
+                    <Link
+                        href={link}
+                        className="text-neutral-500 text-sm line-clamp-2 h-[4ch]">
+                        {description && removeTags(description)}
+                    </Link>
                 </div>
                 <CustomDivider />
                 <div className="flex flex-wrap justify-between items-center w-full">

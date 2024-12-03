@@ -19,19 +19,8 @@ import numeral from "numeral";
 import moment from "moment";
 import { inBound } from "@/app/companies/components/ViewCompanies";
 
-export interface Review {
-    id: number;
-    user_id: number;
-    product_id: number;
-    rating: number;
-    review: string;
-    created_at: string;
-    updated_at: string;
-}
-
 type Props = {
     reviews: Review[];
-    productId: number;
 };
 
 const colors = ["success", "primary", "warning", "warning", "danger"] as const;
@@ -68,13 +57,12 @@ function sortby(key: (typeof sortOptions)[number]["key"], reviews: Review[]) {
     }
 }
 
-export default function ReviewSide({ reviews, productId }: Props) {
+export default function ReviewSide({ reviews }: Props) {
     const [selected, setSelected] = useState<Key>("recent");
     const [currentPage, setCurrentPage] = useState(1);
 
     const { selectedReviews, reviewNum } = useMemo(() => {
-        let selectedReviews = reviews.filter((e) => e.product_id === productId);
-        let sortedReviews = sortby(selected as string, selectedReviews);
+        let sortedReviews = sortby(selected as string, reviews);
         let reviewNum = sortedReviews.length;
         sortedReviews = paginate(sortedReviews, currentPage, PER_PAGE);
         return { selectedReviews: sortedReviews, reviewNum };
@@ -93,7 +81,7 @@ export default function ReviewSide({ reviews, productId }: Props) {
 
     const loggedIn = true;
     return (
-        <div className="grid-in-review mt-6 mx-4 flex flex-col gap-6">
+        <div className="grid-in-review my-12 mx-4 flex flex-col gap-6">
             <div className="top flex flex-row justify-between items-center gap-4">
                 <div className="rating text-center">
                     <h2
@@ -155,13 +143,13 @@ export default function ReviewSide({ reviews, productId }: Props) {
                         <Card shadow="none" className="bg-content2">
                             <CardHeader className="justify-between">
                                 <User
-                                    name={review.user_id}
+                                    name={review.user.name}
                                     description={moment(
                                         review.created_at
                                     ).fromNow()}
                                     avatarProps={{
-                                        src: "https://i.pravatar.cc/150?u=a",
-                                        alt: review.user_id.toString(),
+                                        src: review.user.image,
+                                        alt: review.user.name,
                                         isBordered: true,
                                         showFallback: true,
                                     }}
@@ -179,7 +167,7 @@ export default function ReviewSide({ reviews, productId }: Props) {
                 ))}
             </div>
             {reviewNum > PER_PAGE && (
-                <div className="w-full mb-6">
+                <div className="w-full">
                     <Pagination
                         showControls
                         isCompact

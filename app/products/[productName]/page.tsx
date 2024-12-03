@@ -1,5 +1,3 @@
-import { Company } from "@/app/companies/page";
-import { Product } from "@/app/products/page";
 import { cn } from "@/lib/utils";
 import { Metadata, ResolvingMetadata } from "next";
 import React from "react";
@@ -7,7 +5,7 @@ import CompanySide from "./components/CompanySide";
 import CategorySlide from "@/app/components/CategorySlide";
 import ProductSide from "./components/ProductSide";
 import { API_URL } from "@/lib/var";
-import ReviewSide, { Review } from "./components/ReviewSide";
+import ReviewSide from "./components/ReviewSide";
 
 type Props = {
     params: Promise<{ productName: string }>;
@@ -23,7 +21,7 @@ export default async function ProductPage({ params }: Props) {
     const companyProducts =
         company_full.products as unknown as Product["product"][];
 
-    const reviews = await getReviews();
+    const reviews = await getReviews(product.id);
     return (
         <div className="relative grid grid-areas-productLayoutNoLap grid-cols-productLayoutNoLap lap:grid-areas-productLayoutLap lap:grid-cols-productLayoutLap">
             <CompanySide company={company} />
@@ -39,9 +37,16 @@ export default async function ProductPage({ params }: Props) {
                     />
                 </div>
             )}
-            <ReviewSide reviews={reviews} productId={product.id} />
+            <ReviewSide reviews={reviews} />
         </div>
     );
+}
+
+async function getReviews(productId: number) {
+    const request = await fetch(`${API_URL}/reviews/${productId}`);
+    const reviews = (await request.json()) as Review[];
+
+    return reviews;
 }
 
 async function getCompanyProducts(name: string) {
@@ -59,12 +64,6 @@ async function getProduct(name: string) {
     const response = await fetch(`${API_URL}/product/${name}`);
     const data = (await response.json()) as Product;
     return data;
-}
-
-async function getReviews() {
-    const response = await fetch(`${API_URL}/reviews`);
-    const reviews = (await response.json()) as Review[];
-    return reviews;
 }
 
 export async function generateMetadata(

@@ -9,7 +9,6 @@ import "swiper/css/navigation";
 import { Navigation, Mousewheel } from "swiper/modules";
 import { ProductCard } from "./ProductCard";
 import { cn, toValidUrl } from "@/lib/utils";
-import { Product } from "../products/page";
 
 export default function CategorySlide({
     selected,
@@ -31,7 +30,14 @@ export default function CategorySlide({
                         imageUrl={toValidUrl(select.image1!)}
                         discountPrice={select.price}
                         actualPrice={500}
-                        // rating={4.52}
+                        rating={
+                            select.rating
+                                ? select.rating.reduce(
+                                      (a, b) => a + b.rating,
+                                      0
+                                  ) / select.rating.length
+                                : 0
+                        }
                         seller={select.company.name}
                         sellerAvatar={toValidUrl(select.company.image)}
                         // sellerAvatar="https://i.pravatar.cc/150?u=a04258114e29026702d"

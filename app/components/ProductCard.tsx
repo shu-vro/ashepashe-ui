@@ -14,7 +14,7 @@ import {
 } from "@nextui-org/react";
 import React from "react";
 import { CiBookmark } from "react-icons/ci";
-import { Rating } from "@smastrom/react-rating";
+import { FaStar } from "react-icons/fa6";
 import "@smastrom/react-rating/style.css";
 import {
     cn,
@@ -32,7 +32,7 @@ interface ProductCardProps {
     discountPrice: number;
     seller: string;
     sellerAvatar: string;
-    // rating: number;
+    rating: number;
     imageUrl: string;
     description?: string;
     disableCompany?: boolean;
@@ -47,7 +47,7 @@ export function ProductCard({
     discountPrice,
     seller,
     sellerAvatar,
-    // rating,
+    rating,
     description,
     link,
     disableCompany = false,
@@ -62,7 +62,7 @@ export function ProductCard({
             as={"div"}
             isFooterBlurred
             {...rest}
-            className={cn("w-48 md:w-72 p-0", rest?.className || "")}>
+            className={cn("w-52 md:w-72 p-0", rest?.className || "")}>
             <CardBody
                 className="overflow-visible relative"
                 as={Link}
@@ -118,7 +118,15 @@ export function ProductCard({
                     {/* <Rating style={{ maxWidth: 100 }} readOnly value={rating} /> */}
                 </div>
                 <CustomDivider />
-                <div className="flex flex-row justify-between items-center gap-1 w-full">
+                <div className="flex flex-row justify-between items-center md:gap-1 w-full">
+                    <Chip
+                        startContent={<FaStar />}
+                        size="sm"
+                        variant="bordered"
+                        radius="sm"
+                        color="warning">
+                        {(rating || 0)?.toFixed(1)}
+                    </Chip>
                     <Button isIconOnly variant="light" className="text-xl">
                         <CiBookmark />
                     </Button>
@@ -128,7 +136,8 @@ export function ProductCard({
                     <Chip
                         color="success"
                         variant="bordered"
-                        className={"rounded-[6px]"}>
+                        radius="sm"
+                        size="sm">
                         {discountPercent}%
                     </Chip>
                 </div>

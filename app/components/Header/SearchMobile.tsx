@@ -3,7 +3,6 @@ import { Input, ScrollShadow } from "@nextui-org/react";
 import { useMemo, useState } from "react";
 import { IoSearchOutline } from "react-icons/io5";
 import { debounce } from "lodash";
-import { Product } from "@/app/products/page";
 import { DEBOUNCE_DELAY } from "@/lib/var";
 import SearchItems from "./SearchItems";
 

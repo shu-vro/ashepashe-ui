@@ -2,7 +2,6 @@
 
 import { Button, Card, CardBody } from "@nextui-org/react";
 import React from "react";
-import { Company } from "../page";
 import Link from "next/link";
 import { Rating } from "@smastrom/react-rating";
 import { IoLocationOutline } from "react-icons/io5";

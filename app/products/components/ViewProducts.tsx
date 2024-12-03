@@ -2,7 +2,6 @@
 
 import { Pagination } from "@nextui-org/react";
 import React, { useState } from "react";
-import { Product } from "../page";
 import { dynamicFakeImageGenerator, paginate, toValidUrl } from "@/lib/utils";
 import { ProductCard } from "@/app/components/ProductCard";
 import Link from "next/link";
@@ -40,7 +39,10 @@ export default function ViewProducts({
                         sellerLink={`/companies/${product.company.slug}`}
                         imageUrl={toValidUrl(product.image1!)}
                         // imageUrl={dynamicFakeImageGenerator()}
-                        // rating={4.56}
+                        rating={
+                            product.rating.reduce((a, b) => a + b.rating, 0) /
+                            product.rating.length
+                        }
                         // sellerAvatar="https://i.pravatar.cc/150?u=a04258114e29026702d"
                         sellerAvatar={toValidUrl(product.company.image)}
                         className="!w-full h-fit max-sm:min-h-96"

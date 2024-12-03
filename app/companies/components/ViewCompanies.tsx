@@ -2,7 +2,6 @@
 
 import CompanyTile from "@/app/companies/components/CompanyTile";
 import React, { useState } from "react";
-import { Company } from "../page";
 import { Pagination } from "@nextui-org/react";
 import { dynamicFakeImageGenerator, paginate, toValidUrl } from "@/lib/utils";
 import { useRouter } from "next/navigation";

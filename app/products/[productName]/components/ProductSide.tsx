@@ -10,14 +10,12 @@ import {
     Modal,
     ModalBody,
     ModalContent,
-    ModalFooter,
     ModalHeader,
     useDisclosure,
 } from "@nextui-org/react";
 import React from "react";
 import Link from "next/link";
 import { Rating } from "@smastrom/react-rating";
-import { Product } from "@/app/products/page";
 import NextImage from "next/image";
 import { MdZoomOutMap } from "react-icons/md";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -105,8 +103,17 @@ export default function ProductSide({ product }: Prop) {
                         {removeTags(product.description)}
                     </p>
                     <div className="flex flex-row items-center gap-1 my-4">
-                        <Rating value={0} className="max-w-32" />
-                        <span>(0)</span>
+                        <Rating
+                            readOnly
+                            value={
+                                product.rating.reduce(
+                                    (a, b) => a + b.rating,
+                                    0
+                                ) / product.rating.length
+                            }
+                            className="max-w-32"
+                        />
+                        <span>({product.rating.length})</span>
                     </div>
                     <span className="text-primary font-bold text-3xl">
                         Tk {product.price}

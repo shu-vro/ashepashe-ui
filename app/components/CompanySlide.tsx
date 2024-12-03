@@ -2,7 +2,6 @@
 
 import React from "react";
 import { SwiperWrapper } from "./CategorySlide";
-import { Company } from "../companies/page";
 import { SwiperSlide } from "swiper/react";
 import CompanyTile from "../companies/components/CompanyTile";
 import { dynamicFakeImageGenerator, toValidUrl } from "@/lib/utils";

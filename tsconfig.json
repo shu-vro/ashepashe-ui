@@ -28,7 +28,8 @@
         "**/*.tsx",
         ".next/types/**/*.ts",
         "next.config.ts",
-        "app/companies/index.tsc"
+        "app/companies/index.tsc",
+        "types/global.d.ts"
     ],
     "exclude": ["node_modules"]
 }

@@ -1,6 +1,5 @@
 "use client";
 
-import { Company } from "@/app/companies/page";
 import { dynamicFakeImageGenerator, removeTags, toValidUrl } from "@/lib/utils";
 import { Button, Card, CardBody, CardHeader, Image } from "@nextui-org/react";
 import React from "react";

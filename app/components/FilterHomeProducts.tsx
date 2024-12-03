@@ -4,7 +4,6 @@ import { Tab, Tabs } from "@nextui-org/react";
 import React, { Suspense, useState } from "react";
 import CategorySlide from "./CategorySlide";
 import Loader from "./Loader";
-import { Product } from "../products/page";
 import { first_n } from "@/lib/utils";
 
 const keys = ["Recent", "Popular", "Cheap", "Expensive", "Discount"] as const;

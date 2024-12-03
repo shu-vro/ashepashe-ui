@@ -1,6 +1,5 @@
 "use client";
 
-import { Product } from "@/app/products/page";
 import { cn, dynamicFakeImageGenerator, toValidUrl } from "@/lib/utils";
 import { DEBOUNCE_DELAY } from "@/lib/var";
 import { Card, CardBody, Input, ScrollShadow } from "@nextui-org/react";

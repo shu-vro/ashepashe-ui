@@ -1,26 +1,7 @@
 import React from "react";
 import ViewProducts from "./components/ViewProducts";
 import { Metadata } from "next";
-import { Company } from "../companies/page";
 import { API_URL } from "@/lib/var";
-
-export interface Product {
-    product: {
-        id: number;
-        company_id: number;
-        name: string;
-        description: string;
-        price: number;
-        image1: string | null;
-        image2: string | null;
-        image3: string | null;
-        created_at: string;
-        updated_at: string;
-        slug: string;
-        section_id: number;
-        company: Company;
-    };
-}
 
 export const metadata: Metadata = {
     title: "All Products",

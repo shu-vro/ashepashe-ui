@@ -1,20 +1,10 @@
 import React from "react";
-import { Company } from "../page";
-import { Product } from "@/app/products/page";
 import { cn, removeTags } from "@/lib/utils";
 import CompanyBanner from "./CompanyBanner";
 import CompanyCard from "./CompanyCard";
 import { Metadata, ResolvingMetadata } from "next";
 import CategorySlide from "@/app/components/CategorySlide";
 import { API_URL } from "@/lib/var";
-
-export interface Category {
-    id: number;
-    name: string;
-    company_id: number;
-    created_at: string;
-    updated_at: string;
-}
 
 export default async function Page(props: Props) {
     const params = await props.params;

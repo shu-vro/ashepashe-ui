@@ -13,13 +13,6 @@ import Link from "next/link";
 import Logo from "./Sidebar/Logo";
 import { API_URL } from "@/lib/var";
 
-export interface Category {
-    id: number | string;
-    name: string;
-    created_at: string;
-    updated_at: string;
-}
-
 export async function AppSidebar() {
     const sidebarItems = await getSidebarItems();
     return (

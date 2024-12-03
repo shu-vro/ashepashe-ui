@@ -14,7 +14,6 @@ import Link from "next/link";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import "@smastrom/react-rating/style.css";
 import AppIcon from "@/assets/she.png";
-import { Product } from "../../products/page";
 import { PiSidebarSimpleLight } from "react-icons/pi";
 import { API_URL } from "@/lib/var";
 import ResponsiveButtons from "./ResponsiveSearch";

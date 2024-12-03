@@ -155,7 +155,9 @@ export default function ResponsiveButtons({
                             <p className="font-semibold">Signed in as</p>
                             <p className="font-semibold">zoey@example.com</p>
                         </DropdownItem>
-                        <DropdownItem key="my_store">My Store</DropdownItem>
+                        <DropdownItem key="my_store" href={"/my-store/create"}>
+                            Create Store
+                        </DropdownItem>
                         <DropdownItem key="bookmarks">Bookmarks</DropdownItem>
                         <DropdownItem key="install" onClick={handleInstall}>
                             {deferredPrompt

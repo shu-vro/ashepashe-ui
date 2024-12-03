@@ -19,7 +19,8 @@ import { Rating } from "@smastrom/react-rating";
 import NextImage from "next/image";
 import { MdZoomOutMap } from "react-icons/md";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Mousewheel, Navigation, Zoom } from "swiper/modules";
+import { Navigation, Zoom } from "swiper/modules";
+import confetti from "canvas-confetti";
 
 type Prop = {
     product: Product["product"];
@@ -27,6 +28,51 @@ type Prop = {
 
 export default function ProductSide({ product }: Prop) {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
+    const handleCartClick = (
+        e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+    ) => {
+        var count = 200;
+        var defaults = {
+            origin: { y: 0.7, x: 0.9 },
+        };
+
+        // get position of e.target in viewport and set origin to defaults
+        var rect = e.currentTarget.getBoundingClientRect();
+        defaults.origin.x = (rect.left + rect.width / 2) / window.innerWidth;
+        defaults.origin.y = (rect.top + rect.height / 2) / window.innerHeight;
+
+        function fire(particleRatio: number, opts: confetti.Options) {
+            confetti({
+                ...defaults,
+                ...opts,
+                particleCount: Math.floor(count * particleRatio),
+            });
+        }
+
+        fire(0.25, {
+            spread: 26,
+            startVelocity: 55,
+        });
+        fire(0.2, {
+            spread: 60,
+        });
+        fire(0.35, {
+            spread: 100,
+            decay: 0.91,
+            scalar: 0.8,
+        });
+        fire(0.1, {
+            spread: 120,
+            startVelocity: 25,
+            decay: 0.92,
+            scalar: 1.2,
+        });
+        fire(0.1, {
+            spread: 120,
+            startVelocity: 45,
+        });
+    };
     return (
         <div className="product grid-in-product">
             <Card
@@ -56,9 +102,9 @@ export default function ProductSide({ product }: Prop) {
                     <Modal
                         isOpen={isOpen}
                         onOpenChange={onOpenChange}
+                        size="4xl"
                         scrollBehavior="outside"
-                        placement="bottom-center"
-                        size="4xl">
+                        placement="bottom-center">
                         <ModalContent>
                             {(onClose) => (
                                 <>
@@ -69,15 +115,10 @@ export default function ProductSide({ product }: Prop) {
                                         <Swiper
                                             slidesPerView={"auto"}
                                             spaceBetween={0}
-                                            mousewheel
                                             grabCursor
                                             navigation
                                             zoom
-                                            modules={[
-                                                Navigation,
-                                                Mousewheel,
-                                                Zoom,
-                                            ]}
+                                            modules={[Navigation, Zoom]}
                                             className="mySwiper !mx-0">
                                             <SwiperSlide>
                                                 <div className="swiper-zoom-container">
@@ -128,8 +169,7 @@ export default function ProductSide({ product }: Prop) {
                         </Button>
                         <Button
                             color="success"
-                            as={Link}
-                            href={`/companies/${product.company.slug}`}
+                            onClick={handleCartClick}
                             className="w-full">
                             Add to Cart
                         </Button>

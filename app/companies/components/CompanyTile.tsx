@@ -32,7 +32,7 @@ export default function CompanyTile({
     where: string;
     description: string;
     slug: string;
-} & CardProps) {
+} & React.ComponentProps<typeof Card>) {
     return (
         <Card
             shadow="sm"

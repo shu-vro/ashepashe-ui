@@ -15,7 +15,7 @@ export default function SearchDesktop({
     ...rest
 }: {
     products: Product["product"][];
-} & React.HTMLAttributes<HTMLDivElement>) {
+} & React.ComponentProps<"div">) {
     const router = useRouter();
     const [searchOpen, setSearchOpen] = useState(false);
     const [value, setValue] = useState("");

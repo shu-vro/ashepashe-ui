@@ -6,7 +6,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 
-import { Navigation, Mousewheel } from "swiper/modules";
+import { Navigation } from "swiper/modules";
 import { ProductCard } from "./ProductCard";
 import { cn, toValidUrl } from "@/lib/utils";
 
@@ -17,7 +17,7 @@ export default function CategorySlide({
 }: {
     selected: Product["product"][];
     disableCompany?: boolean;
-} & React.HTMLAttributes<HTMLDivElement>) {
+} & React.ComponentProps<"div">) {
     return (
         <SwiperWrapper {...rest}>
             {selected.map((select, index) => (
@@ -55,16 +55,16 @@ export default function CategorySlide({
 export function SwiperWrapper({
     children,
     ...rest
-}: { children: React.ReactNode } & React.HTMLAttributes<HTMLDivElement>) {
+}: { children: React.ReactNode } & React.ComponentProps<"div">) {
     return (
         <div className={cn(rest?.className ? rest.className : "")}>
             <Swiper
                 slidesPerView={"auto"}
                 spaceBetween={0}
-                mousewheel={true}
+                // mousewheel={true}
                 grabCursor={true}
                 navigation={true}
-                modules={[Navigation, Mousewheel]}
+                modules={[Navigation]}
                 className="mySwiper !mx-0">
                 {children}
             </Swiper>

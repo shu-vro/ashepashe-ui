@@ -63,7 +63,13 @@ export default function CompanyCard({ company }: { company: Company }) {
     );
 }
 
-function FieldWithIcon({ Icon, value }: { Icon: any; value: React.ReactNode }) {
+export function FieldWithIcon({
+    Icon,
+    value,
+}: {
+    Icon: any;
+    value: React.ReactNode;
+}) {
     return (
         <div className="flex flex-row items-center gap-1">
             <Icon className="text-2xl flex-shrink-0" />

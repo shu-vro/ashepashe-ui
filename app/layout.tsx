@@ -1,16 +1,17 @@
 import type { Metadata, Viewport } from "next";
 import { Montserrat } from "next/font/google";
-import "@smastrom/react-rating/style.css";
-import "./globals.css";
 import ThemeProvider from "@/contexts/theme-provider";
 import Header from "./components/Header";
 import Gradient from "./components/Gradient";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "./components/AppSidebar";
 import ConfigComponent from "./components/ConfigComponent";
+import "@smastrom/react-rating/style.css";
+import "./globals.css";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/zoom";
+import Sonner from "./components/Sonner";
 
 const font = Montserrat({
     subsets: ["latin"],
@@ -81,6 +82,7 @@ export default function RootLayout({
                             <Header />
                             <Gradient />
                             {children}
+                            <Sonner />
                             <ConfigComponent />
                         </main>
                     </SidebarProvider>

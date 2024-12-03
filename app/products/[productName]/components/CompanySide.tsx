@@ -1,7 +1,14 @@
 "use client";
 
 import { dynamicFakeImageGenerator, removeTags, toValidUrl } from "@/lib/utils";
-import { Button, Card, CardBody, CardHeader, Image } from "@nextui-org/react";
+import {
+    Button,
+    Card,
+    CardBody,
+    CardFooter,
+    CardHeader,
+    Image,
+} from "@nextui-org/react";
 import React from "react";
 import { IoLocationOutline } from "react-icons/io5";
 import { MdOutlineCall } from "react-icons/md";
@@ -19,19 +26,19 @@ export default function CompanySide({ company }: Prop) {
         <div className="company grid-in-company relative max-md:hidden">
             {/* flex-col sm:flex-row md:flex-row lap:flex-col */}
             <Card
-                className="sticky top-24 h-min overflow-auto p-3 m-4 flex-col max-sm:flex-col max-lg:flex-col max-lap:flex-row"
+                className="sticky top-24 h-min p-3 m-4 flex-col max-sm:flex-col max-lg:flex-col max-lap:flex-row"
                 shadow="sm">
-                <CardHeader className="w-full max-lap:max-w-[250px] max-sm:max-w-full mx-auto">
+                <CardBody className="w-full max-lap:max-w-[250px] max-sm:max-w-full mx-auto">
                     <Image
                         src={toValidUrl(company.image)}
                         fallbackSrc={dynamicFakeImageGenerator()}
                         as={NextImage}
                         width={500}
                         height={280}
-                        className="!h-auto"
+                        className="!h-auto !w-auto"
                         alt={company.name}
                     />
-                </CardHeader>
+                </CardBody>
                 <CardBody className="overflow-visible">
                     <h2 className="text-2xl font-bold">{company.name}</h2>
                     <p className="italic text-neutral-500">

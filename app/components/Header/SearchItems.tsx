@@ -25,9 +25,9 @@ export default function SearchItems({
     onSearchOpen: (b: boolean) => void;
 }) {
     return (
-        <Card className="mt-2 w-full" as={Link} href={`/products/${slug}`}>
+        <Card className="mt-2 p-2 w-full" as={Link} href={`/products/${slug}`}>
             <CardBody
-                className="flex-row justify-start gap-4 hover:bg-content3 transition-all"
+                className="flex-row justify-start gap-4 hover:bg-content3 transition-all p-0"
                 onClick={() => {
                     onSearchOpen(false);
                 }}>
@@ -36,10 +36,10 @@ export default function SearchItems({
                     fallbackSrc={dynamicFakeImageGenerator()}
                     alt={label}
                     as={NextImage}
-                    width={56}
-                    height={56}
+                    width={48}
+                    height={48}
                 />
-                <div className="grid grid-cols-[repeat(2,1fr)] w-full content-center">
+                <div className="grid grid-cols-[repeat(2,1fr)] w-full content-center items-center">
                     <div>
                         <div className="font-bold">{label}</div>{" "}
                         <div>{company_name}</div>

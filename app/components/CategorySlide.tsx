@@ -18,6 +18,7 @@ export default function CategorySlide({
     selected: Product["product"][];
     disableCompany?: boolean;
 } & React.ComponentProps<"div">) {
+    console.log(selected);
     return (
         <SwiperWrapper {...rest}>
             {selected.map((select, index) => (

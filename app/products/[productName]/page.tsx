@@ -21,8 +21,7 @@ export default async function ProductPage({ params }: Props) {
     const company_full = await getCompanyProducts(company.slug);
     const companyProducts =
         company_full.products as unknown as Product["product"][];
-
-    const reviews = await getReviews(product.id);
+    const reviews = product?.rating;
     return (
         <div className="relative grid grid-areas-productLayoutNoLap grid-cols-productLayoutNoLap lap:grid-areas-productLayoutLap lap:grid-cols-productLayoutLap">
             <CompanySide company={company} />
@@ -41,13 +40,6 @@ export default async function ProductPage({ params }: Props) {
             <ReviewSide reviews={reviews} />
         </div>
     );
-}
-
-async function getReviews(productId: number) {
-    const request = await fetch(`${API_URL}/reviews/${productId}`);
-    const reviews = (await request.json()) as Review[];
-
-    return reviews;
 }
 
 async function getCompanyProducts(name: string) {

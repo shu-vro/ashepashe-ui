@@ -61,23 +61,21 @@ export function ProductCard({
             isPressable
             as={"div"}
             {...rest}
-            className={cn("w-52 md:w-72 p-0", rest?.className || "")}>
+            className={cn("w-52 md:w-60 p-0", rest?.className || "")}>
             <CardBody
                 className="overflow-visible relative"
                 as={Link}
                 href={link}>
                 <Image
-                    shadow="sm"
+                    shadow="none"
                     radius="lg"
                     isZoomed
                     alt={name}
                     className="w-full aspect-[4/3] object-cover !h-auto"
                     src={toValidUrl(imageUrl)}
                     isBlurred
-                    // fill={true}
                     width={400}
                     height={300}
-                    // quality={70}
                     as={NextImage}
                     fallbackSrc={dynamicFakeImageGenerator()}
                 />

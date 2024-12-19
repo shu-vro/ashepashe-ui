@@ -89,33 +89,20 @@ export default function ResponsiveButtons({
 
     return (
         <>
-            <NavbarItem className="sm:hidden">
-                <Drawer>
-                    <DrawerTrigger asChild>
-                        <Button
-                            as={Link}
-                            color="primary"
-                            href="#"
-                            variant="flat"
-                            isIconOnly
-                            className="text-xl mob:text-2xl">
-                            <IoSearchOutline />
-                        </Button>
-                    </DrawerTrigger>
-                    <DrawerContent className="h-[90vh]">
-                        <DrawerHeader>
-                            <DrawerTitle>Search</DrawerTitle>
-                            <SearchMobile products={products} />
-                        </DrawerHeader>
-                        <DrawerFooter>
-                            <DrawerClose asChild>
-                                <Button variant="faded">Cancel</Button>
-                            </DrawerClose>
-                        </DrawerFooter>
-                    </DrawerContent>
-                </Drawer>
+            {/* <NavbarItem className="sm:hidden">
+                <SearchMobile products={products}>
+                    <Button
+                        as={Link}
+                        color="primary"
+                        href="#"
+                        variant="flat"
+                        isIconOnly
+                        className="text-xl mob:text-2xl">
+                        <IoSearchOutline />
+                    </Button>
+                </SearchMobile>
             </NavbarItem>
-            <CustomDivider className="md:hidden" />
+            <CustomDivider className="md:hidden" /> */}
             <NavbarItem>
                 <Button
                     as={Link}

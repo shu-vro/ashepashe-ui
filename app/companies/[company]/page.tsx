@@ -5,6 +5,7 @@ import CompanyCard from "./CompanyCard";
 import { Metadata, ResolvingMetadata } from "next";
 import CategorySlide from "@/app/components/CategorySlide";
 import { API_URL } from "@/lib/var";
+import { groupBy } from "lodash";
 
 export default async function Page(props: Props) {
     const params = await props.params;
@@ -18,10 +19,10 @@ export default async function Page(props: Props) {
         company,
     }));
 
-    const group = Object.groupBy(companyProducts, (item) => item.section_id);
+    const group = groupBy(companyProducts, (item) => item.section_id);
     return (
         <div className="grid grid-areas-companyLayoutNoLap grid-cols-productLayoutNoLap lap:grid-cols-productLayoutLap lap:grid-areas-companyLayoutLap gap-4">
-            <CompanyBanner src={company.image} />
+            <CompanyBanner src={company.image} alt={company?.name} />
             <CompanyCard company={company} />
             <div className="grid-in-name text-center">
                 <h2 className="text-5xl font-bold my-3">{company.name}</h2>

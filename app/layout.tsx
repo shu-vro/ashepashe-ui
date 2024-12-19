@@ -69,25 +69,27 @@ export default function RootLayout({
     children: React.ReactNode;
 }) {
     return (
-        <html lang="en" className="scroll-smooth max-sm:text-[12px]">
-            <body className={`${font.className} antialiased`}>
-                <ThemeProvider
-                    attribute="class"
-                    defaultTheme="system"
-                    enableSystem
-                    disableTransitionOnChange>
-                    <SidebarProvider>
-                        <AppSidebar />
-                        <main className="w-full lap:max-w-screen-lap mx-auto">
-                            <Header />
-                            <Gradient />
-                            {children}
-                            <Sonner />
-                            <ConfigComponent />
-                        </main>
-                    </SidebarProvider>
-                </ThemeProvider>
-            </body>
-        </html>
+        <>
+            <html lang="en" className="scroll-smooth max-sm:text-[12px]">
+                <body className={`${font.className} antialiased`}>
+                    <ThemeProvider
+                        attribute="class"
+                        defaultTheme="system"
+                        enableSystem
+                        disableTransitionOnChange>
+                        <SidebarProvider>
+                            <AppSidebar />
+                            <main className="w-full lap:max-w-screen-lap mx-auto">
+                                <Header />
+                                <Gradient />
+                                {children}
+                                <Sonner />
+                                <ConfigComponent />
+                            </main>
+                        </SidebarProvider>
+                    </ThemeProvider>
+                </body>
+            </html>
+        </>
     );
 }

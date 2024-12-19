@@ -3,12 +3,19 @@
 @tailwind utilities;
 
 body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
     font-family: Arial, Helvetica, sans-serif;
     min-height: 100vh;
     position: relative;
     font-weight: 500;
-    width: 100vw;
-    overflow-x: hidden;
+    /* width: 100vw; */
+    /* overflow-x: hidden; */
+}
+
+* {
+    /* border: 1px solid red; */
 }
 
 @layer base {

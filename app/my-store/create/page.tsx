@@ -18,7 +18,7 @@ import {
     Textarea,
     useDisclosure,
 } from "@nextui-org/react";
-import React, { useEffect, useMemo, useState, Key } from "react";
+import React, { useEffect, useMemo, useState, Key, useRef } from "react";
 import { IoLocationOutline } from "react-icons/io5";
 import { MdOutlineCall } from "react-icons/md";
 import { PiFacebookLogoBold } from "react-icons/pi";
@@ -30,13 +30,16 @@ import { toast } from "sonner";
 import { GrSave } from "react-icons/gr";
 import { API_URL } from "@/lib/var";
 import Link from "next/link";
-import { cn, removeTags, toValidUrl } from "@/lib/utils";
+import { cn, dataURLtoFile, removeTags, toValidUrl } from "@/lib/utils";
 import NextImage from "next/image";
 import { CiTrash } from "react-icons/ci";
 import { LuPencilLine } from "react-icons/lu";
 import { MdOutlineLocalOffer } from "react-icons/md";
+import { SwiperSlide } from "swiper/react";
+import { SwiperWrapper } from "@/app/components/CategorySlide";
 
 export default function Page() {
+    const imageRef = useRef<HTMLLabelElement>(null);
     const [companyName, setCompanyName] = useState("Company Name");
     const [phoneNumber, setPhoneNumber] = useState("01xxxxxxxxx");
     const [fbPage, setFbPage] = useState("Fb Page Link");
@@ -78,10 +81,44 @@ export default function Page() {
         })();
     }, []);
 
+    const onImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const DIM = 1200;
+
+        const canvas = document.createElement("canvas");
+        const c = canvas.getContext("2d")!;
+        canvas.width = DIM;
+        canvas.height = DIM;
+        let file = e.target.files![0];
+        if (!file) return console.log("no file");
+        let fr = new FileReader();
+        fr.onload = (e) => {
+            let du = e.target!.result as string;
+            let im = document.createElement("img");
+            im.src = du;
+            im.onload = () => {
+                imageRef.current!.style.backgroundImage = `url(${du})`;
+                c.clearRect(0, 0, DIM, DIM);
+                let big = Math.max(im.width, im.height);
+                let propotion = DIM < big ? DIM / big : 1;
+                let w = im.width * propotion,
+                    h = im.height * propotion;
+                canvas.width = w;
+                canvas.height = h;
+                c.drawImage(im, 0, 0, w, h);
+                let dataURL = canvas.toDataURL("image/webp");
+                const newFile = dataURLtoFile(dataURL, file.type);
+                setImageFile(newFile);
+                canvas.remove();
+            };
+        };
+        fr.readAsDataURL(file);
+    };
+
     return (
-        <div className="grid grid-areas-companyLayoutNoLap grid-cols-productLayoutNoLap lap:grid-cols-productLayoutLap lap:grid-areas-companyLayoutLap gap-4">
+        <div className="grid grid-areas-companyLayoutNoLap grid-cols-productLayoutNoLap lap:grid-cols-productLayoutLap lap:grid-areas-companyLayoutLap gap-4 p-4">
             <label
-                className="grid-in-image bg-content3 rounded-3xl h-96 relative grid place-content-center"
+                className="grid-in-image bg-content3 rounded-3xl h-96 relative grid place-content-center mx-auto w-full overflow-hidden bg-center bg-no-repeat bg-cover"
+                ref={imageRef}
                 htmlFor="file_input">
                 <div className="text-[max(5vw,10vh)] text-white/35 text-center w-full">
                     16 X 7
@@ -89,13 +126,10 @@ export default function Page() {
                 <input
                     type="file"
                     id="file_input"
-                    onChange={(e) => {
-                        if (e.target.files) {
-                            setImageFile(e.target.files[0]);
-                        }
-                    }}
+                    accept="image/*"
+                    onChange={onImageUpload}
                 />
-            </label>
+            </label>{" "}
             <div className="grid-in-name text-center">
                 <h1 className="text-5xl font-bold my-3">
                     <WritableField
@@ -126,7 +160,6 @@ export default function Page() {
                     </WritableField>
                 </div>
             </div>
-
             <Card
                 className="static lap:sticky top-24 grid-in-company h-min mt-6 ml-6 max-lap:mr-6 p-4 mb-10"
                 shadow="sm">
@@ -305,14 +338,13 @@ export default function Page() {
                     </div>
                 </CardBody>
             </Card>
-
-            <div className="grid-in-product">
+            <div className="grid-in-product mb-20">
                 <div className="flex flex-wrap justify-between items-center">
                     <div className="text-3xl font-bold text-default-600 ml-4">
                         Categories
                     </div>
                 </div>
-                <div className="w-full max-lap:w-screen max-[760px]:w-[100vw]">
+                <div className="w-full">
                     <div className="more-product grid-in-more mt-6">
                         <h2 className="text-2xl font-bold text-default-400 ml-4 flex flex-wrap justify-between items-center">
                             <span>
@@ -341,6 +373,12 @@ export default function Page() {
                 startContent={<GrSave />}>
                 Save
             </Button>
+            <SwiperWrapper>
+                <SwiperSlide className="w-fit p-4">
+                    Welcome, User. <br />
+                    Let's create your store.
+                </SwiperSlide>
+            </SwiperWrapper>
         </div>
     );
 }

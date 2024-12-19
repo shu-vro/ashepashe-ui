@@ -6,6 +6,7 @@ import {
     Card,
     CardBody,
     CardHeader,
+    Chip,
     Image,
     Modal,
     ModalBody,
@@ -73,6 +74,10 @@ export default function ProductSide({ product }: Prop) {
             startVelocity: 45,
         });
     };
+
+    const offer = product.offers?.find(
+        (offer) => new Date(offer.validity).getTime() > Date.now()
+    );
     return (
         <div className="product grid-in-product">
             <Card
@@ -139,7 +144,14 @@ export default function ProductSide({ product }: Prop) {
                     </Modal>
                 </CardHeader>
                 <CardBody className="overflow-visible">
-                    <h2 className="text-2xl font-bold">{product.name}</h2>
+                    <h2 className="text-2xl font-bold">
+                        {product.name}{" "}
+                        {offer && (
+                            <Chip color="warning">
+                                {offer.offer_percent}% Discount
+                            </Chip>
+                        )}
+                    </h2>
                     <p className="italic text-neutral-500">
                         {removeTags(product.description)}
                     </p>
@@ -156,9 +168,24 @@ export default function ProductSide({ product }: Prop) {
                         />
                         <span>({product.rating.length})</span>
                     </div>
-                    <span className="text-primary font-bold text-3xl">
-                        Tk {product.price}
-                    </span>
+                    <div>
+                        {offer ? (
+                            <>
+                                <del className="text-neutral-400">
+                                    {product.price}
+                                </del>
+                                <span className="text-primary font-bold text-3xl ml-3">
+                                    Tk{" "}
+                                    {((100 - offer.offer_percent) / 100) *
+                                        product.price}
+                                </span>
+                            </>
+                        ) : (
+                            <span className="text-primary font-bold text-3xl">
+                                Tk {product.price}
+                            </span>
+                        )}
+                    </div>
                     <div className="flex justify-around items-stretch pt-2 gap-8 max-lap:mt-auto">
                         <Button
                             color="warning"

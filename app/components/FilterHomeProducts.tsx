@@ -23,6 +23,18 @@ const resolver: Record<
         return recent;
     },
     Popular: (products) => {
+        products.sort((a, b) => {
+            let ratingA =
+                a.rating.reduce((c, d) => c + d?.rating, 0) / a.rating.length ||
+                0;
+            let ratingB =
+                b.rating.reduce((c, d) => c + d?.rating, 0) / b.rating.length ||
+                0;
+            if (ratingB === ratingA) {
+                return b.rating.length - a.rating.length;
+            }
+            return ratingB - ratingA;
+        });
         return products;
     },
     Cheap: (products) => {
@@ -38,7 +50,11 @@ const resolver: Record<
         return expensive;
     },
     Discount: (products) => {
-        return products;
+        return products.filter((select) =>
+            select.offers.find(
+                (offer) => new Date(offer.validity).getTime() > Date.now()
+            )
+        );
     },
 };
 

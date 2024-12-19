@@ -11,6 +11,7 @@ type Prop = {
 };
 
 export default function CompanyBanner({ src, alt }: Prop) {
+    console.log(toValidUrl(src));
     return (
         <div className="grid-in-image">
             <Image

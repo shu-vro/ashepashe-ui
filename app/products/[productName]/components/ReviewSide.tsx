@@ -80,6 +80,8 @@ export default function ReviewSide({ reviews }: Props) {
     }, [reviews, selectedReviews]);
 
     const loggedIn = true;
+
+    console.log(reviews);
     return (
         <div className="grid-in-review my-12 mx-4 flex flex-col gap-6">
             <div className="top flex flex-row justify-between items-center gap-4">

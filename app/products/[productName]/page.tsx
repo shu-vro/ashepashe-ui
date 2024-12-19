@@ -49,7 +49,6 @@ async function getCompanyProducts(name: string) {
         ...product,
         company,
     }));
-    <div>ReviewSide</div>;
     return company;
 }
 

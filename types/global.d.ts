@@ -57,6 +57,16 @@ interface Category {
     updated_at: string;
 }
 
+interface Offer {
+    id: number;
+    product_id: number;
+    offer_percent: number;
+    offer_buy: number | null;
+    validity: string;
+    created_at: string;
+    updated_at: string;
+}
+
 interface Product {
     product: {
         id: number;
@@ -73,5 +83,6 @@ interface Product {
         section_id: number;
         company: Company;
         rating: Review[];
+        offers: Offer[];
     };
 }

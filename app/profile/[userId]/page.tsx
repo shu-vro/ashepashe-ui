@@ -28,7 +28,10 @@ export default function Page() {
                             <Button
                                 color="danger"
                                 onClick={() => {
-                                    signOut({ callbackUrl: "/" });
+                                    signOut({
+                                        callbackUrl: "/",
+                                        redirect: false,
+                                    });
                                 }}>
                                 Sign Out
                             </Button>

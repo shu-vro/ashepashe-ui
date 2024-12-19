@@ -16,27 +16,6 @@ export default function LoginButton({}: Props) {
             variant="flat"
             size={"md"}
             onClick={async () => {
-                // try {
-                //     const data = await fetch(
-                //         `https://asepashe.com/api/user/update`,
-                //         {
-                //             method: "POST",
-                //             headers: {
-                //                 "Content-Type": "application/json",
-                //             },
-                //             body: JSON.stringify({
-                //                 name: "user name",
-                //                 email: "john.doe@example.com",
-                //                 google_id: "abc",
-                //                 image: "whatever",
-                //             }),
-                //         }
-                //     );
-                //     const response = await data.json();
-                //     console.log(response, data);
-                // } catch (error) {
-                //     console.log(error);
-                // }
                 await signIn("google", {
                     redirectTo: location.href,
                     redirect: false,

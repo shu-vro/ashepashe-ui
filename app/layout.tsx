@@ -12,6 +12,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/zoom";
 import Sonner from "./components/Sonner";
+import { SessionProvider } from "next-auth/react";
 
 const font = Montserrat({
     subsets: ["latin"],
@@ -69,7 +70,7 @@ export default function RootLayout({
     children: React.ReactNode;
 }) {
     return (
-        <>
+        <SessionProvider>
             <html lang="en" className="scroll-smooth max-sm:text-[12px]">
                 <body className={`${font.className} antialiased`}>
                     <ThemeProvider
@@ -90,6 +91,6 @@ export default function RootLayout({
                     </ThemeProvider>
                 </body>
             </html>
-        </>
+        </SessionProvider>
     );
 }

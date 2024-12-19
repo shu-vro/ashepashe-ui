@@ -79,8 +79,6 @@ export default function ReviewSide({ reviews }: Props) {
         return { rating, groupRating };
     }, [reviews, selectedReviews]);
 
-    const loggedIn = true;
-
     console.log(reviews);
     return (
         <div className="grid-in-review my-12 mx-4 flex flex-col gap-6">

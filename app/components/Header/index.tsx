@@ -95,7 +95,7 @@ export default function Header() {
                 </NavbarContent>
 
                 <NavbarContent justify="end">
-                    <ResponsiveButtons products={products} />
+                    <ResponsiveButtons />
                 </NavbarContent>
             </Navbar>
             <Navbar

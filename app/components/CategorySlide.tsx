@@ -28,6 +28,7 @@ export default function CategorySlide({
                     <SwiperSlide key={select.id} className="w-fit p-4">
                         <ProductCard
                             name={select.name}
+                            description={select?.description}
                             // imageUrl={`https://nextui.org/images/fruit-${
                             //     (index % 8) + 1
                             // }.jpeg`}

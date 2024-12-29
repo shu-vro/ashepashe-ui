@@ -30,13 +30,19 @@ import { toast } from "sonner";
 import { GrSave } from "react-icons/gr";
 import { API_URL } from "@/lib/var";
 import Link from "next/link";
-import { cn, dataURLtoFile, removeTags, toValidUrl } from "@/lib/utils";
+import {
+    cn,
+    dataURLtoFile,
+    onImageUpload,
+    removeTags,
+    toValidUrl,
+} from "@/lib/utils";
 import NextImage from "next/image";
 import { CiTrash } from "react-icons/ci";
 import { LuPencilLine } from "react-icons/lu";
 import { MdOutlineLocalOffer } from "react-icons/md";
-import { SwiperSlide } from "swiper/react";
-import { SwiperWrapper } from "@/app/components/CategorySlide";
+import DeleteProductBtn from "./components/DeleteProductBtn";
+import EditProductBtn from "./components/EditProductBtn";
 
 export default function Page() {
     const imageRef = useRef<HTMLLabelElement>(null);
@@ -81,43 +87,49 @@ export default function Page() {
         })();
     }, []);
 
-    const onImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const DIM = 1200;
+    // const onImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    //     const DIM = 1200;
 
-        const canvas = document.createElement("canvas");
-        const c = canvas.getContext("2d")!;
-        canvas.width = DIM;
-        canvas.height = DIM;
-        let file = e.target.files![0];
-        if (!file) return console.log("no file");
-        let fr = new FileReader();
-        fr.onload = (e) => {
-            let du = e.target!.result as string;
-            let im = document.createElement("img");
-            im.src = du;
-            im.onload = () => {
-                imageRef.current!.style.backgroundImage = `url(${du})`;
-                c.clearRect(0, 0, DIM, DIM);
-                let big = Math.max(im.width, im.height);
-                let propotion = DIM < big ? DIM / big : 1;
-                let w = im.width * propotion,
-                    h = im.height * propotion;
-                canvas.width = w;
-                canvas.height = h;
-                c.drawImage(im, 0, 0, w, h);
-                let dataURL = canvas.toDataURL("image/webp");
-                const newFile = dataURLtoFile(dataURL, file.type);
-                setImageFile(newFile);
-                canvas.remove();
-            };
-        };
-        fr.readAsDataURL(file);
+    //     const canvas = document.createElement("canvas");
+    //     const c = canvas.getContext("2d")!;
+    //     canvas.width = DIM;
+    //     canvas.height = DIM;
+    //     let file = e.target.files![0];
+    //     if (!file) return console.log("no file");
+    //     let fr = new FileReader();
+    //     fr.onload = (e) => {
+    //         let du = e.target!.result as string;
+    //         let im = document.createElement("img");
+    //         im.src = du;
+    //         im.onload = () => {
+    //             imageRef.current!.style.backgroundImage = `url(${du})`;
+    //             c.clearRect(0, 0, DIM, DIM);
+    //             let big = Math.max(im.width, im.height);
+    //             let propotion = DIM < big ? DIM / big : 1;
+    //             let w = im.width * propotion,
+    //                 h = im.height * propotion;
+    //             canvas.width = w;
+    //             canvas.height = h;
+    //             c.drawImage(im, 0, 0, w, h);
+    //             let dataURL = canvas.toDataURL("image/webp");
+    //             const newFile = dataURLtoFile(dataURL, file.type);
+    //             setImageFile(newFile);
+    //             canvas.remove();
+    //         };
+    //     };
+    //     fr.readAsDataURL(file);
+    // };
+
+    const handleImageUpload = async (
+        e: React.ChangeEvent<HTMLInputElement>
+    ) => {
+        onImageUpload(e, setImageFile, imageRef.current!);
     };
 
     return (
         <div className="grid grid-areas-companyLayoutNoLap grid-cols-productLayoutNoLap lap:grid-cols-productLayoutLap lap:grid-areas-companyLayoutLap gap-4 p-4">
             <label
-                className="grid-in-image bg-content3 rounded-3xl h-96 relative grid place-content-center mx-auto w-full overflow-hidden bg-center bg-no-repeat bg-cover"
+                className="grid-in-image bg-content3 rounded-3xl h-96 relative grid place-content-center mx-auto w-full overflow-hidden bg-center bg-no-repeat bg-contain"
                 ref={imageRef}
                 htmlFor="file_input">
                 <div className="text-[max(5vw,10vh)] text-white/35 text-center w-full">
@@ -127,11 +139,11 @@ export default function Page() {
                     type="file"
                     id="file_input"
                     accept="image/*"
-                    onChange={onImageUpload}
+                    onChange={handleImageUpload}
                 />
             </label>{" "}
-            <div className="grid-in-name text-center">
-                <h1 className="text-5xl font-bold my-3">
+            <div className="grid-in-name">
+                <h1 className="text-5xl font-bold my-3 mx-auto w-fit">
                     <WritableField
                         component={Input}
                         props={{
@@ -207,7 +219,7 @@ export default function Page() {
                             setSelectedCategory(key as Key | undefined)
                         }
                         defaultItems={categories}>
-                        {(item) => (
+                        {(item: Category) => (
                             <AutocompleteItem key={item.id}>
                                 {item.name}
                             </AutocompleteItem>
@@ -246,7 +258,7 @@ export default function Page() {
                                 }}>
                                 {district}
                             </WritableSelect>
-                            ,
+                            ,{" "}
                             <WritableSelect
                                 key="district"
                                 options={Object.keys(
@@ -365,6 +377,22 @@ export default function Page() {
                         </h2>
                     </div>
                 </div>
+                <div className="flex flex-wrap justify-start items-center w-full gap-2">
+                    {Array.from({ length: 10 }).map((_, i) => (
+                        <EditProduct
+                            key={i}
+                            product={
+                                {
+                                    name: "Product Name",
+                                    price: 1000,
+                                    image1: "/images/placeholder.png",
+                                    description:
+                                        "Lorem ipsum dolor sit amet consectetur adipisicingelit. Reprehenderit itaque adipisci nemo, ducimusfacere fugit! Minima tempora cupiditate explicaboconsequuntur quis ex odit officia, at quod ipsum utquaerat repellat.",
+                                } as Product["product"]
+                            }
+                        />
+                    ))}
+                </div>
             </div>
             <Button
                 color="success"
@@ -373,12 +401,6 @@ export default function Page() {
                 startContent={<GrSave />}>
                 Save
             </Button>
-            <SwiperWrapper>
-                <SwiperSlide className="w-fit p-4">
-                    Welcome, User. <br />
-                    Let's create your store.
-                </SwiperSlide>
-            </SwiperWrapper>
         </div>
     );
 }
@@ -441,12 +463,8 @@ function EditProduct({ product }: { product: Product["product"] }) {
                 </div>
                 <CustomDivider />
                 <div className="flex flex-row justify-between items-center md:gap-1 w-full">
-                    <Button isIconOnly>
-                        <CiTrash />
-                    </Button>
-                    <Button isIconOnly>
-                        <LuPencilLine />
-                    </Button>
+                    <DeleteProductBtn />
+                    <EditProductBtn />
                     <Button isIconOnly>
                         <MdOutlineLocalOffer />
                     </Button>

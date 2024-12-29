@@ -1,12 +1,25 @@
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import {
     Dropdown,
     DropdownTrigger,
     Avatar,
     DropdownMenu,
     DropdownItem,
+    useDisclosure,
+    Modal,
+    ModalContent,
+    ModalHeader,
+    ModalBody,
+    ModalFooter,
+    Button,
+    Form,
+    Input,
 } from "@nextui-org/react";
 import { useSession, signOut } from "next-auth/react";
+import { createStoreAction } from "./createStoreAction";
+import { UserContext } from "@/contexts/UserContext";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 type Props = {};
 
 /**
@@ -44,6 +57,9 @@ export default function UserDropdown({}: Props) {
         useState<BeforeInstallPromptEvent>();
     const [isInstallable, setIsInstallable] = useState(true);
     const { data: session, status } = useSession();
+    const useUser = use(UserContext);
+    const { isOpen, onOpen, onOpenChange } = useDisclosure();
+    const { push } = useRouter();
 
     const handleInstall = async () => {
         if (!deferredPrompt) return;
@@ -65,48 +81,112 @@ export default function UserDropdown({}: Props) {
         };
     }, []);
     return status === "authenticated" ? (
-        <Dropdown placement="bottom-end">
-            <DropdownTrigger>
-                <Avatar
-                    isBordered
-                    as="button"
-                    className="transition-transform"
-                    src={session.user?.image || ""}
-                />
-            </DropdownTrigger>
-            <DropdownMenu aria-label="Profile Actions" variant="flat">
-                <DropdownItem key="profile" className="h-14 gap-2">
-                    <p className="font-semibold">Signed in as</p>
-                    <p className="font-semibold">{session.user?.name}</p>
-                </DropdownItem>
-                <DropdownItem key="my_store" href={"/my-store/create"}>
-                    Create Store
-                </DropdownItem>
-                <DropdownItem key="profile_link" href={"/profile/me"}>
-                    View Profile
-                </DropdownItem>
-                <DropdownItem key="bookmarks">Bookmarks</DropdownItem>
-                <DropdownItem key="install" onClick={handleInstall}>
-                    {deferredPrompt
-                        ? isInstallable
-                            ? "Install App"
-                            : "Installed"
-                        : "Not Ready"}
-                </DropdownItem>
-                <DropdownItem key="help_and_feedback">
-                    Help & Feedback
-                </DropdownItem>
-                <DropdownItem
-                    key="logout"
-                    color="danger"
-                    onClick={() =>
-                        signOut({
-                            redirect: false,
-                        })
-                    }>
-                    Log Out
-                </DropdownItem>
-            </DropdownMenu>
-        </Dropdown>
+        <>
+            <Dropdown placement="bottom-end">
+                <DropdownTrigger>
+                    <Avatar
+                        isBordered
+                        as="button"
+                        className="transition-transform"
+                        src={session.user?.image || ""}
+                    />
+                </DropdownTrigger>
+                <DropdownMenu aria-label="Profile Actions" variant="flat">
+                    <DropdownItem key="profile" className="h-14 gap-2">
+                        <p className="font-semibold">Signed in as</p>
+                        <p className="font-semibold">{session.user?.name}</p>
+                    </DropdownItem>
+                    <DropdownItem key="my_store" onClick={onOpen}>
+                        Create Store
+                    </DropdownItem>
+                    <DropdownItem key="profile_link" href={"/profile/me"}>
+                        View Profile
+                    </DropdownItem>
+                    <DropdownItem key="bookmarks">Bookmarks</DropdownItem>
+                    <DropdownItem key="install" onClick={handleInstall}>
+                        {deferredPrompt
+                            ? isInstallable
+                                ? "Install App"
+                                : "Installed"
+                            : "Not Ready"}
+                    </DropdownItem>
+                    <DropdownItem key="help_and_feedback">
+                        Help & Feedback
+                    </DropdownItem>
+                    <DropdownItem
+                        key="logout"
+                        color="danger"
+                        onClick={() =>
+                            signOut({
+                                redirect: false,
+                            })
+                        }>
+                        Log Out
+                    </DropdownItem>
+                </DropdownMenu>
+            </Dropdown>
+            <Modal isOpen={isOpen} onOpenChange={onOpenChange} backdrop="blur">
+                <ModalContent>
+                    {(onClose) => (
+                        <>
+                            <ModalHeader className="flex flex-col gap-1">
+                                Create Product
+                            </ModalHeader>
+                            <ModalBody>
+                                <Form
+                                    validationBehavior="native"
+                                    onSubmit={async (e) => {
+                                        console.log(e);
+                                        e.preventDefault();
+                                        const formData = new FormData(
+                                            e.target as HTMLFormElement
+                                        );
+                                        const data = Object.fromEntries(
+                                            formData.entries()
+                                        );
+                                        if (!useUser) return;
+                                        const user = useUser.user;
+                                        const ans = await createStoreAction(
+                                            data as any,
+                                            user!.id
+                                        );
+
+                                        if (ans.status === "200") {
+                                            toast.success(
+                                                "Store Created Successfully.",
+                                                {
+                                                    description:
+                                                        "Redirecting to your store...",
+                                                }
+                                            );
+                                            push("/my-store/update");
+                                        }
+                                    }}>
+                                    <Input
+                                        isRequired
+                                        errorMessage="Please enter a valid Company Name"
+                                        label="Company Name"
+                                        labelPlacement="outside"
+                                        name="name"
+                                        placeholder="Company Name"
+                                        type="text"
+                                    />
+                                    <ModalFooter className="w-full pr-0">
+                                        <Button
+                                            color="danger"
+                                            onClick={onClose}>
+                                            Close
+                                        </Button>
+                                        <Button color="primary" type="submit">
+                                            Create Store
+                                        </Button>
+                                    </ModalFooter>
+                                </Form>
+                            </ModalBody>
+                        </>
+                    )}
+                </ModalContent>
+            </Modal>
+        </>
     ) : null;
 }

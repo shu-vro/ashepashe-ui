@@ -13,6 +13,7 @@ import "swiper/css/navigation";
 import "swiper/css/zoom";
 import Sonner from "./components/Sonner";
 import { SessionProvider } from "next-auth/react";
+import UserProvider from "@/contexts/UserContext";
 
 const font = Montserrat({
     subsets: ["latin"],
@@ -79,14 +80,16 @@ export default function RootLayout({
                         enableSystem
                         disableTransitionOnChange>
                         <SidebarProvider>
-                            <AppSidebar />
-                            <main className="w-full lap:max-w-screen-lap mx-auto">
-                                <Header />
-                                <Gradient />
-                                {children}
-                                <Sonner />
-                                <ConfigComponent />
-                            </main>
+                            <UserProvider>
+                                <AppSidebar />
+                                <main className="w-full lap:max-w-screen-lap mx-auto">
+                                    <Header />
+                                    <Gradient />
+                                    {children}
+                                    <Sonner />
+                                    <ConfigComponent />
+                                </main>
+                            </UserProvider>
                         </SidebarProvider>
                     </ThemeProvider>
                 </body>

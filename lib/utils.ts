@@ -62,3 +62,42 @@ export function toValidUrl(url: string) {
         return BASE_URL + "/" + url;
     }
 }
+
+export const onImageUpload = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    setImageFile: React.Dispatch<React.SetStateAction<File | undefined>>,
+    imageEl?: HTMLElement
+) => {
+    const DIM = 1200;
+
+    const canvas = document.createElement("canvas");
+    const c = canvas.getContext("2d")!;
+    canvas.width = DIM;
+    canvas.height = DIM;
+    let file = e.target.files![0];
+    if (!file) return console.log("no file");
+    let fr = new FileReader();
+    fr.onload = (e) => {
+        let du = e.target!.result as string;
+        let im = document.createElement("img");
+        im.src = du;
+        im.onload = () => {
+            if (imageEl) {
+                imageEl.style.backgroundImage = `url(${du})`;
+            }
+            c.clearRect(0, 0, DIM, DIM);
+            let big = Math.max(im.width, im.height);
+            let propotion = DIM < big ? DIM / big : 1;
+            let w = im.width * propotion,
+                h = im.height * propotion;
+            canvas.width = w;
+            canvas.height = h;
+            c.drawImage(im, 0, 0, w, h);
+            let dataURL = canvas.toDataURL("image/webp");
+            const newFile = dataURLtoFile(dataURL, file.type);
+            setImageFile(newFile);
+            canvas.remove();
+        };
+    };
+    fr.readAsDataURL(file);
+};

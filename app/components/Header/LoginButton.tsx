@@ -7,7 +7,7 @@ import { API_URL } from "@/lib/var";
 type Props = {};
 
 export default function LoginButton({}: Props) {
-    const { data: session, status } = useSession();
+    const { status } = useSession();
     return status !== "authenticated" ? (
         <Button
             as={Link}

@@ -14,7 +14,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             try {
                 const existRes = await fetch(`${API_URL}/user/${user.email}`);
                 const exist = await existRes.json();
-                console.log("exist", exist);
                 if (exist) {
                     return true;
                 }

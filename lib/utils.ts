@@ -65,7 +65,7 @@ export function toValidUrl(url: string) {
 
 export const onImageUpload = (
     e: React.ChangeEvent<HTMLInputElement>,
-    setImageFile: React.Dispatch<React.SetStateAction<File | undefined>>,
+    setImageFile: (file: File | undefined) => void,
     imageEl?: HTMLElement
 ) => {
     const DIM = 1200;

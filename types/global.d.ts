@@ -18,8 +18,9 @@ interface User {
     email: string;
     role: string;
     email_verified_at: string | null;
-    created_at: string;
-    updated_at: string;
+    created_at: Date;
+    updated_at: Date;
+    company: Company[];
 }
 
 interface Category {

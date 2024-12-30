@@ -96,8 +96,16 @@ export default function UserDropdown({}: Props) {
                         <p className="font-semibold">Signed in as</p>
                         <p className="font-semibold">{session.user?.name}</p>
                     </DropdownItem>
-                    <DropdownItem key="my_store" onClick={onOpen}>
-                        Create Store
+                    <DropdownItem
+                        key="my_store"
+                        onClick={() => {
+                            if (!useUser?.userCompany) {
+                                onOpen();
+                            } else {
+                                push("/my-store/update");
+                            }
+                        }}>
+                        {!useUser?.userCompany ? "Create Store" : "My Store"}
                     </DropdownItem>
                     <DropdownItem key="profile_link" href={"/profile/me"}>
                         View Profile
@@ -125,12 +133,12 @@ export default function UserDropdown({}: Props) {
                     </DropdownItem>
                 </DropdownMenu>
             </Dropdown>
-            <Modal isOpen={isOpen} onOpenChange={onOpenChange} backdrop="blur">
+            <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
                 <ModalContent>
                     {(onClose) => (
                         <>
                             <ModalHeader className="flex flex-col gap-1">
-                                Create Product
+                                Create Store
                             </ModalHeader>
                             <ModalBody>
                                 <Form
@@ -160,6 +168,25 @@ export default function UserDropdown({}: Props) {
                                                 }
                                             );
                                             push("/my-store/update");
+                                        } else {
+                                            console.log(ans);
+                                            toast.error(
+                                                "Failed to create store.",
+                                                {
+                                                    description: () => {
+                                                        return (
+                                                            <pre>
+                                                                {JSON.stringify(
+                                                                    ans.errors,
+                                                                    null,
+                                                                    2
+                                                                )}
+                                                            </pre>
+                                                        );
+                                                    },
+                                                    closeButton: true,
+                                                }
+                                            );
                                         }
                                     }}>
                                     <Input

@@ -18,7 +18,7 @@ import {
     Textarea,
     useDisclosure,
 } from "@nextui-org/react";
-import React, { useEffect, useMemo, useState, Key, useRef } from "react";
+import React, { useEffect, useMemo, useState, Key, useRef, use } from "react";
 import { IoLocationOutline } from "react-icons/io5";
 import { MdOutlineCall } from "react-icons/md";
 import { PiFacebookLogoBold } from "react-icons/pi";
@@ -43,8 +43,11 @@ import { LuPencilLine } from "react-icons/lu";
 import { MdOutlineLocalOffer } from "react-icons/md";
 import DeleteProductBtn from "./components/DeleteProductBtn";
 import EditProductBtn from "./components/EditProductBtn";
+import { updateStoreAction } from "./components/updateStoreAction";
+import { UserContext } from "@/contexts/UserContext";
 
 export default function Page() {
+    const useUser = use(UserContext);
     const imageRef = useRef<HTMLLabelElement>(null);
     const [companyName, setCompanyName] = useState("Company Name");
     const [phoneNumber, setPhoneNumber] = useState("01xxxxxxxxx");
@@ -87,38 +90,27 @@ export default function Page() {
         })();
     }, []);
 
-    // const onImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    //     const DIM = 1200;
-
-    //     const canvas = document.createElement("canvas");
-    //     const c = canvas.getContext("2d")!;
-    //     canvas.width = DIM;
-    //     canvas.height = DIM;
-    //     let file = e.target.files![0];
-    //     if (!file) return console.log("no file");
-    //     let fr = new FileReader();
-    //     fr.onload = (e) => {
-    //         let du = e.target!.result as string;
-    //         let im = document.createElement("img");
-    //         im.src = du;
-    //         im.onload = () => {
-    //             imageRef.current!.style.backgroundImage = `url(${du})`;
-    //             c.clearRect(0, 0, DIM, DIM);
-    //             let big = Math.max(im.width, im.height);
-    //             let propotion = DIM < big ? DIM / big : 1;
-    //             let w = im.width * propotion,
-    //                 h = im.height * propotion;
-    //             canvas.width = w;
-    //             canvas.height = h;
-    //             c.drawImage(im, 0, 0, w, h);
-    //             let dataURL = canvas.toDataURL("image/webp");
-    //             const newFile = dataURLtoFile(dataURL, file.type);
-    //             setImageFile(newFile);
-    //             canvas.remove();
-    //         };
-    //     };
-    //     fr.readAsDataURL(file);
-    // };
+    useEffect(() => {
+        if (!useUser?.userCompany) return;
+        setCompanyName(useUser.userCompany.name || companyName);
+        setCompanyDescription(
+            useUser.userCompany.description || companyDescription
+        );
+        setPhoneNumber(useUser.userCompany.phone || phoneNumber);
+        setFbPage(useUser.userCompany.fb_page || fbPage);
+        setMap(useUser.userCompany.map || map);
+        setSelectedCategory(useUser.userCompany.category || selectedCategory);
+        setDivision(
+            new Set<string>([
+                useUser.userCompany.division || ([...division][0] as string),
+            ])
+        );
+        setDistrict(
+            new Set<string>([
+                useUser.userCompany.city || ([...district][0] as string),
+            ])
+        );
+    }, [useUser?.userCompany]);
 
     const handleImageUpload = async (
         e: React.ChangeEvent<HTMLInputElement>
@@ -166,6 +158,11 @@ export default function Page() {
                                 label: "Description",
                                 value: companyDescription,
                                 onValueChange: setCompanyDescription,
+                            },
+                            textProps: {
+                                style: {
+                                    whiteSpace: "pre-wrap",
+                                },
                             },
                         }}>
                         {companyDescription}
@@ -398,6 +395,29 @@ export default function Page() {
                 color="success"
                 className="fixed bottom-4 right-4 font-bold"
                 size="lg"
+                onPress={async () => {
+                    const payload = {
+                        name: companyName,
+                        city: [...district][0],
+                        description: companyDescription,
+                        division: [...division][0],
+                        map: map,
+                        iframe: `https://maps.google.com/maps?q=${location.lat},${location.long}&hl=es;z=132m&output=embed`,
+                        phone: phoneNumber,
+                        fb_page: fbPage,
+                    };
+                    console.log(payload);
+                    const x = await updateStoreAction({
+                        data: payload,
+                        userId: useUser?.user?.id,
+                        store_slug: useUser?.userCompany?.slug,
+                    });
+                    if (x.status === 200) {
+                        toast.success(x.message);
+                    } else {
+                        toast.error(`Error(${x.status}): ` + x.message);
+                    }
+                }}
                 startContent={<GrSave />}>
                 Save
             </Button>

@@ -35,25 +35,58 @@ export default function ViewProducts({
     const [products, setProducts] = useState(
         resolver[selectedTab](allProducts)
     );
+    const [range, setRange] = useState([PRICE_RANGE[0], PRICE_RANGE[1]]);
 
     const [currentPage, setCurrentPage] = useState(
         inBound(initialPage, Math.ceil(products.length / PER_PAGE))
     );
 
-    useEffect(() => {
-        setProducts(() => {
-            if (!value) return allProducts;
-            return allProducts.filter((product) =>
-                product.name.toLowerCase().includes(value.toLowerCase())
-            );
-        });
-    }, [value]);
+    // useEffect(() => {
+    //     setProducts(() => {
+    //         if (!value) return allProducts;
+    //         return allProducts.filter((product) =>
+    //             product.name.toLowerCase().includes(value.toLowerCase())
+    //         );
+    //     });
+    // }, [value]);
 
     const router = useRouter();
+
+    const handleSearch = (
+        value: string,
+        range: number[],
+        selectedTab: KeyType
+    ) => {
+        setCurrentPage(1);
+        setProducts(() => {
+            let answer = allProducts;
+            // filter by search value
+            if (value) {
+                answer = answer.filter((product) =>
+                    product.name.toLowerCase().includes(value.toLowerCase())
+                );
+            }
+            // filter by price range
+            answer = answer.filter((product) => {
+                const offer = product.offers?.find(
+                    (offer) => new Date(offer.validity).getTime() > Date.now()
+                );
+                const discountPrice = !offer
+                    ? product.price
+                    : ((100 - offer.offer_percent) / 100) * product.price;
+                return discountPrice >= range[0] && discountPrice <= range[1];
+            });
+            // filter by tab
+            return resolver[selectedTab](answer);
+        });
+    };
     return (
         <>
             <Input
-                onValueChange={debounce(setValue, DEBOUNCE_DELAY)}
+                onValueChange={debounce((val) => {
+                    setValue(val);
+                    handleSearch(val, range, selectedTab);
+                }, DEBOUNCE_DELAY)}
                 variant="faded"
                 radius="md"
                 // label="Search"
@@ -81,34 +114,8 @@ export default function ViewProducts({
                     minValue={0}
                     size="lg"
                     onChangeEnd={(v: number | number[]) => {
-                        if (Array.isArray(v)) {
-                            setProducts(() => {
-                                let filtered = allProducts.filter((p) => {
-                                    const offer = p.offers?.find(
-                                        (offer) =>
-                                            new Date(offer.validity).getTime() >
-                                            Date.now()
-                                    );
-                                    const discountPrice = !offer
-                                        ? p.price
-                                        : ((100 - offer.offer_percent) / 100) *
-                                          p.price;
-                                    return (
-                                        discountPrice >= v[0] &&
-                                        discountPrice <= v[1]
-                                    );
-                                });
-                                if (!value) {
-                                    return filtered;
-                                } else {
-                                    return filtered.filter((product) =>
-                                        product.name
-                                            .toLowerCase()
-                                            .includes(value.toLowerCase())
-                                    );
-                                }
-                            });
-                        }
+                        setRange(v as [number, number]);
+                        handleSearch(value, v as [number, number], selectedTab);
                     }}
                 />
                 <Tabs
@@ -116,17 +123,7 @@ export default function ViewProducts({
                     selectedKey={selectedTab as KeyType}
                     onSelectionChange={(v) => {
                         setSelectedTab(v as KeyType);
-                        setCurrentPage(1);
-                        setProducts(() => {
-                            return resolver[v as KeyType](
-                                allProducts.filter((product) => {
-                                    if (!value) return true;
-                                    return product.name
-                                        .toLowerCase()
-                                        .includes(value.toLowerCase());
-                                })
-                            );
-                        });
+                        handleSearch(value, range, v as KeyType);
                     }}>
                     {keys.map((key) => (
                         <Tab title={key} key={key}></Tab>

@@ -14,6 +14,7 @@ import {
     Image,
 } from "@nextui-org/react";
 import { TbCurrencyTaka } from "react-icons/tb";
+import { BsUpload } from "react-icons/bs";
 
 type Props = {};
 
@@ -42,11 +43,22 @@ export default function EditProductBtn({}: Props) {
                             <ModalBody>
                                 <Form validationBehavior="native">
                                     <label htmlFor="image1">
-                                        <Image
-                                            isBlurred
-                                            src=""
-                                            alt="placeholder image"
-                                        />
+                                        <div className="relative">
+                                            <Image
+                                                isBlurred
+                                                // src="afds"
+                                                src={`https://placehold.co/400x300/2e2d51/3b82f6?text=4x3`}
+                                                fallbackSrc={`https://placehold.co/400x300/2e2d51/3b82f6?text=4x3`}
+                                                alt="placeholder image"
+                                            />
+                                            <Button
+                                                color="primary"
+                                                variant="flat"
+                                                isIconOnly
+                                                className="mt-2 absolute right-4 top-4 z-10">
+                                                <BsUpload />
+                                            </Button>
+                                        </div>
                                         <input
                                             type="file"
                                             name="image1"

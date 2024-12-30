@@ -76,6 +76,10 @@ export default function Page() {
             allLocationOptions.bangladesh[
                 [...division][0] as keyof typeof allLocationOptions.bangladesh
             ] || [];
+        console.log(selectedDistricts);
+        if (selectedDistricts.includes([...district][0] as string)) {
+            return selectedDistricts;
+        }
         setDistrict(new Set<string>([selectedDistricts[0]]));
         return selectedDistricts;
     }, [division]);
@@ -441,6 +445,7 @@ function EditProduct({ product }: { product: Product["product"] }) {
                     alt={product.name}
                     className="w-full aspect-[4/3] object-cover !h-auto"
                     src={toValidUrl(product.image1!)}
+                    fallbackSrc={`https://placehold.co/400x300/21131f/ffffff?text=4x3`}
                     isBlurred
                     // fill={true}
                     width={400}

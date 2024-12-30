@@ -26,7 +26,7 @@ export default function CompanyBanner({ src, alt }: Prop) {
                 alt={alt}
                 width={1200}
                 height={(1200 / 16) * 7}
-                fallbackSrc={`https://placehold.co/685x300?text=${
+                fallbackSrc={`https://placehold.co/400x300/2e2d51/3b82f6/685x300?text=${
                     alt?.replace(" ", "+") || "Company+Banner"
                 }`}
                 // removeWrapper

@@ -89,7 +89,6 @@ export default function ProductSide({ product }: Prop) {
                         as={NextImage}
                         width={500}
                         height={280}
-                        // src="https://asepashe.com/api/images/1"
                         fallbackSrc={dynamicFakeImageGenerator()}
                         alt={product.name}
                         removeWrapper

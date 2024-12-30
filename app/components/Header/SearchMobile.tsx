@@ -1,5 +1,5 @@
 import { dynamicFakeImageGenerator, toValidUrl } from "@/lib/utils";
-import { Button, Input, ScrollShadow } from "@nextui-org/react";
+import { Button, Input, ScrollShadow, Tooltip } from "@nextui-org/react";
 import { useMemo, useState } from "react";
 import { IoSearchOutline } from "react-icons/io5";
 import { debounce } from "lodash";
@@ -15,6 +15,7 @@ import {
     DrawerTrigger,
 } from "@/components/ui/drawer";
 import Link from "next/link";
+import { FaRegKeyboard } from "react-icons/fa6";
 
 export default function SearchMobile({
     products,
@@ -43,7 +44,14 @@ export default function SearchMobile({
                             radius="md"
                             placeholder="Search"
                             className="z-40"
-                            endContent={<IoSearchOutline fontSize="1.3rem" />}
+                            startContent={<IoSearchOutline fontSize="1.3rem" />}
+                            endContent={
+                                <Tooltip content="Advanced Search">
+                                    <Link href="/products">
+                                        <FaRegKeyboard fontSize="1.3rem" />
+                                    </Link>
+                                </Tooltip>
+                            }
                         />
                         <div className="max-h-[70vh] overflow-y-auto">
                             <ScrollShadow>

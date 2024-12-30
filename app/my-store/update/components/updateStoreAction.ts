@@ -20,7 +20,6 @@ export async function updateStoreAction(payload: {
     };
 
     try {
-        // https://asepashe.com/api/create-store/test-store-by-shirshen/update-info
         const response = await fetch(
             `${API_URL}/create-store/${payload.store_slug}/update-info`,
             options

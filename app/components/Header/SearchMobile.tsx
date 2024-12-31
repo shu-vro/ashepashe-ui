@@ -55,20 +55,33 @@ export default function SearchMobile({
                         />
                         <div className="max-h-[70vh] overflow-y-auto">
                             <ScrollShadow>
-                                {selectedProducts.map((product) => (
-                                    <SearchItems
-                                        key={product.id}
-                                        label={product.name}
-                                        actualPrice={product.price}
-                                        discountPrice={product.price}
-                                        company_name={product.company.name}
-                                        companyAvatar="https://i.pravatar.cc/150?u=a042581f4e29026704d"
-                                        // image={dynamicFakeImageGenerator()}
-                                        image={toValidUrl(product.image1!)}
-                                        slug={product.slug}
-                                        onSearchOpen={() => {}}
-                                    />
-                                ))}
+                                {selectedProducts.map((product) => {
+                                    // const discountPrice = product.price;
+                                    // const actualPrice = product.offers.find(p => )
+                                    const offer = product.offers?.find(
+                                        (offer) =>
+                                            new Date(offer.validity).getTime() >
+                                            Date.now()
+                                    );
+                                    const discountPrice = !offer
+                                        ? product.price
+                                        : ((100 - offer.offer_percent) / 100) *
+                                          product.price;
+                                    return (
+                                        <SearchItems
+                                            key={product.id}
+                                            label={product.name}
+                                            actualPrice={product.price}
+                                            discountPrice={discountPrice}
+                                            company_name={product.company.name}
+                                            companyAvatar="https://i.pravatar.cc/150?u=a042581f4e29026704d"
+                                            // image={dynamicFakeImageGenerator()}
+                                            image={toValidUrl(product.image1!)}
+                                            slug={product.slug}
+                                            onSearchOpen={() => {}}
+                                        />
+                                    );
+                                })}
                             </ScrollShadow>
                         </div>
                     </DrawerHeader>

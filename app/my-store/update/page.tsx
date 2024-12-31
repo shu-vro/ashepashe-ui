@@ -76,7 +76,6 @@ export default function Page() {
             allLocationOptions.bangladesh[
                 [...division][0] as keyof typeof allLocationOptions.bangladesh
             ] || [];
-        console.log(selectedDistricts);
         if (selectedDistricts.includes([...district][0] as string)) {
             return selectedDistricts;
         }

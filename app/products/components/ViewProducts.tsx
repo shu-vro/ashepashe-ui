@@ -33,8 +33,10 @@ import {
     DrawerHeader,
     DrawerTitle,
     DrawerTrigger,
+    DrawerOverlay,
 } from "@/components/ui/drawer";
 import { bangladesh } from "@/lib/divisions.json";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const PER_PAGE = 12 as const;
 const PRICE_RANGE = Object.freeze([0, 2000]);
@@ -95,6 +97,7 @@ export default function ViewProducts({
     }, [selectDivision]);
 
     const router = useRouter();
+    const isMobile = useIsMobile(500);
 
     const handleSearch = (
         value: string,
@@ -188,11 +191,12 @@ export default function ViewProducts({
                     />
                 }
             />
-            <DrawerRoot direction="right" modal={false}>
+            <DrawerRoot direction="right" modal={isMobile}>
                 <DrawerTrigger asChild>
                     <Button>Advanced Filters</Button>
                 </DrawerTrigger>
                 <Drawer.Portal>
+                    <DrawerOverlay />
                     <Drawer.Content
                         className="right-2 top-2 bottom-2 fixed z-50 outline-none w-[380px] flex inset-x-[unset] backdrop:blur-lg"
                         // The gap between the edge of the screen and the drawer is 8px in this case.
@@ -301,6 +305,10 @@ export default function ViewProducts({
                                             setRange(PRICE_RANGE as number[]);
                                             setValue("");
                                             setSelectedTab(keys[0]);
+                                            setSelectCompany(new Set([]));
+                                            setSelectDivision(new Set([]));
+                                            setSelectDistrict(new Set([]));
+
                                             handleSearch(
                                                 "",
                                                 PRICE_RANGE as number[],

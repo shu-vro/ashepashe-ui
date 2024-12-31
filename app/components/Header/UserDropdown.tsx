@@ -144,7 +144,6 @@ export default function UserDropdown({}: Props) {
                                 <Form
                                     validationBehavior="native"
                                     onSubmit={async (e) => {
-                                        console.log(e);
                                         e.preventDefault();
                                         const formData = new FormData(
                                             e.target as HTMLFormElement
@@ -169,7 +168,6 @@ export default function UserDropdown({}: Props) {
                                             );
                                             push("/my-store/update");
                                         } else {
-                                            console.log(ans);
                                             toast.error(
                                                 "Failed to create store.",
                                                 {

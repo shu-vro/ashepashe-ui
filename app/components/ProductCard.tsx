@@ -61,7 +61,7 @@ export function ProductCard({
             isPressable
             as={"div"}
             {...rest}
-            className={cn("w-52 md:w-60 p-0", rest?.className || "")}>
+            className={cn("w-52 md:w-64 p-0", rest?.className || "")}>
             <CardBody
                 className="overflow-visible relative"
                 as={Link}

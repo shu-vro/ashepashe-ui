@@ -18,7 +18,7 @@ export default function CompanySlide({ companies }: { companies: Company[] }) {
                         slug={company.slug}
                         imageUrl={toValidUrl(company.image)}
                         // imageUrl={dynamicFakeImageGenerator()}
-                        className="w-64 md:w-80"
+                        className="w-52 md:w-64"
                     />
                 </SwiperSlide>
             ))}

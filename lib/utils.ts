@@ -101,3 +101,23 @@ export const onImageUpload = (
     };
     fr.readAsDataURL(file);
 };
+
+export function extractIframeUrl(iframeString: string | null): string {
+    if (!iframeString) return "";
+    const regex =
+        /<iframe[^>]+src="https:\/\/www\.google\.com\/maps\/embed([^"|^\\]+)"[^>]*>/;
+    const match = iframeString.match(regex);
+    // return match ? match[1] : null;
+
+    let url = "";
+
+    if (!match) {
+        const regex2 = /https:\/\/www\.google\.com\/maps\/embed([^"|^\\]+)/;
+        const match2 = iframeString.match(regex2);
+        url = match2 ? match2[1] : "";
+    } else {
+        url = match[1];
+    }
+    const frame = `<iframe src='https://www.google.com/maps/embed${url}' width='600' height='450' style='border:0;' allowfullscreen='' loading='lazy' referrerpolicy='no-referrer-when-downgrade'></iframe>`;
+    return url;
+}

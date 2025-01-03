@@ -2,6 +2,7 @@
 
 import {
     Button,
+    Divider,
     Form,
     Input,
     Pagination,
@@ -12,7 +13,7 @@ import {
     Tab,
     Tabs,
 } from "@nextui-org/react";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { dynamicFakeImageGenerator, paginate, toValidUrl } from "@/lib/utils";
 import { ProductCard } from "@/app/components/ProductCard";
 import Link from "next/link";
@@ -25,21 +26,31 @@ import { IoCloseCircleOutline } from "react-icons/io5";
 import { debounce } from "lodash";
 import { Drawer } from "vaul";
 import {
-    Drawer as DrawerRoot,
-    DrawerClose,
-    DrawerContent,
-    DrawerDescription,
-    DrawerFooter,
-    DrawerHeader,
+    // Drawer as DrawerRoot,
+    // DrawerClose,
+    // DrawerContent,
+    // DrawerDescription,
+    // DrawerFooter,
+    // DrawerHeader,
     DrawerTitle,
     DrawerTrigger,
     DrawerOverlay,
 } from "@/components/ui/drawer";
-import { bangladesh } from "@/lib/divisions.json";
+import allLocationOption from "@/lib/divisions.json";
 import { useIsMobile } from "@/hooks/use-mobile";
+
+import {
+    Drawer as DrawerRoot,
+    DrawerContent,
+    DrawerHeader,
+    DrawerBody,
+    DrawerFooter,
+    useDisclosure,
+} from "@nextui-org/react";
 
 const PER_PAGE = 12 as const;
 const PRICE_RANGE = Object.freeze([0, 2000]);
+const bangladesh = allLocationOption.bangladesh;
 
 export default function ViewProducts({
     allProducts,
@@ -66,6 +77,11 @@ export default function ViewProducts({
     const [currentPage, setCurrentPage] = useState(
         inBound(initialPage, Math.ceil(products.length / PER_PAGE))
     );
+    const {
+        isOpen: isDrawerOpen,
+        onOpen: onDrawerOpen,
+        onOpenChange: onDrawerOpenChange,
+    } = useDisclosure();
 
     const companies = useMemo(() => {
         return Array(
@@ -191,7 +207,157 @@ export default function ViewProducts({
                     />
                 }
             />
-            <DrawerRoot direction="right" modal={isMobile}>
+            <Button onPress={onDrawerOpen}>Advanced Filter</Button>
+            <DrawerRoot isOpen={isDrawerOpen} onOpenChange={onDrawerOpenChange}>
+                <DrawerContent className="bg-white/20 text-white backdrop-blur-sm border-l-2 border-t-2 border-white/30">
+                    {(onClose) => (
+                        <DrawerBody>
+                            <div className="w-full rounded-md">
+                                <DrawerHeader className="flex flex-col p-0 m-0">
+                                    <h2 className="text-xl">
+                                        Advanced Filters
+                                    </h2>
+                                    <p className="text-sm text-white/60">
+                                        Filter products by price range and
+                                        options. Don't forget to apply filters.
+                                    </p>
+                                </DrawerHeader>
+                                <Divider className="my-6" />
+                                <div className="pb-0 flex flex-wrap items-center justify-around gap-2">
+                                    <Slider
+                                        className="max-w-md"
+                                        defaultValue={range as [number, number]}
+                                        formatOptions={{
+                                            style: "currency",
+                                            currency: "BDT",
+                                        }}
+                                        label="Price Range"
+                                        showTooltip
+                                        maxValue={PRICE_RANGE[1]}
+                                        minValue={0}
+                                        size="lg"
+                                        onChangeEnd={(v: number | number[]) => {
+                                            setRange(v as [number, number]);
+                                        }}
+                                    />
+
+                                    <Tabs
+                                        aria-label="Options"
+                                        size="sm"
+                                        className="w-full"
+                                        selectedKey={selectedTab as KeyType}
+                                        onSelectionChange={(v) => {
+                                            setSelectedTab(v as KeyType);
+                                        }}>
+                                        {keys.map((key) => (
+                                            <Tab
+                                                title={key}
+                                                key={key}
+                                                className="text-xs p-1"></Tab>
+                                        ))}
+                                    </Tabs>
+                                    <Select
+                                        className="w-full"
+                                        label="Select Companies"
+                                        placeholder="Select Multiple Companies"
+                                        selectedKeys={selectCompany}
+                                        onSelectionChange={(v) => {
+                                            setSelectCompany(v);
+                                        }}
+                                        selectionMode="multiple">
+                                        {companies.map((company) => (
+                                            <SelectItem
+                                                key={company.id}
+                                                value={company.id}>
+                                                {company.name}
+                                            </SelectItem>
+                                        ))}
+                                    </Select>
+                                    <div className="flex flex-row w-full gap-2">
+                                        <Select
+                                            className="w-full max-w-[170px]"
+                                            label="District"
+                                            placeholder="Select Districts"
+                                            selectedKeys={selectDistrict}
+                                            onSelectionChange={(v) => {
+                                                setSelectDistrict(v);
+                                            }}
+                                            selectionMode="multiple">
+                                            {districts.map((district) => (
+                                                <SelectItem key={district}>
+                                                    {district}
+                                                </SelectItem>
+                                            ))}
+                                        </Select>
+                                        <Select
+                                            className="w-full max-w-[170px]"
+                                            label="Division"
+                                            placeholder="Select Divisions"
+                                            selectedKeys={selectDivision}
+                                            onSelectionChange={(v) => {
+                                                setSelectDivision(v);
+                                            }}
+                                            selectionMode="multiple">
+                                            {divisions.map((division) => (
+                                                <SelectItem
+                                                    key={division}
+                                                    value={division}>
+                                                    {division}
+                                                </SelectItem>
+                                            ))}
+                                        </Select>
+                                    </div>
+                                </div>
+                            </div>
+                            <DrawerFooter className="flex justify-between items-center flex-wrap flex-row">
+                                <Button color="warning" onPress={onClose}>
+                                    Close
+                                </Button>
+                                <Button
+                                    color="secondary"
+                                    className="text-white"
+                                    onPress={() => {
+                                        setRange(PRICE_RANGE as number[]);
+                                        setValue("");
+                                        setSelectedTab(keys[0]);
+                                        setSelectCompany(new Set([]));
+                                        setSelectDivision(new Set([]));
+                                        setSelectDistrict(new Set([]));
+
+                                        handleSearch(
+                                            "",
+                                            PRICE_RANGE as number[],
+                                            keys[0],
+                                            selectCompany,
+                                            selectDivision,
+                                            selectDistrict
+                                        );
+                                        onClose();
+                                    }}>
+                                    Clear Filters
+                                </Button>
+                                <Button
+                                    color="success"
+                                    type="submit"
+                                    onPress={() => {
+                                        handleSearch(
+                                            value,
+                                            range,
+                                            selectedTab,
+                                            selectCompany,
+                                            selectDivision,
+                                            selectDistrict
+                                        );
+                                        onClose();
+                                    }}>
+                                    Apply Filters
+                                </Button>
+                            </DrawerFooter>
+                        </DrawerBody>
+                    )}
+                </DrawerContent>
+            </DrawerRoot>
+            {/* <DrawerRoot direction="right" modal={isMobile}>
                 <DrawerTrigger asChild>
                     <Button>Advanced Filters</Button>
                 </DrawerTrigger>
@@ -255,7 +421,9 @@ export default function ViewProducts({
                                     }}
                                     selectionMode="multiple">
                                     {companies.map((company) => (
-                                        <SelectItem key={company.id}>
+                                        <SelectItem
+                                            key={company.id}
+                                            value={company.id}>
                                             {company.name}
                                         </SelectItem>
                                     ))}
@@ -286,7 +454,9 @@ export default function ViewProducts({
                                         }}
                                         selectionMode="multiple">
                                         {divisions.map((division) => (
-                                            <SelectItem key={division}>
+                                            <SelectItem
+                                                key={division}
+                                                value={division}>
                                                 {division}
                                             </SelectItem>
                                         ))}
@@ -342,7 +512,7 @@ export default function ViewProducts({
                         </div>
                     </Drawer.Content>
                 </Drawer.Portal>
-            </DrawerRoot>
+            </DrawerRoot> */}
             <div className="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] max-sm:grid-cols-2 gap-4 place-items-center py-4">
                 {paginate(products, currentPage, PER_PAGE).map((product) => {
                     const offer = product.offers?.find(
@@ -352,7 +522,7 @@ export default function ViewProducts({
                     return (
                         <ProductCard
                             key={product.slug}
-                            className="!w-full h-fit max-sm:min-h-96"
+                            className="!w-full h-fit max-sm:min-h-96 max-w-96"
                             name={product.name}
                             description={product?.description}
                             // imageUrl={`https://nextui.org/images/fruit-${

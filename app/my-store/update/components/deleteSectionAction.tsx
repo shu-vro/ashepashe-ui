@@ -3,24 +3,25 @@
 import { API_URL } from "@/lib/var";
 import { revalidatePath } from "next/cache";
 
-export async function updateStoreAction(payload: {
-    data: Record<string, any>;
-    store_slug?: Company["slug"];
+export async function deleteSectionAction(payload: {
+    sectionId?: Company["id"];
 }) {
     revalidatePath("/");
-    if (!payload.data || !payload.store_slug) {
-        return;
+    if (!payload.sectionId) {
+        return {
+            status: 402,
+            message: "SectionId is required",
+        };
     }
 
     const options = {
-        method: "POST",
+        method: "DELETE",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify(payload.data),
     };
 
     try {
         const response = await fetch(
-            `${API_URL}/create-store/${payload.store_slug}/update-info`,
+            `${API_URL}/delete-section/${payload.sectionId}`,
             options
         );
         const data = await response.json();

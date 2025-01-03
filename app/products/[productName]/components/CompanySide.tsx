@@ -1,6 +1,11 @@
 "use client";
 
-import { dynamicFakeImageGenerator, removeTags, toValidUrl } from "@/lib/utils";
+import {
+    dynamicFakeImageGenerator,
+    extractIframeUrl,
+    removeTags,
+    toValidUrl,
+} from "@/lib/utils";
 import {
     Button,
     Card,
@@ -78,7 +83,10 @@ export default function CompanySide({ company }: Prop) {
                     <div className="flex justify-around items-stretch pt-2 gap-8">
                         <Button
                             onClick={() => {
-                                window.open(company.iframe);
+                                const iframe = extractIframeUrl(company.iframe);
+                                window.open(
+                                    `https://www.google.com/maps/embed${iframe}`
+                                );
                             }}
                             className="w-full">
                             View Location

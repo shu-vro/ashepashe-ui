@@ -40,6 +40,7 @@ export default function CreateSection() {
                             if (res.status === 200) {
                                 toast.success(res.message);
                                 setNewSectionName("");
+                                useUser?.ticktock();
                             } else {
                                 toast.error(
                                     `Error(${res.status}): ` + res.message

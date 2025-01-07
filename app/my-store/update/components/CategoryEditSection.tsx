@@ -1,10 +1,21 @@
-import { Button, Input } from "@nextui-org/react";
+import {
+    Button,
+    Input,
+    Modal,
+    ModalBody,
+    ModalContent,
+    ModalFooter,
+    ModalHeader,
+    useDisclosure,
+} from "@nextui-org/react";
 import { WritableField } from "./Writable";
-import { useState } from "react";
+import { use, useState } from "react";
 import EditProduct from "./EditProduct";
 import { deleteSectionAction } from "./deleteSectionAction";
 import { toast } from "sonner";
 import { updateSectionAction } from "./updateSectionAction";
+import { UserContext } from "@/contexts/UserContext";
+import { ProductForm } from "./EditProductBtn";
 
 export default function CategoryEditSection({
     section,
@@ -14,6 +25,9 @@ export default function CategoryEditSection({
     id: Category["id"];
 }) {
     const [sectionName, setSectionName] = useState(section);
+    const useUser = use(UserContext);
+    const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
     return (
         <div>
             <div className="w-full">
@@ -42,9 +56,9 @@ export default function CategoryEditSection({
                                     name: sectionName,
                                     sectionId: id,
                                 });
-                                console.log(res);
                                 if (res.status === 200) {
                                     toast.success(res.message);
+                                    useUser?.ticktock();
                                 } else {
                                     toast.error(res.message);
                                 }
@@ -62,6 +76,7 @@ export default function CategoryEditSection({
                                 console.log(res);
                                 if (res.status === 200) {
                                     toast.success(res.message);
+                                    useUser?.ticktock();
                                 } else {
                                     toast.error(res.message);
                                 }
@@ -72,9 +87,29 @@ export default function CategoryEditSection({
                 </div>
             </div>
             <div className="flex flex-wrap justify-start items-center w-full gap-2">
-                <Button className="w-full h-48 text-4xl font-bold">
+                <Button
+                    className="w-full h-48 text-4xl font-bold"
+                    onPress={onOpen}>
                     Create Product
                 </Button>
+                <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+                    <ModalContent>
+                        {(onClose) => (
+                            <>
+                                <ModalHeader className="flex flex-col gap-1">
+                                    Create Product
+                                </ModalHeader>
+                                <ProductForm
+                                    submitText="Create Product"
+                                    onClose={onClose}
+                                    onSubmit={(payload) => {
+                                        alert(JSON.stringify(payload));
+                                    }}
+                                />
+                            </>
+                        )}
+                    </ModalContent>
+                </Modal>
                 {Array.from({
                     length: 2,
                 }).map((_, i) => (

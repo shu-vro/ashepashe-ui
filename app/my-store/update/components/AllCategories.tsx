@@ -4,27 +4,14 @@ import { API_URL } from "@/lib/var";
 import { UserContext } from "@/contexts/UserContext";
 
 export default function AllCategories({ companyId }: { companyId?: number }) {
-    const [sections, setSections] = useState<Category[]>([]);
-    // useEffect(() => {
-    //     (async () => {
-    //         if (!companyId) return;
-    //         const response = await fetch(`${API_URL}/sections`);
-    //         const data = (await response.json()) as Category[];
-    //         setSections(
-    //             data.filter((section) => section.company_id === companyId)
-    //         );
-    //     })();
-    // }, []);
     const useUser = use(UserContext);
 
-    useEffect(() => {
-        setSections(useUser?.companySections || []);
-        console.log(useUser?.companySections);
-    }, [useUser?.companySections]);
+    if (!useUser) return null;
+    const { companySections } = useUser;
 
-    if (!sections || !sections.length) return null;
+    if (!companySections || !companySections.length) return null;
 
-    return sections.map((section) => (
+    return companySections.map((section) => (
         <CategoryEditSection
             key={section.id}
             section={section.name}

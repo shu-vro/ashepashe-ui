@@ -22,7 +22,7 @@ import SelectLocation from "./components/SelectLocation";
 import { toast } from "sonner";
 import { GrSave } from "react-icons/gr";
 import { API_URL } from "@/lib/var";
-import { onImageUpload } from "@/lib/utils";
+import { onImageUpload, validatePhoneNumber } from "@/lib/utils";
 import { updateStoreAction } from "./components/updateStoreAction";
 import { UserContext } from "@/contexts/UserContext";
 import CreateSection from "./components/CreateSection";
@@ -100,7 +100,7 @@ export default function Page() {
     const handleImageUpload = async (
         e: React.ChangeEvent<HTMLInputElement>
     ) => {
-        onImageUpload(e, setImageFile, imageRef.current!);
+        onImageUpload({ e, setImageFile, imageEl: imageRef.current! });
     };
 
     useEffect(() => {
@@ -132,7 +132,9 @@ export default function Page() {
                 className="grid-in-image bg-content3 rounded-3xl h-96 relative grid place-content-center mx-auto w-full overflow-hidden bg-center bg-no-repeat bg-contain"
                 ref={imageRef}
                 style={{
-                    backgroundImage: `url(${useUser?.userCompany?.image})`,
+                    backgroundImage: `url(${
+                        useUser?.userCompany?.image || imageFile
+                    })`,
                 }}
                 htmlFor="file_input">
                 <div className="text-[max(5vw,10vh)] text-white/35 text-center w-full">
@@ -142,6 +144,7 @@ export default function Page() {
                     type="file"
                     id="file_input"
                     accept="image/*"
+                    className="sr-only"
                     onChange={handleImageUpload}
                 />
             </label>{" "}
@@ -327,7 +330,7 @@ export default function Page() {
                                 height={400}></iframe>
                         )}
                         <Button
-                            onClick={async () => {
+                            onPress={async () => {
                                 navigator.geolocation.getCurrentPosition(
                                     async (success) => {
                                         setLocation({
@@ -372,6 +375,10 @@ export default function Page() {
                 className="fixed bottom-4 right-4 font-bold"
                 size="lg"
                 onPress={async () => {
+                    const phone = validatePhoneNumber(phoneNumber);
+                    if (!phone) {
+                        return toast.error("Phone number is not valid.");
+                    }
                     const payload = {
                         name: companyName,
                         city: [...district][0],
@@ -379,7 +386,7 @@ export default function Page() {
                         division: [...division][0],
                         map: map,
                         iframe: `https://maps.google.com/maps?q=${location.lat},${location.long}&hl=es;z=132m&output=embed`,
-                        phone: phoneNumber,
+                        phone,
                         fb_page: fbPage,
                         lati: location.lat,
                         longi: location.long,
@@ -392,6 +399,7 @@ export default function Page() {
                     });
                     if (x.status === 200) {
                         toast.success(x.message);
+                        useUser?.ticktock();
                     } else {
                         toast.error(`Error(${x.status}): ` + x.message);
                     }

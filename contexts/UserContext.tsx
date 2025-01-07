@@ -15,6 +15,7 @@ export type UserContextType = {
     setCompanySections: React.Dispatch<
         React.SetStateAction<UserContextType["companySections"]>
     >;
+    ticktock: () => void;
 };
 
 export const UserContext = createContext<UserContextType | null>(null);
@@ -30,6 +31,10 @@ export default function UserProvider({
     const [companySections, setCompanySections] = useState<
         UserContextType["companySections"]
     >([]);
+    const [tick, setTick] = useState(false);
+    const ticktock = () => {
+        setTick((p) => !p);
+    };
     const { data } = useSession();
 
     useEffect(() => {
@@ -63,7 +68,7 @@ export default function UserProvider({
         })();
 
         return () => {};
-    }, [data]);
+    }, [data, tick]);
 
     return (
         <UserContext.Provider
@@ -74,6 +79,7 @@ export default function UserProvider({
                 setUserCompany,
                 companySections,
                 setCompanySections,
+                ticktock,
             }}>
             {children}
         </UserContext.Provider>

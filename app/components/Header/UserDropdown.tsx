@@ -52,13 +52,102 @@ interface BeforeInstallPromptEvent extends Event {
     prompt(): Promise<void>;
 }
 
+interface CreateStoreModalProps {
+    isOpen: boolean;
+    onOpenChange: (isOpen: boolean) => void;
+}
+
+export function CreateStoreModal({
+    isOpen,
+    onOpenChange,
+}: CreateStoreModalProps) {
+    const useUser = use(UserContext);
+    const { push } = useRouter();
+    return (
+        <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+            <ModalContent>
+                {(onClose) => (
+                    <>
+                        <ModalHeader className="flex flex-col gap-1">
+                            Create Store
+                        </ModalHeader>
+                        <ModalBody>
+                            <Form
+                                validationBehavior="native"
+                                onSubmit={async (e) => {
+                                    e.preventDefault();
+                                    const formData = new FormData(
+                                        e.target as HTMLFormElement
+                                    );
+                                    const data = Object.fromEntries(
+                                        formData.entries()
+                                    );
+                                    if (!useUser) return;
+                                    const user = useUser.user;
+                                    const ans = await createStoreAction(
+                                        data as any,
+                                        user!.id
+                                    );
+
+                                    if (ans.status === "200") {
+                                        toast.success(
+                                            "Store Created Successfully.",
+                                            {
+                                                description:
+                                                    "Redirecting to your store...",
+                                            }
+                                        );
+                                        push("/my-store/update");
+                                    } else {
+                                        toast.error("Failed to create store.", {
+                                            description: () => {
+                                                return (
+                                                    <pre>
+                                                        {JSON.stringify(
+                                                            ans.errors,
+                                                            null,
+                                                            2
+                                                        )}
+                                                    </pre>
+                                                );
+                                            },
+                                            closeButton: true,
+                                        });
+                                    }
+                                }}>
+                                <Input
+                                    isRequired
+                                    errorMessage="Please enter a valid Company Name"
+                                    label="Company Name"
+                                    labelPlacement="outside"
+                                    name="name"
+                                    placeholder="Company Name"
+                                    type="text"
+                                />
+                                <ModalFooter className="w-full pr-0">
+                                    <Button color="danger" onPress={onClose}>
+                                        Close
+                                    </Button>
+                                    <Button color="primary" type="submit">
+                                        Create Store
+                                    </Button>
+                                </ModalFooter>
+                            </Form>
+                        </ModalBody>
+                    </>
+                )}
+            </ModalContent>
+        </Modal>
+    );
+}
+
 export default function UserDropdown({}: Props) {
     const [deferredPrompt, setDeferredPrompt] =
         useState<BeforeInstallPromptEvent>();
     const [isInstallable, setIsInstallable] = useState(true);
     const { data: session, status } = useSession();
-    const useUser = use(UserContext);
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
+    const useUser = use(UserContext);
     const { push } = useRouter();
 
     const handleInstall = async () => {
@@ -133,85 +222,9 @@ export default function UserDropdown({}: Props) {
                     </DropdownItem>
                 </DropdownMenu>
             </Dropdown>
-            <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
-                <ModalContent>
-                    {(onClose) => (
-                        <>
-                            <ModalHeader className="flex flex-col gap-1">
-                                Create Store
-                            </ModalHeader>
-                            <ModalBody>
-                                <Form
-                                    validationBehavior="native"
-                                    onSubmit={async (e) => {
-                                        e.preventDefault();
-                                        const formData = new FormData(
-                                            e.target as HTMLFormElement
-                                        );
-                                        const data = Object.fromEntries(
-                                            formData.entries()
-                                        );
-                                        if (!useUser) return;
-                                        const user = useUser.user;
-                                        const ans = await createStoreAction(
-                                            data as any,
-                                            user!.id
-                                        );
-
-                                        if (ans.status === "200") {
-                                            toast.success(
-                                                "Store Created Successfully.",
-                                                {
-                                                    description:
-                                                        "Redirecting to your store...",
-                                                }
-                                            );
-                                            push("/my-store/update");
-                                        } else {
-                                            toast.error(
-                                                "Failed to create store.",
-                                                {
-                                                    description: () => {
-                                                        return (
-                                                            <pre>
-                                                                {JSON.stringify(
-                                                                    ans.errors,
-                                                                    null,
-                                                                    2
-                                                                )}
-                                                            </pre>
-                                                        );
-                                                    },
-                                                    closeButton: true,
-                                                }
-                                            );
-                                        }
-                                    }}>
-                                    <Input
-                                        isRequired
-                                        errorMessage="Please enter a valid Company Name"
-                                        label="Company Name"
-                                        labelPlacement="outside"
-                                        name="name"
-                                        placeholder="Company Name"
-                                        type="text"
-                                    />
-                                    <ModalFooter className="w-full pr-0">
-                                        <Button
-                                            color="danger"
-                                            onPress={onClose}>
-                                            Close
-                                        </Button>
-                                        <Button color="primary" type="submit">
-                                            Create Store
-                                        </Button>
-                                    </ModalFooter>
-                                </Form>
-                            </ModalBody>
-                        </>
-                    )}
-                </ModalContent>
-            </Modal>
+            <CreateStoreModal
+                isOpen={isOpen}
+                onOpenChange={onOpenChange}></CreateStoreModal>
         </>
     ) : null;
 }

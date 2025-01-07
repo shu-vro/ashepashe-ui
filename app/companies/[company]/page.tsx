@@ -33,10 +33,16 @@ export default async function Page(props: Props) {
             {companyProducts.length > 0 && (
                 <div className="grid-in-product">
                     {Object.entries(group).map(([key, value]) => {
-                        const section = sections.find(
+                        let section = sections.find(
                             (section) => section.id === Number(key)
                         );
-                        if (!section || !value) return null;
+                        if (!value) return null;
+                        if (!section) {
+                            section = {
+                                id: Math.random(),
+                                name: "Others",
+                            } as Category;
+                        }
                         return (
                             <div
                                 key={section.id}
@@ -62,8 +68,8 @@ export default async function Page(props: Props) {
 async function getCompany(name: string) {
     const response = await fetch(`${API_URL}/company/${name}`);
     const company: Company = await response.json();
-    const response2 = await fetch(`${API_URL}/sections`);
-    const sections: Category[] = await response2.json();
+    const response2 = await fetch(`${API_URL}/company-sections/${company.id}`);
+    const sections: Category[] = (await response2.json()).sections;
     return { company, sections };
 }
 

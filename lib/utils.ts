@@ -63,13 +63,19 @@ export function toValidUrl(url: string) {
     }
 }
 
-export const onImageUpload = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    setImageFile: (file: string | undefined) => void,
-    imageEl?: HTMLElement
-) => {
-    const DIM = 1200;
+interface ImageUploadParams {
+    e: React.ChangeEvent<HTMLInputElement>;
+    setImageFile: (file: string) => void;
+    imageEl?: HTMLElement | null;
+    DIM?: number;
+}
 
+export const onImageUpload = ({
+    e,
+    setImageFile,
+    imageEl,
+    DIM = 1200,
+}: ImageUploadParams) => {
     const canvas = document.createElement("canvas");
     const c = canvas.getContext("2d")!;
     canvas.width = DIM;
@@ -119,4 +125,18 @@ export function extractIframeUrl(iframeString: string | null): string {
         url = "https://www.google.com/maps/embed" + match[1];
     }
     return url;
+}
+
+export function validatePhoneNumber(phoneNumber: string): string | null {
+    // Example regex for validating phone numbers (adjust as needed)
+    const phoneRegex =
+        /(?:([+]\d{1,4})[-.\s]?)?(?:[(](\d{1,3})[)][-.\s]?)?(\d{1,4})[-.\s]?(\d{1,4})[-.\s]?(\d{1,9})/;
+    const match = phoneNumber.match(phoneRegex);
+    if (match) {
+        if (match[0] !== phoneNumber) {
+            return null;
+        }
+        return match[0];
+    }
+    return null;
 }

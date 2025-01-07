@@ -15,7 +15,6 @@ export default async function ProductPage({ params }: Props) {
     const { productName } = await params;
     const productDetails = await getProduct(productName);
     const product = productDetails.product;
-    console.log(product);
     const company = product.company;
 
     const company_full = await getCompanyProducts(company.slug);

@@ -98,7 +98,7 @@ export default function UserDropdown({}: Props) {
                     </DropdownItem>
                     <DropdownItem
                         key="my_store"
-                        onClick={() => {
+                        onPress={() => {
                             if (!useUser?.userCompany) {
                                 onOpen();
                             } else {
@@ -111,7 +111,7 @@ export default function UserDropdown({}: Props) {
                         View Profile
                     </DropdownItem>
                     <DropdownItem key="bookmarks">Bookmarks</DropdownItem>
-                    <DropdownItem key="install" onClick={handleInstall}>
+                    <DropdownItem key="install" onPress={handleInstall}>
                         {deferredPrompt
                             ? isInstallable
                                 ? "Install App"
@@ -124,7 +124,7 @@ export default function UserDropdown({}: Props) {
                     <DropdownItem
                         key="logout"
                         color="danger"
-                        onClick={() =>
+                        onPress={() =>
                             signOut({
                                 redirect: false,
                             })
@@ -199,7 +199,7 @@ export default function UserDropdown({}: Props) {
                                     <ModalFooter className="w-full pr-0">
                                         <Button
                                             color="danger"
-                                            onClick={onClose}>
+                                            onPress={onClose}>
                                             Close
                                         </Button>
                                         <Button color="primary" type="submit">

@@ -17,6 +17,12 @@ export async function createStoreAction(
 
     try {
         const response = await fetch(`${API_URL}/create-store`, options);
+        if (response.status !== 200) {
+            return {
+                status: response.status,
+                message: response.statusText,
+            };
+        }
         const data = await response.json();
         return data;
     } catch (error) {

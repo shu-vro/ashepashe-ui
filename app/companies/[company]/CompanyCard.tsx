@@ -11,6 +11,7 @@ import { extractIframeUrl, removeTags } from "@/lib/utils";
 
 export default function CompanyCard({ company }: { company: Company }) {
     const iframe = extractIframeUrl(company.iframe);
+    console.log(iframe, company.iframe);
     return (
         <Card
             className="static lap:sticky top-24 grid-in-company h-min mt-6 ml-6 max-lap:mr-6 p-4 mb-10"
@@ -52,7 +53,7 @@ export default function CompanyCard({ company }: { company: Company }) {
                 </div>
                 <div className="flex justify-around items-stretch pt-2 gap-8">
                     <iframe
-                        src={`https://www.google.com/maps/embed${iframe}`}
+                        src={`${iframe}`}
                         className="w-full"
                         height="400"
                         allowFullScreen

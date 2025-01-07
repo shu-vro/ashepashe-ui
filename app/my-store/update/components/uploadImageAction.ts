@@ -3,27 +3,32 @@
 import { API_URL } from "@/lib/var";
 import { revalidatePath } from "next/cache";
 
-export async function deleteSectionAction(payload: {
-    sectionId?: Company["id"];
+export async function uploadImageAction(payload: {
+    data: string;
+    slug: Company["slug"];
 }) {
-    if (!payload.sectionId) {
+    revalidatePath("/");
+    if (!payload.data || !payload.slug) {
         return {
             status: 402,
-            message: "SectionId is required",
+            message: "Payload incomplete " + JSON.stringify(payload),
         };
     }
 
     const options = {
-        method: "DELETE",
+        method: "POST",
         headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+            data: payload.data,
+            company_slug: payload.slug,
+        }),
     };
 
     try {
         const response = await fetch(
-            `${API_URL}/delete-section/${payload.sectionId}`,
+            `${API_URL}/create-store/store-img/${payload.slug}`,
             options
         );
-
         if (response.status !== 200) {
             return {
                 status: response.status,
@@ -34,7 +39,5 @@ export async function deleteSectionAction(payload: {
         return data;
     } catch (error) {
         return error;
-    } finally {
-        revalidatePath("/");
     }
 }

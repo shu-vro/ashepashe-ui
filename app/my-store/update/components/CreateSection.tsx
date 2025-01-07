@@ -25,7 +25,6 @@ export default function CreateSection() {
                             }}>
                             {newSectionName}
                         </WritableField>{" "}
-                        ({0})
                     </span>
                     <Button
                         color="secondary"

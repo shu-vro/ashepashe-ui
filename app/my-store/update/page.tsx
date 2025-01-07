@@ -27,6 +27,7 @@ import { updateStoreAction } from "./components/updateStoreAction";
 import { UserContext } from "@/contexts/UserContext";
 import CreateSection from "./components/CreateSection";
 import AllCategories from "./components/AllCategories";
+import { uploadImageAction } from "./components/uploadImageAction";
 
 export default function Page() {
     const useUser = use(UserContext);
@@ -47,7 +48,7 @@ export default function Page() {
         lat: 0,
         long: 0,
     });
-    const [imageFile, setImageFile] = useState<File>();
+    const [imageFile, setImageFile] = useState<string>();
     const [selectedCategory, setSelectedCategory] = useState<
         React.Key | undefined
     >("");
@@ -102,11 +103,37 @@ export default function Page() {
         onImageUpload(e, setImageFile, imageRef.current!);
     };
 
+    useEffect(() => {
+        if (!imageFile) {
+            return;
+        }
+        if (!useUser) {
+            toast.warning("User not authenticated");
+        }
+        if (!useUser?.userCompany) {
+            toast.warning("Company not found");
+        }
+        (async () => {
+            const res = await uploadImageAction({
+                data: imageFile,
+                slug: useUser?.userCompany?.slug || "",
+            });
+            if (res.status === 200) {
+                toast.success(res.message);
+            } else {
+                toast.error(`Error(${res.status}): ${res.message}`);
+            }
+        })();
+    }, [imageFile]);
+
     return (
         <div className="grid grid-areas-companyLayoutNoLap grid-cols-productLayoutNoLap lap:grid-cols-productLayoutLap lap:grid-areas-companyLayoutLap gap-4 p-4">
             <label
                 className="grid-in-image bg-content3 rounded-3xl h-96 relative grid place-content-center mx-auto w-full overflow-hidden bg-center bg-no-repeat bg-contain"
                 ref={imageRef}
+                style={{
+                    backgroundImage: `url(${useUser?.userCompany?.image})`,
+                }}
                 htmlFor="file_input">
                 <div className="text-[max(5vw,10vh)] text-white/35 text-center w-full">
                     16 X 7
@@ -354,11 +381,14 @@ export default function Page() {
                         iframe: `https://maps.google.com/maps?q=${location.lat},${location.long}&hl=es;z=132m&output=embed`,
                         phone: phoneNumber,
                         fb_page: fbPage,
+                        lati: location.lat,
+                        longi: location.long,
                     };
                     console.log(payload);
                     const x = await updateStoreAction({
                         data: payload,
                         store_slug: useUser?.userCompany?.slug,
+                        userId: useUser?.user?.id,
                     });
                     if (x.status === 200) {
                         toast.success(x.message);

@@ -65,7 +65,7 @@ export function toValidUrl(url: string) {
 
 export const onImageUpload = (
     e: React.ChangeEvent<HTMLInputElement>,
-    setImageFile: (file: File | undefined) => void,
+    setImageFile: (file: string | undefined) => void,
     imageEl?: HTMLElement
 ) => {
     const DIM = 1200;
@@ -94,8 +94,8 @@ export const onImageUpload = (
             canvas.height = h;
             c.drawImage(im, 0, 0, w, h);
             let dataURL = canvas.toDataURL("image/webp");
-            const newFile = dataURLtoFile(dataURL, file.type);
-            setImageFile(newFile);
+            // const newFile = dataURLtoFile(dataURL, file.type);
+            setImageFile(dataURL);
             canvas.remove();
         };
     };
@@ -112,12 +112,11 @@ export function extractIframeUrl(iframeString: string | null): string {
     let url = "";
 
     if (!match) {
-        const regex2 = /https:\/\/www\.google\.com\/maps\/embed([^"|^\\]+)/;
+        const regex2 = /https:\/\/maps\.google\.com\/maps([^"|^\\]+)/;
         const match2 = iframeString.match(regex2);
-        url = match2 ? match2[1] : "";
+        url = match2 ? "https://maps.google.com/maps" + match2[1] : "";
     } else {
-        url = match[1];
+        url = "https://www.google.com/maps/embed" + match[1];
     }
-    const frame = `<iframe src='https://www.google.com/maps/embed${url}' width='600' height='450' style='border:0;' allowfullscreen='' loading='lazy' referrerpolicy='no-referrer-when-downgrade'></iframe>`;
     return url;
 }

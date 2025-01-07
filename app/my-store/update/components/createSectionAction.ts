@@ -26,6 +26,13 @@ export async function createSectionAction(payload: {
 
     try {
         const response = await fetch(`${API_URL}/create-section`, options);
+
+        if (response.status !== 200) {
+            return {
+                status: response.status,
+                message: response.statusText,
+            };
+        }
         const data = await response.json();
         return data;
     } catch (error) {

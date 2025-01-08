@@ -1,4 +1,4 @@
-import { Card, CardBody, Image } from "@nextui-org/react";
+import { Card, CardBody, CardProps, Image } from "@nextui-org/react";
 import Link from "next/link";
 import NextImage from "next/image";
 import { dynamicFakeImageGenerator } from "@/lib/utils";
@@ -13,6 +13,8 @@ export default function SearchItems({
     image,
     slug,
     onSearchOpen,
+    as = Link,
+    ...rest
 }: {
     label: string;
     actualPrice: number;
@@ -23,12 +25,16 @@ export default function SearchItems({
     image: string;
     slug: string;
     onSearchOpen: (b: boolean) => void;
-}) {
+} & CardProps) {
     return (
         <Card
             className="mt-2 p-2 w-full hover:bg-content3 transition-all"
-            as={Link}
-            href={`/products/${slug}`}>
+            as={as}
+            href={`/products/${slug}`}
+            onPress={() => {
+                onSearchOpen(false);
+            }}
+            {...rest}>
             <CardBody
                 className="flex-row justify-start items-center gap-4 p-0"
                 onClick={() => {

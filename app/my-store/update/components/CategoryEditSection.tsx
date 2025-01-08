@@ -72,6 +72,9 @@ export default function CategoryEditSection({
                 </div>
             </div>
             <div className="flex flex-wrap justify-start items-center w-full gap-2">
+                <Button className="w-full h-48 text-4xl font-bold">
+                    Create Product
+                </Button>
                 {Array.from({
                     length: 2,
                 }).map((_, i) => (

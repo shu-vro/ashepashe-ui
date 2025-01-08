@@ -25,6 +25,7 @@ export default function SearchMobile({
     products: Product["product"][];
 }) {
     const [value, setValue] = useState("");
+    const [open, setOpen] = useState(false);
     const selectedProducts = useMemo(() => {
         if (!value) return products;
         return products.filter((product) =>
@@ -33,7 +34,7 @@ export default function SearchMobile({
     }, [value]);
     return (
         <>
-            <Drawer>
+            <Drawer open={open} onOpenChange={setOpen}>
                 <DrawerTrigger asChild>{children}</DrawerTrigger>
                 <DrawerContent className="h-[90vh]">
                     <DrawerHeader>
@@ -78,7 +79,7 @@ export default function SearchMobile({
                                             // image={dynamicFakeImageGenerator()}
                                             image={toValidUrl(product.image1!)}
                                             slug={product.slug}
-                                            onSearchOpen={() => {}}
+                                            onSearchOpen={setOpen}
                                         />
                                     );
                                 })}

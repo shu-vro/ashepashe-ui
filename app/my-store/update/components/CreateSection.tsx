@@ -18,7 +18,7 @@ export default function CreateSection() {
                             component={Input}
                             props={{
                                 inputProps: {
-                                    label: "Section Name",
+                                    label: "Create Section",
                                     value: newSectionName,
                                     onValueChange: setNewSectionName,
                                 },

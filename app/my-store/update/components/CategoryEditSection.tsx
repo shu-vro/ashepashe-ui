@@ -19,8 +19,9 @@ import { ProductForm } from "./EditProductBtn";
 import { CompanySection } from "./AllCategories";
 import { createProductAction } from "./createProductAction";
 
-function UpdateCategory({ section }: { section: Category }) {
+function UpdateCategory({ section }: { section: CompanySection }) {
     const [sectionName, setSectionName] = useState(section.name || "");
+    const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const useUser = use(UserContext);
     return (
         <div className="w-full">
@@ -38,7 +39,7 @@ function UpdateCategory({ section }: { section: Category }) {
                             }}>
                             {sectionName}
                         </WritableField>{" "}
-                        ({0})
+                        ({section.products.length})
                     </div>
                     <Button
                         color="secondary"
@@ -58,23 +59,60 @@ function UpdateCategory({ section }: { section: Category }) {
                         }}>
                         Update
                     </Button>
-                    <Button
-                        color="danger"
-                        variant="flat"
-                        onPress={async () => {
-                            const res = await deleteSectionAction({
-                                sectionId: section.id,
-                            });
-
-                            if (res.status === 200) {
-                                toast.success(res.message);
-                                useUser?.ticktock();
-                            } else {
-                                toast.error(res.message);
-                            }
-                        }}>
+                    <Button color="danger" variant="flat" onPress={onOpen}>
                         Delete
                     </Button>
+                    <Modal
+                        isOpen={isOpen}
+                        onOpenChange={onOpenChange}
+                        backdrop="blur">
+                        <ModalContent>
+                            {(onClose) => (
+                                <>
+                                    <ModalHeader className="flex flex-col gap-1">
+                                        Confirm To Delete Section "
+                                        {section.name}" ?
+                                    </ModalHeader>
+                                    <ModalBody>
+                                        <p>
+                                            This will delete all the products in
+                                            this section and{" "}
+                                            <span className="uppercase text-warning">
+                                                this action is irreversible!
+                                            </span>
+                                            <br />
+                                            Are you absolutely sure?
+                                        </p>
+                                    </ModalBody>
+                                    <ModalFooter>
+                                        <Button
+                                            color="warning"
+                                            variant="light"
+                                            onPress={onClose}>
+                                            Close
+                                        </Button>
+                                        <Button
+                                            color="danger"
+                                            onPress={async () => {
+                                                const res =
+                                                    await deleteSectionAction({
+                                                        sectionId: section.id,
+                                                    });
+
+                                                if (res.status === 200) {
+                                                    toast.success(res.message);
+                                                    useUser?.ticktock();
+                                                } else {
+                                                    toast.error(res.message);
+                                                }
+                                            }}>
+                                            Delete
+                                        </Button>
+                                    </ModalFooter>
+                                </>
+                            )}
+                        </ModalContent>
+                    </Modal>
                 </h2>
             </div>
         </div>
@@ -94,7 +132,7 @@ export default function CategoryEditSection({
             <UpdateCategory section={section} />
             <div className="flex flex-wrap justify-start items-center w-full gap-2">
                 <Button
-                    className="w-full h-48 text-4xl font-bold"
+                    className="w-full h-36 text-4xl font-bold"
                     onPress={onOpen}>
                     Create Product
                 </Button>

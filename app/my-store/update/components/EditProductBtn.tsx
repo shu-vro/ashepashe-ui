@@ -17,9 +17,11 @@ import { TbCurrencyTaka } from "react-icons/tb";
 import { BsUpload } from "react-icons/bs";
 import { onImageUpload } from "@/lib/utils";
 
-type Props = {};
+type Props = {
+    defaultProps: Product["product"];
+};
 
-export default function EditProductBtn({}: Props) {
+export default function EditProductBtn({ defaultProps }: Props) {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
     return (
@@ -37,6 +39,7 @@ export default function EditProductBtn({}: Props) {
                             <ProductForm
                                 onClose={onClose}
                                 onSubmit={() => {}}
+                                defaultProps={defaultProps}
                             />
                         </>
                     )}
@@ -50,11 +53,12 @@ export function ProductForm({
     submitText = "Submit",
     onClose,
     onSubmit,
+    defaultProps,
 }: {
     submitText?: string;
     onClose: () => void;
     onSubmit: (arg0: any) => void;
-}) {
+} & Partial<Props>) {
     const [imageUrl, setImageUrl] = useState("");
     const validatePrice = (value: string) => {
         const regex = /(^\d*$)/;
@@ -88,6 +92,7 @@ export function ProductForm({
                             isBlurred
                             src={
                                 imageUrl ||
+                                defaultProps?.image1 ||
                                 "https://placehold.co/400x300/2e2d51/3b82f6?text=4x3"
                             }
                             fallbackSrc={`https://placehold.co/400x300/2e2d51/3b82f6?text=4x3`}
@@ -118,6 +123,7 @@ export function ProductForm({
                     name="name"
                     placeholder="Product name"
                     type="text"
+                    defaultValue={defaultProps?.name}
                 />
                 <Textarea
                     errorMessage="Please enter a valid username"
@@ -126,6 +132,7 @@ export function ProductForm({
                     name="description"
                     placeholder="Product Description"
                     type="text"
+                    defaultValue={defaultProps?.description}
                 />
                 <Input
                     isRequired
@@ -134,6 +141,7 @@ export function ProductForm({
                     name="price"
                     type="number"
                     validate={validatePrice}
+                    defaultValue={defaultProps?.price?.toString()}
                     startContent={<TbCurrencyTaka />}
                 />
             </ModalBody>

@@ -76,7 +76,7 @@ export default function EditProduct({
                 <CustomDivider />
                 <div className="flex flex-row justify-between items-center md:gap-1 w-full">
                     <DeleteProductBtn />
-                    <EditProductBtn />
+                    <EditProductBtn defaultProps={product} />
                     <Button isIconOnly>
                         <MdOutlineLocalOffer />
                     </Button>

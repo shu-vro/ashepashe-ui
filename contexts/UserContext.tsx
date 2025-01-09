@@ -53,11 +53,15 @@ export default function UserProvider({
                     return;
                 }
                 const companyData = userData.company[0] as Company;
-                setUserCompany(companyData);
+                const response = await fetch(
+                    `${API_URL}/company/${companyData.slug}`
+                );
+                const company: Company = await response.json();
+                setUserCompany(company);
                 setUser(userData);
-                if (!companyData) return;
+                if (!company) return;
                 const res2 = await fetch(
-                    `${API_URL}/company-sections/${companyData.id}`
+                    `${API_URL}/company-sections/${company.id}`
                 );
                 const sd = await res2.json();
                 console.log(sd);

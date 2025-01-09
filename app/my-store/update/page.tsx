@@ -368,7 +368,9 @@ export default function Page() {
                     </div>
                 </div>
                 <CreateSection />
-                <AllCategories companyId={useUser?.userCompany?.id} />
+                <AllCategories
+                    products={useUser?.userCompany?.products || []}
+                />
             </div>
             <Button
                 color="success"

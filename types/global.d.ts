@@ -48,7 +48,7 @@ interface Company {
     status: number;
     phone: string | null;
     fb_page: string | null;
-    products: Product[];
+    products: Product["product"][];
 }
 
 interface Category {

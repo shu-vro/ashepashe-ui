@@ -16,76 +16,82 @@ import { toast } from "sonner";
 import { updateSectionAction } from "./updateSectionAction";
 import { UserContext } from "@/contexts/UserContext";
 import { ProductForm } from "./EditProductBtn";
+import { CompanySection } from "./AllCategories";
+import { createProductAction } from "./createProductAction";
+
+function UpdateCategory({ section }: { section: Category }) {
+    const [sectionName, setSectionName] = useState(section.name || "");
+    const useUser = use(UserContext);
+    return (
+        <div className="w-full">
+            <div className="more-product grid-in-more my-6">
+                <h2 className="text-2xl font-bold text-default-400 ml-4 flex flex-wrap justify-between items-center gap-2">
+                    <div className="grow">
+                        <WritableField
+                            component={Input}
+                            props={{
+                                inputProps: {
+                                    label: "Section Name",
+                                    value: sectionName,
+                                    onValueChange: setSectionName,
+                                },
+                            }}>
+                            {sectionName}
+                        </WritableField>{" "}
+                        ({0})
+                    </div>
+                    <Button
+                        color="secondary"
+                        variant="flat"
+                        onPress={async () => {
+                            const res = await updateSectionAction({
+                                name: sectionName,
+                                sectionId: section.id,
+                            });
+
+                            if (res.status === 200) {
+                                toast.success(res.message);
+                                useUser?.ticktock();
+                            } else {
+                                toast.error(res.message);
+                            }
+                        }}>
+                        Update
+                    </Button>
+                    <Button
+                        color="danger"
+                        variant="flat"
+                        onPress={async () => {
+                            const res = await deleteSectionAction({
+                                sectionId: section.id,
+                            });
+
+                            if (res.status === 200) {
+                                toast.success(res.message);
+                                useUser?.ticktock();
+                            } else {
+                                toast.error(res.message);
+                            }
+                        }}>
+                        Delete
+                    </Button>
+                </h2>
+            </div>
+        </div>
+    );
+}
 
 export default function CategoryEditSection({
     section,
-    id,
 }: {
-    section: Category["name"];
-    id: Category["id"];
+    section: CompanySection;
 }) {
-    const [sectionName, setSectionName] = useState(section);
     const useUser = use(UserContext);
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
     return (
         <div>
-            <div className="w-full">
-                <div className="more-product grid-in-more my-6">
-                    <h2 className="text-2xl font-bold text-default-400 ml-4 flex flex-wrap justify-between items-center gap-2">
-                        <div className="grow">
-                            <WritableField
-                                component={Input}
-                                props={{
-                                    inputProps: {
-                                        label: "Section Name",
-                                        value: sectionName,
-                                        onValueChange: setSectionName,
-                                    },
-                                }}>
-                                {sectionName}
-                            </WritableField>{" "}
-                            ({0})
-                        </div>
-                        <Button
-                            color="secondary"
-                            variant="flat"
-                            onPress={async () => {
-                                console.log(id);
-                                const res = await updateSectionAction({
-                                    name: sectionName,
-                                    sectionId: id,
-                                });
-                                if (res.status === 200) {
-                                    toast.success(res.message);
-                                    useUser?.ticktock();
-                                } else {
-                                    toast.error(res.message);
-                                }
-                            }}>
-                            Update
-                        </Button>
-                        <Button
-                            color="danger"
-                            variant="flat"
-                            onPress={async () => {
-                                console.log(id);
-                                const res = await deleteSectionAction({
-                                    sectionId: id,
-                                });
-                                console.log(res);
-                                if (res.status === 200) {
-                                    toast.success(res.message);
-                                    useUser?.ticktock();
-                                } else {
-                                    toast.error(res.message);
-                                }
-                            }}>
-                            Delete
-                        </Button>
-                    </h2>
-                </div>
-            </div>
+            <UpdateCategory section={section} />
             <div className="flex flex-wrap justify-start items-center w-full gap-2">
                 <Button
                     className="w-full h-48 text-4xl font-bold"
@@ -102,29 +108,62 @@ export default function CategoryEditSection({
                                 <ProductForm
                                     submitText="Create Product"
                                     onClose={onClose}
-                                    onSubmit={(payload) => {
-                                        alert(JSON.stringify(payload));
+                                    onSubmit={async (payload) => {
+                                        // {
+                                        //     "name" : "test",
+                                        //     "description" : "test",
+                                        //     "company_id" : 11,
+                                        //     "price" : 69,
+                                        //     "section_id": 11,
+                                        //     "image1": "data:image/webp;base64,...,
+                                        //    "image2" : "optional",
+                                        //    "image3" : "optional",
+                                        //   "user_id" : 11
+                                        // }
+                                        if (
+                                            !useUser ||
+                                            !useUser.user ||
+                                            !useUser.userCompany ||
+                                            !section ||
+                                            !payload ||
+                                            !payload.price ||
+                                            !payload.name ||
+                                            !payload.image
+                                        )
+                                            return toast.error(
+                                                "Some Fields are missing.",
+                                                {
+                                                    description:
+                                                        "This error happened because you missed some REQUIRED fields empty. If this error happens over and over, please logout and login again. Also, make sure that you have created your store.",
+                                                }
+                                            );
+                                        const customPayload = {
+                                            name: payload.name,
+                                            description: payload.description,
+                                            price: parseFloat(payload.price),
+                                            section_id: section.id,
+                                            image1: payload.image,
+                                            user_id: useUser?.user?.id,
+                                            company_id:
+                                                useUser?.userCompany?.id,
+                                        };
+                                        const res = await createProductAction(
+                                            customPayload
+                                        );
+                                        if (res.status === 200) {
+                                            toast.success(res.message);
+                                            useUser?.ticktock();
+                                        } else {
+                                            toast.error(res.message);
+                                        }
                                     }}
                                 />
                             </>
                         )}
                     </ModalContent>
                 </Modal>
-                {Array.from({
-                    length: 2,
-                }).map((_, i) => (
-                    <EditProduct
-                        key={i}
-                        product={
-                            {
-                                name: "Product Name",
-                                price: 1000,
-                                image1: "/images/placeholder.png",
-                                description:
-                                    "Lorem ipsum dolor sit amet consectetur adipisicingelit. Reprehenderit itaque adipisci nemo, ducimusfacere fugit! Minima tempora cupiditate explicaboconsequuntur quis ex odit officia, at quod ipsum utquaerat repellat.",
-                            } as Product["product"]
-                        }
-                    />
+                {section.products.map((product) => (
+                    <EditProduct key={product.id} product={product} />
                 ))}
             </div>
         </div>

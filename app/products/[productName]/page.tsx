@@ -32,11 +32,11 @@ export default async function ProductPage({ params }: Props) {
                     </h2>
                     <CategorySlide
                         selected={companyProducts}
-                        className={cn("w-full max-lap:w-[100vw]")}
+                        className={cn("w-full max-lap:w-[95vw]")}
                     />
                 </div>
             )}
-            <ReviewSide reviews={reviews} />
+            <ReviewSide reviews={reviews} productId={product.id} />
         </div>
     );
 }

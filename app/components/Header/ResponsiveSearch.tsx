@@ -10,11 +10,13 @@ import UserDropdown, { CreateStoreModal } from "./UserDropdown";
 import { useRouter } from "next/navigation";
 import { use } from "react";
 import { UserContext } from "@/contexts/UserContext";
+import { useSession } from "next-auth/react";
 
 export default function ResponsiveButtons({}) {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const { push } = useRouter();
     const useUser = use(UserContext);
+    const { status } = useSession();
     return (
         <>
             <NavbarItem>
@@ -33,18 +35,20 @@ export default function ResponsiveButtons({}) {
                 <ThemeButton />
             </NavbarItem>
             <CustomDivider />
-            <Button
-                color="primary"
-                variant="flat"
-                onPress={() => {
-                    if (!useUser?.userCompany) {
-                        onOpen();
-                    } else {
-                        push("/my-store/update");
-                    }
-                }}>
-                {!useUser?.userCompany ? "Create Store" : "My Store"}
-            </Button>
+            {status === "authenticated" && (
+                <Button
+                    color="primary"
+                    variant="flat"
+                    onPress={() => {
+                        if (!useUser?.userCompany) {
+                            onOpen();
+                        } else {
+                            push("/my-store/update");
+                        }
+                    }}>
+                    {!useUser?.userCompany ? "Create Store" : "My Store"}
+                </Button>
+            )}
             <CustomDivider />
             <NavbarItem>
                 <LoginButton />

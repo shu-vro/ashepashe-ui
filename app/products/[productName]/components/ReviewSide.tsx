@@ -1,8 +1,9 @@
 "use client";
 
-import React, { Key, useEffect, useMemo, useState } from "react";
+import React, { Key, use, useEffect, useMemo, useState } from "react";
 import { Rating } from "@smastrom/react-rating";
 import {
+    Button,
     Card,
     CardBody,
     CardHeader,
@@ -11,6 +12,7 @@ import {
     Progress,
     Tab,
     Tabs,
+    Textarea,
     Tooltip,
     User,
 } from "@nextui-org/react";
@@ -18,9 +20,14 @@ import { cn, paginate } from "@/lib/utils";
 import numeral from "numeral";
 import moment from "moment";
 import { inBound } from "@/app/companies/components/ViewCompanies";
+import { useSession } from "next-auth/react";
+import { UserContext } from "@/contexts/UserContext";
+import { reviewSendAction } from "./reviewSendAction";
+import { toast } from "sonner";
 
 type Props = {
     reviews: Review[];
+    productId: number;
 };
 
 const colors = ["success", "primary", "warning", "warning", "danger"] as const;
@@ -57,10 +64,71 @@ function sortby(key: (typeof sortOptions)[number]["key"], reviews: Review[]) {
     }
 }
 
-export default function ReviewSide({ reviews }: Props) {
+function CreateReview({
+    productId,
+    defaultReview,
+    defaultRating,
+}: {
+    productId: number;
+    defaultReview?: string;
+    defaultRating?: number;
+}) {
+    const useUser = use(UserContext);
+    const [review, setReview] = useState(defaultReview || "");
+    const [rating, setRating] = useState(defaultRating || 0);
+    useEffect(() => {
+        setRating(defaultRating || 0);
+        setReview(defaultReview || "");
+    }, [defaultRating, defaultReview]);
+
+    return (
+        <div>
+            <Rating
+                style={{
+                    maxWidth: 300,
+                }}
+                value={rating}
+                onChange={setRating}
+                className="mx-auto"
+            />
+            <Textarea
+                label="Write a review"
+                className="max-w-xl mx-auto my-4"
+                value={review}
+                onValueChange={setReview}
+            />
+            <div className="flex flex-row max-w-xl mx-auto">
+                <div className="grow" />
+                <Button
+                    variant="shadow"
+                    color="success"
+                    onPress={async () => {
+                        const payload = {
+                            user_id: useUser?.user?.id,
+                            product_id: productId,
+                            rating,
+                            review,
+                        };
+                        const res = await reviewSendAction(payload);
+                        if (res.status === 200) {
+                            toast.success(res.message);
+                        } else {
+                            toast.error(`Error(${res.status}): ` + res.message);
+                        }
+                    }}>
+                    Submit
+                </Button>
+            </div>
+        </div>
+    );
+}
+
+export default function ReviewSide({ reviews, productId }: Props) {
     const [selected, setSelected] = useState<Key>("recent");
     const [currentPage, setCurrentPage] = useState(1);
     const [reviewers, setReviewers] = useState([]);
+    const { status } = useSession();
+    const useUser = use(UserContext);
 
     const { selectedReviews, reviewNum } = useMemo(() => {
         let sortedReviews = sortby(selected as string, reviews);
@@ -86,6 +154,10 @@ export default function ReviewSide({ reviews }: Props) {
         );
         console.log(userSet);
     }, []);
+
+    const myReview = useMemo(() => {
+        return reviews.find((r) => r.user_id === useUser?.user?.id);
+    }, [useUser?.user]);
 
     return (
         <div className="grid-in-review my-12 mx-4 flex flex-col gap-6">
@@ -135,6 +207,13 @@ export default function ReviewSide({ reviews }: Props) {
                         })}
                 </div>
             </div>
+            {status === "authenticated" && (
+                <CreateReview
+                    productId={productId}
+                    defaultRating={myReview?.rating}
+                    defaultReview={myReview?.review}
+                />
+            )}
             <div className="mx-auto w-fit">
                 <Tabs
                     variant="bordered"

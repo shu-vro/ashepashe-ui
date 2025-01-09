@@ -47,13 +47,13 @@ export default async function Page(props: Props) {
                             <div
                                 key={section.id}
                                 className="more-product grid-in-more mt-6">
-                                <h2 className="text-2xl font-bold text-default-400 ml-4">
+                                <h2 className="text-2xl font-bold text-default-400 ml-4 w-fit">
                                     {section.name} ({value.length})
                                 </h2>
                                 <CategorySlide
                                     selected={value}
                                     className={cn(
-                                        "w-full max-lap:w-screen max-[760px]:w-[100vw]"
+                                        "w-full max-lap:w-[95vw] max-[760px]:w-[95vw]"
                                     )}
                                 />
                             </div>

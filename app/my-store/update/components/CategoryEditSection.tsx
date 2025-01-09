@@ -109,17 +109,21 @@ export default function CategoryEditSection({
                                     submitText="Create Product"
                                     onClose={onClose}
                                     onSubmit={async (payload) => {
-                                        // {
-                                        //     "name" : "test",
-                                        //     "description" : "test",
-                                        //     "company_id" : 11,
-                                        //     "price" : 69,
-                                        //     "section_id": 11,
-                                        //     "image1": "data:image/webp;base64,...,
-                                        //    "image2" : "optional",
-                                        //    "image3" : "optional",
-                                        //   "user_id" : 11
-                                        // }
+                                        if (!payload.image) {
+                                            throw new Error(
+                                                "Please upload an image."
+                                            );
+                                        }
+                                        if (!payload.name) {
+                                            throw new Error(
+                                                "Please Enter a valid name."
+                                            );
+                                        }
+                                        if (!payload.price) {
+                                            throw new Error(
+                                                "Please Enter a valid price."
+                                            );
+                                        }
                                         if (
                                             !useUser ||
                                             !useUser.user ||
@@ -129,14 +133,14 @@ export default function CategoryEditSection({
                                             !payload.price ||
                                             !payload.name ||
                                             !payload.image
-                                        )
-                                            return toast.error(
+                                        ) {
+                                            throw new Error(
                                                 "Some Fields are missing.",
                                                 {
-                                                    description:
-                                                        "This error happened because you missed some REQUIRED fields empty. If this error happens over and over, please logout and login again. Also, make sure that you have created your store.",
+                                                    cause: "This error happened because you missed some REQUIRED fields empty. If this error happens over and over, please logout and login again. Also, make sure that you have created your store.",
                                                 }
                                             );
+                                        }
                                         const customPayload = {
                                             name: payload.name,
                                             description: payload.description,

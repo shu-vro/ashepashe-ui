@@ -64,7 +64,6 @@ export default function UserProvider({
                     `${API_URL}/company-sections/${company.id}`
                 );
                 const sd = await res2.json();
-                console.log(sd);
                 setCompanySections(sd.sections);
             } catch (error) {
                 toast.error("Error fetching user data");

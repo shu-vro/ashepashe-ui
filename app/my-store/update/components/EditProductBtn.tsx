@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { use, useState } from "react";
 import { LuPencilLine } from "react-icons/lu";
 import {
     Modal,
@@ -16,6 +16,10 @@ import {
 import { TbCurrencyTaka } from "react-icons/tb";
 import { BsUpload } from "react-icons/bs";
 import { onImageUpload } from "@/lib/utils";
+import { UserContext } from "@/contexts/UserContext";
+import { toast } from "sonner";
+import { editProductAction } from "./editProductAction";
+import { API_URL } from "@/lib/var";
 
 type Props = {
     defaultProps: Product["product"];
@@ -23,10 +27,11 @@ type Props = {
 
 export default function EditProductBtn({ defaultProps }: Props) {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
+    const useUser = use(UserContext);
 
     return (
         <>
-            <Button isIconOnly onClick={onOpen}>
+            <Button isIconOnly onPress={onOpen}>
                 <LuPencilLine />
             </Button>
             <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
@@ -38,7 +43,48 @@ export default function EditProductBtn({ defaultProps }: Props) {
                             </ModalHeader>
                             <ProductForm
                                 onClose={onClose}
-                                onSubmit={() => {}}
+                                onSubmit={async (payload) => {
+                                    if (!payload.image) {
+                                        return toast.error(
+                                            "Please upload an image."
+                                        );
+                                    }
+                                    if (
+                                        !useUser ||
+                                        !useUser.user ||
+                                        !useUser.userCompany ||
+                                        !payload ||
+                                        !payload.price ||
+                                        !payload.name ||
+                                        !payload.image
+                                    )
+                                        return toast.error(
+                                            "Some Fields are missing.",
+                                            {
+                                                description:
+                                                    "This error happened because you missed some REQUIRED fields empty. If this error happens over and over, please logout and login again. Also, make sure that you have created your store.",
+                                            }
+                                        );
+                                    const customPayload = {
+                                        name: payload.name,
+                                        description: payload.description,
+                                        price: parseFloat(payload.price),
+                                        section_id: defaultProps.section_id,
+                                        image1: payload.image,
+                                        user_id: useUser?.user?.id,
+                                        company_id: useUser?.userCompany?.id,
+                                    };
+                                    const data = await editProductAction(
+                                        customPayload,
+                                        defaultProps.slug
+                                    );
+                                    if (data.status === 200) {
+                                        toast.success(data.message);
+                                        useUser?.ticktock();
+                                    } else {
+                                        toast.error(data.message);
+                                    }
+                                }}
                                 defaultProps={defaultProps}
                             />
                         </>
@@ -57,7 +103,7 @@ export function ProductForm({
 }: {
     submitText?: string;
     onClose: () => void;
-    onSubmit: (arg0: any) => void;
+    onSubmit: (arg0: any) => Promise<any>;
 } & Partial<Props>) {
     const [imageUrl, setImageUrl] = useState("");
     const validatePrice = (value: string) => {
@@ -77,13 +123,17 @@ export function ProductForm({
     return (
         <Form
             validationBehavior="native"
-            onSubmit={(e) => {
+            onSubmit={async (e) => {
                 e.preventDefault();
                 const formData = new FormData(e.target as HTMLFormElement);
                 const payload = Object.fromEntries(formData);
                 payload["image"] = imageUrl;
-                onSubmit(payload);
-                onClose();
+                try {
+                    await onSubmit(payload);
+                    onClose();
+                } catch (e: any) {
+                    toast.error(e.message, { description: e.cause });
+                }
             }}>
             <ModalBody>
                 <label htmlFor="image1" className="cursor-pointer">

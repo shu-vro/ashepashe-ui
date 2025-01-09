@@ -78,6 +78,22 @@ export default function ResponsiveButtons({
     };
 
     useEffect(() => {
+        const fetchData = async () => {
+            try {
+              const response = await fetch('http://127.0.0.1:8000/user');
+              const data = await response.json();
+              
+              if (data) {
+                // Store data in localStorage
+                localStorage.setItem('user', JSON.stringify(data));
+                console.log('User data stored:', data);
+              }
+            } catch (error) {
+              console.error('Error fetching data:', error);
+            }
+          };
+      
+        fetchData(); 
         const cb = (e: Event) => {
             setDeferredPrompt(e as BeforeInstallPromptEvent);
         };
@@ -85,7 +101,14 @@ export default function ResponsiveButtons({
         return () => {
             window.removeEventListener("beforeinstallprompt", cb);
         };
+
+       
+
     }, []);
+
+    const Login = async () => {
+        window.location.href = "http://127.0.0.1:8000/auth/google";
+    };
 
     return (
         <>
@@ -130,6 +153,9 @@ export default function ResponsiveButtons({
             <CustomDivider />
             <NavbarItem>
                 <ThemeButton />
+            </NavbarItem>
+            <NavbarItem className="w-full">
+                <button onClick={() => Login()} className="btn btn-primary">Login</button>
             </NavbarItem>
             <CustomDivider />
             <NavbarItem>

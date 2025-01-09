@@ -89,12 +89,15 @@ export default function Header() {
                     <NavbarItem className="w-full">
                         <SearchDesktop products={products} />
                     </NavbarItem>
+                   
+                  
                 </NavbarContent>
 
                 <NavbarContent justify="end">
                     <ResponsiveButtons products={products} />
                 </NavbarContent>
             </Navbar>
+
             <Navbar
                 isBordered
                 shouldHideOnScroll

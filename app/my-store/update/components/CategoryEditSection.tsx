@@ -1,5 +1,6 @@
 import {
     Button,
+    Card,
     Input,
     Modal,
     ModalBody,
@@ -22,6 +23,11 @@ import { createProductAction } from "./createProductAction";
 function UpdateCategory({ section }: { section: CompanySection }) {
     const [sectionName, setSectionName] = useState(section.name || "");
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
+    const {
+        isOpen: isCreateProductOpen,
+        onOpen: onCreateProductOpen,
+        onOpenChange: onCreateProductOpenChange,
+    } = useDisclosure();
     const useUser = use(UserContext);
     return (
         <div className="w-full">
@@ -45,6 +51,10 @@ function UpdateCategory({ section }: { section: CompanySection }) {
                         color="secondary"
                         variant="flat"
                         onPress={async () => {
+                            if (sectionName === section.name) {
+                                toast.error("No changes detected.");
+                                return;
+                            }
                             const res = await updateSectionAction({
                                 name: sectionName,
                                 sectionId: section.id,
@@ -113,97 +123,105 @@ function UpdateCategory({ section }: { section: CompanySection }) {
                             )}
                         </ModalContent>
                     </Modal>
+
+                    <Button
+                        color="primary"
+                        variant="flat"
+                        className="font-bold"
+                        onPress={onCreateProductOpen}>
+                        Create Product
+                    </Button>
+                    <Modal
+                        isOpen={isCreateProductOpen}
+                        onOpenChange={onCreateProductOpenChange}>
+                        <ModalContent>
+                            {(onClose) => (
+                                <>
+                                    <ModalHeader className="flex flex-col gap-1">
+                                        Create Product
+                                    </ModalHeader>
+                                    <ProductForm
+                                        submitText="Create Product"
+                                        onClose={onClose}
+                                        onSubmit={async (payload) => {
+                                            if (!payload.image) {
+                                                throw new Error(
+                                                    "Please upload an image."
+                                                );
+                                            }
+                                            if (!payload.name) {
+                                                throw new Error(
+                                                    "Please Enter a valid name."
+                                                );
+                                            }
+                                            if (!payload.price) {
+                                                throw new Error(
+                                                    "Please Enter a valid price."
+                                                );
+                                            }
+                                            if (
+                                                !useUser ||
+                                                !useUser.user ||
+                                                !useUser.userCompany ||
+                                                !section ||
+                                                !payload ||
+                                                !payload.price ||
+                                                !payload.name ||
+                                                !payload.image
+                                            ) {
+                                                throw new Error(
+                                                    "Some Fields are missing.",
+                                                    {
+                                                        cause: "This error happened because you missed some REQUIRED fields empty. If this error happens over and over, please logout and login again. Also, make sure that you have created your store.",
+                                                    }
+                                                );
+                                            }
+                                            const customPayload = {
+                                                name: payload.name,
+                                                description:
+                                                    payload.description,
+                                                price: parseFloat(
+                                                    payload.price
+                                                ),
+                                                section_id: section.id,
+                                                image1: payload.image,
+                                                user_id: useUser?.user?.id,
+                                                company_id:
+                                                    useUser?.userCompany?.id,
+                                            };
+                                            const res =
+                                                await createProductAction(
+                                                    customPayload
+                                                );
+                                            if (res.status === 200) {
+                                                toast.success(res.message);
+                                                useUser?.ticktock();
+                                            } else {
+                                                toast.error(
+                                                    `Error(${res.status}): ` +
+                                                        res.message
+                                                );
+                                            }
+                                        }}
+                                    />
+                                </>
+                            )}
+                        </ModalContent>
+                    </Modal>
                 </h2>
             </div>
         </div>
     );
 }
-
 export default function CategoryEditSection({
     section,
 }: {
     section: CompanySection;
 }) {
-    const useUser = use(UserContext);
-    const { isOpen, onOpen, onOpenChange } = useDisclosure();
-
     return (
         <div>
             <UpdateCategory section={section} />
             <div className="flex flex-wrap justify-start items-center w-full gap-2">
-                <Button
-                    className="w-full h-36 text-4xl font-bold"
-                    onPress={onOpen}>
-                    Create Product
-                </Button>
-                <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
-                    <ModalContent>
-                        {(onClose) => (
-                            <>
-                                <ModalHeader className="flex flex-col gap-1">
-                                    Create Product
-                                </ModalHeader>
-                                <ProductForm
-                                    submitText="Create Product"
-                                    onClose={onClose}
-                                    onSubmit={async (payload) => {
-                                        if (!payload.image) {
-                                            throw new Error(
-                                                "Please upload an image."
-                                            );
-                                        }
-                                        if (!payload.name) {
-                                            throw new Error(
-                                                "Please Enter a valid name."
-                                            );
-                                        }
-                                        if (!payload.price) {
-                                            throw new Error(
-                                                "Please Enter a valid price."
-                                            );
-                                        }
-                                        if (
-                                            !useUser ||
-                                            !useUser.user ||
-                                            !useUser.userCompany ||
-                                            !section ||
-                                            !payload ||
-                                            !payload.price ||
-                                            !payload.name ||
-                                            !payload.image
-                                        ) {
-                                            throw new Error(
-                                                "Some Fields are missing.",
-                                                {
-                                                    cause: "This error happened because you missed some REQUIRED fields empty. If this error happens over and over, please logout and login again. Also, make sure that you have created your store.",
-                                                }
-                                            );
-                                        }
-                                        const customPayload = {
-                                            name: payload.name,
-                                            description: payload.description,
-                                            price: parseFloat(payload.price),
-                                            section_id: section.id,
-                                            image1: payload.image,
-                                            user_id: useUser?.user?.id,
-                                            company_id:
-                                                useUser?.userCompany?.id,
-                                        };
-                                        const res = await createProductAction(
-                                            customPayload
-                                        );
-                                        if (res.status === 200) {
-                                            toast.success(res.message);
-                                            useUser?.ticktock();
-                                        } else {
-                                            toast.error(res.message);
-                                        }
-                                    }}
-                                />
-                            </>
-                        )}
-                    </ModalContent>
-                </Modal>
                 {section.products.map((product) => (
                     <EditProduct key={product.id} product={product} />
                 ))}

@@ -24,6 +24,7 @@ import { useSession } from "next-auth/react";
 import { UserContext } from "@/contexts/UserContext";
 import { reviewSendAction } from "./reviewSendAction";
 import { toast } from "sonner";
+import { deleteReviewAction } from "./deleteReviewAction";
 
 type Props = {
     reviews: Review[];
@@ -68,10 +69,12 @@ function CreateReview({
     productId,
     defaultReview,
     defaultRating,
+    defaultReviewId,
 }: {
     productId: number;
     defaultReview?: string;
     defaultRating?: number;
+    defaultReviewId?: number;
 }) {
     const useUser = use(UserContext);
     const [review, setReview] = useState(defaultReview || "");
@@ -99,10 +102,37 @@ function CreateReview({
             />
             <div className="flex flex-row max-w-xl mx-auto">
                 <div className="grow" />
+                {typeof defaultReviewId === "number" && (
+                    <Button
+                        variant="shadow"
+                        color="danger"
+                        className="mr-4"
+                        onPress={async () => {
+                            const res = await deleteReviewAction({
+                                userId: useUser?.user?.id,
+                                reviewId: defaultReviewId,
+                            });
+
+                            if (res.status === 200) {
+                                toast.success(res.message);
+                            } else {
+                                toast.error(
+                                    `Error(${res.status}): ` + res.message
+                                );
+                            }
+                        }}>
+                        Delete
+                    </Button>
+                )}
                 <Button
                     variant="shadow"
                     color="success"
                     onPress={async () => {
+                        if (rating < 1 || rating > 5) {
+                            return toast.error(
+                                "Rating must be at least 1 and at most 5"
+                            );
+                        }
                         const payload = {
                             user_id: useUser?.user?.id,
                             product_id: productId,
@@ -110,7 +140,7 @@ function CreateReview({
                             review,
                         };
                         const res = await reviewSendAction(payload);
-                        if (res.status === 200) {
+                        if (res.status === 201) {
                             toast.success(res.message);
                         } else {
                             toast.error(`Error(${res.status}): ` + res.message);
@@ -126,7 +156,6 @@ function CreateReview({
 export default function ReviewSide({ reviews, productId }: Props) {
     const [selected, setSelected] = useState<Key>("recent");
     const [currentPage, setCurrentPage] = useState(1);
-    const [reviewers, setReviewers] = useState([]);
     const { status } = useSession();
     const useUser = use(UserContext);
 
@@ -147,13 +176,6 @@ export default function ReviewSide({ reviews, productId }: Props) {
         );
         return { rating, groupRating };
     }, [reviews, selectedReviews]);
-
-    useEffect(() => {
-        const userSet = Array.from(
-            new Set(selectedReviews.map((review) => review.user_id))
-        );
-        console.log(userSet);
-    }, []);
 
     const myReview = useMemo(() => {
         return reviews.find((r) => r.user_id === useUser?.user?.id);
@@ -212,6 +234,7 @@ export default function ReviewSide({ reviews, productId }: Props) {
                     productId={productId}
                     defaultRating={myReview?.rating}
                     defaultReview={myReview?.review}
+                    defaultReviewId={myReview?.id}
                 />
             )}
             <div className="mx-auto w-fit">
@@ -227,11 +250,11 @@ export default function ReviewSide({ reviews, productId }: Props) {
                 {selectedReviews.map((review) => (
                     <div key={review.id}>
                         <Card shadow="none" className="bg-content2">
-                            <CardHeader className="justify-between">
-                                {/* <User
+                            <CardHeader className="justify-between flex-wrap">
+                                <User
                                     name={review.user.name}
                                     description={moment(
-                                        review.created_at
+                                        review.updated_at
                                     ).fromNow()}
                                     avatarProps={{
                                         src: review.user.image,
@@ -239,9 +262,9 @@ export default function ReviewSide({ reviews, productId }: Props) {
                                         isBordered: true,
                                         showFallback: true,
                                     }}
-                                /> */}
+                                />
                                 <Rating
-                                    style={{ maxWidth: 75 }}
+                                    style={{ maxWidth: 100 }}
                                     readOnly
                                     value={review.rating}
                                 />

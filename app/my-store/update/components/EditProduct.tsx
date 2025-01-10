@@ -1,16 +1,9 @@
 import { cn, removeTags, toValidUrl } from "@/lib/utils";
-import {
-    Button,
-    Card,
-    CardBody,
-    CardFooter,
-    Divider,
-    Image,
-} from "@nextui-org/react";
+import { Card, CardBody, CardFooter, Divider, Image } from "@nextui-org/react";
 import NextImage from "next/image";
 import DeleteProductBtn from "./DeleteProductBtn";
 import EditProductBtn from "./EditProductBtn";
-import { MdOutlineLocalOffer } from "react-icons/md";
+import OfferProductBtn from "./OfferProductBtn";
 
 export default function EditProduct({
     product,
@@ -77,9 +70,7 @@ export default function EditProduct({
                 <div className="flex flex-row justify-between items-center md:gap-1 w-full">
                     <DeleteProductBtn slug={product.slug} />
                     <EditProductBtn defaultProps={product} />
-                    <Button isIconOnly>
-                        <MdOutlineLocalOffer />
-                    </Button>
+                    <OfferProductBtn />
                 </div>
             </CardFooter>
         </Card>

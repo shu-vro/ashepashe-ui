@@ -16,7 +16,6 @@ import {
 import React, { useMemo, useState } from "react";
 import { dynamicFakeImageGenerator, paginate, toValidUrl } from "@/lib/utils";
 import { ProductCard } from "@/app/components/ProductCard";
-import Link from "next/link";
 import { inBound } from "@/app/companies/components/ViewCompanies";
 import { useRouter } from "next/navigation";
 import { keys, resolver, KeyType } from "@/lib/filter-products";
@@ -24,18 +23,6 @@ import { DEBOUNCE_DELAY } from "@/lib/var";
 import { IoSearchOutline } from "react-icons/io5";
 import { IoCloseCircleOutline } from "react-icons/io5";
 import { debounce } from "lodash";
-import { Drawer } from "vaul";
-import {
-    // Drawer as DrawerRoot,
-    // DrawerClose,
-    // DrawerContent,
-    // DrawerDescription,
-    // DrawerFooter,
-    // DrawerHeader,
-    DrawerTitle,
-    DrawerTrigger,
-    DrawerOverlay,
-} from "@/components/ui/drawer";
 import allLocationOption from "@/lib/divisions.json";
 import { useIsMobile } from "@/hooks/use-mobile";
 

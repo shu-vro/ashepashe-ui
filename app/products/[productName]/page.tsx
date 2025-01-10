@@ -17,6 +17,8 @@ export default async function ProductPage({ params }: Props) {
     const product = productDetails.product;
     const company = product.company;
 
+    console.log(product);
+
     const company_full = await getCompanyProducts(company.slug);
     const companyProducts =
         company_full.products as unknown as Product["product"][];

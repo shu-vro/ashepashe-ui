@@ -11,29 +11,130 @@ import {
     ModalHeader,
     useDisclosure,
 } from "@nextui-org/react";
-import React, { useMemo, useState } from "react";
+import React, { use, useMemo, useState } from "react";
 import { MdOutlineLocalOffer } from "react-icons/md";
 import { TbCurrencyTaka } from "react-icons/tb";
 import { toast } from "sonner";
-import { now, getLocalTimeZone } from "@internationalized/date";
+import {
+    now,
+    getLocalTimeZone,
+    DateValue,
+    parseDateTime,
+    parseDate,
+} from "@internationalized/date";
+import { createProductOffersAction } from "./createProductOffersAction";
+import { UserContext } from "@/contexts/UserContext";
+import { deleteOfferAction } from "./deleteOfferAction";
+import { updateProductOfferAction } from "./updateProductOfferAction";
 
-export default function OfferProductBtn() {
+export default function OfferProductBtn({
+    productId,
+    currentOffer,
+    currentPrice,
+}: {
+    productId: number;
+    currentOffer?: Offer;
+    currentPrice?: number;
+}) {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
-    const [discountPrice, setDiscountPrice] = useState("0");
-    const price = 299;
+    const [discountPrice, setDiscountPrice] = useState(
+        currentPrice?.toString() ||
+            (
+                ((currentOffer?.offer_percent || 0) * (currentPrice || 0)) /
+                100
+            ).toFixed()
+    );
+    const [validity, setValidity] = useState<DateValue | null>(
+        parseDateTime(now(getLocalTimeZone()).toString().split("T")[0])
+    );
     const discountPercent = useMemo(() => {
-        return (Number(discountPrice) / price) * 100;
+        return 100 - (Number(discountPrice) / (currentPrice || 1)) * 100;
     }, [discountPrice]);
+    const useUser = use(UserContext);
+
     return (
         <>
-            <Button isIconOnly onPress={onOpen}>
+            <Button
+                isIconOnly
+                onPress={onOpen}
+                color={currentOffer ? "success" : "default"}>
                 <MdOutlineLocalOffer />
             </Button>
 
             <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
                 <ModalContent>
                     {(onClose) => (
-                        <Form validationBehavior="native" className="block">
+                        <Form
+                            validationBehavior="native"
+                            className="block"
+                            onSubmit={async (e) => {
+                                e.preventDefault();
+                                if (!useUser || !useUser.user?.id) {
+                                    toast.error("User not found.");
+                                    return;
+                                }
+                                if (currentOffer) {
+                                    // {
+                                    //     "product_id" : 34,
+                                    //     "offer_percent": 22,
+                                    //     "offer_buy" : "offer_buy",
+                                    //     "validity" : "2025-01-09T19:10:39.000000Z",
+                                    //         "user_id": 1
+                                    // }
+                                    const payload = {
+                                        user_id: useUser.user?.id,
+                                        product_id: productId,
+                                        offer_percent: discountPercent,
+                                        validity: validity
+                                            ? new Date(
+                                                  validity.toString()
+                                              ).toISOString()
+                                            : null,
+                                    };
+                                    const res: any =
+                                        await updateProductOfferAction(
+                                            payload,
+                                            currentOffer.id
+                                        );
+                                    if (res.status === 200) {
+                                        toast.success(res.message);
+                                        useUser.ticktock();
+                                        onClose();
+                                    } else {
+                                        toast.error(
+                                            `Error(${res.status}) ` +
+                                                res.message
+                                        );
+                                    }
+                                } else {
+                                    const payload = {
+                                        user_id: useUser.user?.id,
+                                        product_id: productId,
+                                        offer_percent: discountPercent,
+                                        validity: validity
+                                            ? new Date(
+                                                  validity.toString()
+                                              ).toISOString()
+                                            : null,
+                                    };
+                                    // return console.log(payload);
+                                    const res: any =
+                                        await createProductOffersAction(
+                                            payload
+                                        );
+
+                                    if (res.status === 201) {
+                                        toast.success(res.message);
+                                        useUser.ticktock();
+                                        onClose();
+                                    } else {
+                                        toast.error(
+                                            `Error(${res.status}) ` +
+                                                res.message
+                                        );
+                                    }
+                                }
+                            }}>
                             <ModalHeader className="flex flex-col gap-1">
                                 Offer Product
                             </ModalHeader>
@@ -43,14 +144,14 @@ export default function OfferProductBtn() {
                                     <Badge
                                         color="primary"
                                         content={`${Math.round(
-                                            100 - discountPercent
+                                            discountPercent
                                         )}% discount`}
                                         size="lg"
                                         classNames={{
                                             badge: "-right-8 -top-1",
                                         }}>
                                         <div className="text-primary text-3xl">
-                                            {price}
+                                            {currentPrice}
                                         </div>
                                     </Badge>
                                 </div>
@@ -71,17 +172,46 @@ export default function OfferProductBtn() {
                                     labelPlacement="outside"
                                     isRequired
                                     defaultValue={now(getLocalTimeZone())}
+                                    value={validity}
+                                    onChange={setValidity}
                                 />
                             </ModalBody>
                             <ModalFooter>
-                                <Button
-                                    autoFocus
-                                    color="success"
-                                    onPress={() => {
-                                        toast.success("Product offered.");
-                                        onClose();
-                                    }}>
-                                    Create Offer
+                                {currentOffer && (
+                                    <Button
+                                        autoFocus
+                                        color="danger"
+                                        onPress={async () => {
+                                            if (!currentOffer?.id || !useUser) {
+                                                return toast.error(
+                                                    "Offer not found."
+                                                );
+                                            }
+                                            const res = await deleteOfferAction(
+                                                {
+                                                    offerId: currentOffer?.id,
+                                                    userId: useUser?.user?.id,
+                                                }
+                                            );
+
+                                            if (res.status === 200) {
+                                                toast.success(res.message);
+                                                useUser.ticktock();
+                                                onClose();
+                                            } else {
+                                                toast.error(
+                                                    `Error(${res.status}) ` +
+                                                        res.message
+                                                );
+                                            }
+                                        }}>
+                                        Delete Offer
+                                    </Button>
+                                )}
+                                <Button autoFocus color="success" type="submit">
+                                    {currentOffer
+                                        ? "Update Offer"
+                                        : "Create Offer"}
                                 </Button>
                             </ModalFooter>
                         </Form>

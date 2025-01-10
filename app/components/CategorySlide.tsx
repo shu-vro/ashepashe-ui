@@ -36,8 +36,10 @@ export default function CategorySlide({
                             discountPrice={
                                 !offer
                                     ? select.price
-                                    : ((100 - offer.offer_percent) / 100) *
-                                      select.price
+                                    : Math.round(
+                                          ((100 - offer.offer_percent) / 100) *
+                                              select.price
+                                      )
                             }
                             actualPrice={select.price}
                             rating={

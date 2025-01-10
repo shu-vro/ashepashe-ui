@@ -56,7 +56,7 @@ export function ProductCard({
     ...rest
 }: ProductCardProps & CardProps) {
     const { push } = useRouter();
-    const discountPercent = ((discountPrice / actualPrice) * 100).toFixed(0);
+    const discountPercent = (discountPrice / actualPrice) * 100;
     return (
         <Card
             shadow="sm"
@@ -71,7 +71,6 @@ export function ProductCard({
                 onClick={(e) => {
                     e.stopPropagation();
                     push(link);
-                    console.log("clicked");
                 }}>
                 <Image
                     shadow="none"
@@ -113,7 +112,7 @@ export function ProductCard({
                 <CustomDivider />
                 <div className="flex flex-wrap justify-between items-center w-full">
                     <div>
-                        {discountPercent !== "100" && (
+                        {discountPercent !== 0 && (
                             <del className="text-default-500 text-sm">
                                 {actualPrice}৳
                             </del>
@@ -140,13 +139,15 @@ export function ProductCard({
                     <Button isIconOnly variant="light" className="text-xl">
                         <CiShoppingCart />
                     </Button>
-                    <Chip
-                        color="success"
-                        variant="bordered"
-                        radius="sm"
-                        size="sm">
-                        {discountPercent}%
-                    </Chip>
+                    {discountPercent !== 0 && (
+                        <Chip
+                            color="success"
+                            variant="bordered"
+                            radius="sm"
+                            size="sm">
+                            {discountPercent.toFixed(0)}%
+                        </Chip>
+                    )}
                 </div>
                 <div className="w-full">
                     {!disableCompany && (

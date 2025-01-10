@@ -1,16 +1,32 @@
 import { cn, removeTags, toValidUrl } from "@/lib/utils";
-import { Card, CardBody, CardFooter, Divider, Image } from "@nextui-org/react";
+import {
+    Card,
+    CardBody,
+    CardFooter,
+    Chip,
+    Divider,
+    Image,
+} from "@nextui-org/react";
 import NextImage from "next/image";
 import DeleteProductBtn from "./DeleteProductBtn";
 import EditProductBtn from "./EditProductBtn";
 import OfferProductBtn from "./OfferProductBtn";
+import { useMemo } from "react";
 
 export default function EditProduct({
     product,
 }: {
     product: Product["product"];
 }) {
-    const discountPercent = ((product.price / product.price) * 100).toFixed(0);
+    const offer = useMemo(
+        () =>
+            product.offers?.find(
+                (offer) => new Date(offer.validity).getTime() > Date.now()
+            ),
+        [product.offers]
+    );
+    const discountPercent = (offer?.offer_percent || 0).toFixed();
+
     return (
         <Card
             shadow="sm"
@@ -38,15 +54,15 @@ export default function EditProduct({
                 <div className="w-full">
                     <div className="capitalize not-italic font-bold text-xl line-clamp-2 h-[4ch]">
                         {product.name}{" "}
-                        {/* <Chip
+                        <Chip
                             color="success"
                             variant="bordered"
                             className={cn(
                                 "rounded-[6px] md:hidden",
-                                discountPercent === "100" ? "!hidden" : "flex"
+                                discountPercent === "0" ? "!hidden" : "flex"
                             )}>
                             {discountPercent}%
-                        </Chip> */}
+                        </Chip>
                     </div>
                     <div className="text-neutral-500 text-sm line-clamp-2 h-[4ch]">
                         {product.description && removeTags(product.description)}
@@ -55,9 +71,13 @@ export default function EditProduct({
                 <CustomDivider />
                 <div className="flex flex-wrap justify-between items-center w-full">
                     <div>
-                        {discountPercent !== "100" && (
+                        {offer && discountPercent !== "100" && (
                             <del className="text-default-500 text-sm">
-                                {product.price}৳
+                                {Math.round(
+                                    ((100 - offer.offer_percent) / 100) *
+                                        product.price
+                                )}
+                                ৳
                             </del>
                         )}{" "}
                         <span className="text-xl font-bold">
@@ -70,7 +90,11 @@ export default function EditProduct({
                 <div className="flex flex-row justify-between items-center md:gap-1 w-full">
                     <DeleteProductBtn slug={product.slug} />
                     <EditProductBtn defaultProps={product} />
-                    <OfferProductBtn />
+                    <OfferProductBtn
+                        productId={product.id}
+                        currentOffer={product.offers?.[0]}
+                        currentPrice={product.price}
+                    />
                 </div>
             </CardFooter>
         </Card>

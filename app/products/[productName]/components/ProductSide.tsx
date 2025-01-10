@@ -14,7 +14,7 @@ import {
     ModalHeader,
     useDisclosure,
 } from "@nextui-org/react";
-import React from "react";
+import React, { useMemo } from "react";
 import Link from "next/link";
 import { Rating } from "@smastrom/react-rating";
 import NextImage from "next/image";
@@ -75,9 +75,14 @@ export default function ProductSide({ product }: Prop) {
         });
     };
 
-    const offer = product.offers?.find(
-        (offer) => new Date(offer.validity).getTime() > Date.now()
+    const offer = useMemo(
+        () =>
+            product.offers?.find(
+                (offer) => new Date(offer.validity).getTime() > Date.now()
+            ),
+        [product.offers]
     );
+    console.log(offer);
     return (
         <div className="product grid-in-product">
             <Card
@@ -147,7 +152,7 @@ export default function ProductSide({ product }: Prop) {
                         {product.name}{" "}
                         {offer && (
                             <Chip color="warning">
-                                {offer.offer_percent}% Discount
+                                {offer.offer_percent.toFixed()}% Discount
                             </Chip>
                         )}
                     </h2>
@@ -175,8 +180,10 @@ export default function ProductSide({ product }: Prop) {
                                 </del>
                                 <span className="text-primary font-bold text-3xl ml-3">
                                     Tk{" "}
-                                    {((100 - offer.offer_percent) / 100) *
-                                        product.price}
+                                    {Math.round(
+                                        ((100 - offer.offer_percent) / 100) *
+                                            product.price
+                                    )}
                                 </span>
                             </>
                         ) : (

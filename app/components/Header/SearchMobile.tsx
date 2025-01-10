@@ -73,7 +73,9 @@ export default function SearchMobile({
                                             key={product.id}
                                             label={product.name}
                                             actualPrice={product.price}
-                                            discountPrice={discountPrice}
+                                            discountPrice={Math.round(
+                                                discountPrice
+                                            )}
                                             company_name={product.company.name}
                                             companyAvatar="https://i.pravatar.cc/150?u=a042581f4e29026704d"
                                             // image={dynamicFakeImageGenerator()}

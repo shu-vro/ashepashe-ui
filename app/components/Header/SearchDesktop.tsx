@@ -86,24 +86,39 @@ export default function SearchDesktop({
                                 key="search-menu">
                                 <CardBody className="w-[66vw] max-[480px]:w-screen text-wrap bg-content2">
                                     <ScrollShadow className="max-h-[60vh]">
-                                        {selectedProducts.map((product) => (
-                                            <SearchItems
-                                                key={product.id}
-                                                label={product.name}
-                                                actualPrice={product.price}
-                                                discountPrice={product.price}
-                                                company_name={
-                                                    product.company.name
-                                                }
-                                                companyAvatar="https://i.pravatar.cc/150?u=a042581f4e29026704d"
-                                                // image={dynamicFakeImageGenerator()}
-                                                image={toValidUrl(
-                                                    product.image1!
-                                                )}
-                                                slug={product.slug}
-                                                onSearchOpen={onSearchOpen}
-                                            />
-                                        ))}
+                                        {selectedProducts.map((product) => {
+                                            const offer = product.offers?.find(
+                                                (offer) =>
+                                                    new Date(
+                                                        offer.validity
+                                                    ).getTime() > Date.now()
+                                            );
+                                            const discountPrice = !offer
+                                                ? product.price
+                                                : ((100 - offer.offer_percent) /
+                                                      100) *
+                                                  product.price;
+                                            return (
+                                                <SearchItems
+                                                    key={product.id}
+                                                    label={product.name}
+                                                    actualPrice={product.price}
+                                                    discountPrice={Math.round(
+                                                        discountPrice
+                                                    )}
+                                                    company_name={
+                                                        product.company.name
+                                                    }
+                                                    companyAvatar="https://i.pravatar.cc/150?u=a042581f4e29026704d"
+                                                    // image={dynamicFakeImageGenerator()}
+                                                    image={toValidUrl(
+                                                        product.image1!
+                                                    )}
+                                                    slug={product.slug}
+                                                    onSearchOpen={onSearchOpen}
+                                                />
+                                            );
+                                        })}
                                     </ScrollShadow>
                                 </CardBody>
                             </Card>

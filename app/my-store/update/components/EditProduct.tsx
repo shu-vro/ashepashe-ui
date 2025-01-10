@@ -71,7 +71,7 @@ export default function EditProduct({
                 <CustomDivider />
                 <div className="flex flex-wrap justify-between items-center w-full">
                     <div>
-                        {offer && discountPercent !== "100" && (
+                        {/* {offer && discountPercent !== "100" && (
                             <del className="text-default-500 text-sm">
                                 {Math.round(
                                     ((100 - offer.offer_percent) / 100) *
@@ -82,7 +82,26 @@ export default function EditProduct({
                         )}{" "}
                         <span className="text-xl font-bold">
                             {product.price + "৳"}
-                        </span>
+                        </span> */}
+                        {offer && discountPercent !== "100" ? (
+                            <>
+                                <del className="text-default-500 text-sm">
+                                    {product.price + "৳"}
+                                </del>
+                                <span className="text-xl font-bold">
+                                    {Math.round(
+                                        ((100 - offer.offer_percent) / 100) *
+                                            product.price
+                                    )}
+                                    ৳
+                                </span>
+                            </>
+                        ) : (
+                            <span className="text-xl font-bold">
+                                {product.price}৳
+                            </span>
+                        )}
+                        <span className="text-xl font-bold"></span>
                     </div>
                     {/* <Rating style={{ maxWidth: 100 }} readOnly value={rating} /> */}
                 </div>

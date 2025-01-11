@@ -52,7 +52,13 @@ export default function UserProvider({
                 if (!userData && x.status !== "success") {
                     return;
                 }
-                const companyData = userData.company[0] as Company;
+                const companyData = userData.company?.[0] as Company;
+                if (!companyData) {
+                    setUser(userData);
+                    setUserCompany(null);
+                    setCompanySections([]);
+                    return;
+                }
                 const response = await fetch(
                     `${API_URL}/company/${companyData.slug}`
                 );

@@ -6,7 +6,7 @@ import React, { useMemo } from "react";
 export default function IndividualLink({ slug }: { slug: string }) {
     const individualUrl = useMemo(() => {
         return `${window.location.origin}/a/${slug}`;
-    }, []);
+    }, [slug]);
     return (
         <>
             Your Individual Link:{" "}

@@ -25,14 +25,14 @@ export async function updateStoreAction(payload: {
             options
         );
 
-        if (response.status !== 200) {
-            return {
-                status: response.status,
-                message: response.statusText,
-            };
-        }
         const data = await response.json();
-        return data;
+        return {
+            status: response.status,
+            message:
+                data?.message ||
+                Object.values(data.errors).join(", ") ||
+                response.statusText,
+        };
     } catch (error) {
         return error;
     }

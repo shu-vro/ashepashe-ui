@@ -397,7 +397,7 @@ export default function Page() {
                         category: selectedCategory,
                     };
                     console.log(payload);
-                    const x = await updateStoreAction({
+                    const x: any = await updateStoreAction({
                         data: payload,
                         store_slug: useUser?.userCompany?.slug,
                         userId: useUser?.user?.id,

@@ -21,7 +21,7 @@ export default function Home() {
                     <Button
                         className="my-2 bg-gradient-to-tr from-green-500 to-green-400 text-white shadow-lg text-xl font-bold"
                         as={Link}
-                        href="/home"
+                        href="/my-store/create"
                         // size="large"
                     >
                         Get Started

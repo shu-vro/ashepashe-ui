@@ -84,12 +84,14 @@ export function CreateStoreModal({
                                     );
                                     if (!useUser) return;
                                     const user = useUser.user;
-                                    const ans = await createStoreAction(
+                                    const ans: any = await createStoreAction(
                                         data as any,
                                         user!.id
                                     );
 
-                                    if (ans.status === "200") {
+                                    console.log(ans);
+
+                                    if (ans.status == 200) {
                                         toast.success(
                                             "Store Created Successfully.",
                                             {
@@ -98,21 +100,11 @@ export function CreateStoreModal({
                                             }
                                         );
                                         push("/my-store/update");
+                                        onClose();
                                     } else {
-                                        toast.error("Failed to create store.", {
-                                            description: () => {
-                                                return (
-                                                    <pre>
-                                                        {JSON.stringify(
-                                                            ans.errors,
-                                                            null,
-                                                            2
-                                                        )}
-                                                    </pre>
-                                                );
-                                            },
-                                            closeButton: true,
-                                        });
+                                        toast.error(
+                                            `Error(${ans.status}): ${ans.message}`
+                                        );
                                     }
                                 }}>
                                 <Input

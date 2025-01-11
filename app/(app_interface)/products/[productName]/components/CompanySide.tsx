@@ -27,6 +27,8 @@ type Prop = {
 };
 
 export default function CompanySide({ company }: Prop) {
+    const iframe = extractIframeUrl(company.iframe);
+
     return (
         <div className="company grid-in-company relative max-md:hidden">
             {/* flex-col sm:flex-row md:flex-row lap:flex-col */}
@@ -80,17 +82,14 @@ export default function CompanySide({ company }: Prop) {
                         <Rating value={0} className="max-w-32" />
                         <span>(0)</span>
                     </div>
-                    <div className="flex justify-around items-stretch pt-2 gap-8">
-                        <Button
-                            onClick={() => {
-                                const iframe = extractIframeUrl(company.iframe);
-                                window.open(
-                                    `https://www.google.com/maps/embed${iframe}`
-                                );
-                            }}
-                            className="w-full">
-                            View Location
-                        </Button>
+                    <div className="flex justify-around items-stretch flex-col pt-2 gap-8">
+                        <iframe
+                            src={`${iframe}`}
+                            className="w-full"
+                            height="350"
+                            allowFullScreen
+                            loading="lazy"
+                            referrerPolicy="no-referrer-when-downgrade"></iframe>
                         <Button
                             as={Link}
                             href={`/companies/${company.slug}`}

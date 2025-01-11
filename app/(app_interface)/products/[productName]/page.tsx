@@ -23,6 +23,7 @@ export default async function ProductPage({ params }: Props) {
     const companyProducts =
         company_full.products as unknown as Product["product"][];
     const reviews = product?.rating;
+
     return (
         <div className="relative grid grid-areas-productLayoutNoLap grid-cols-productLayoutNoLap lap:grid-areas-productLayoutLap lap:grid-cols-productLayoutLap">
             <CompanySide company={company} />

@@ -56,7 +56,7 @@ export function ProductCard({
     ...rest
 }: ProductCardProps & CardProps) {
     const { push } = useRouter();
-    const discountPercent = (discountPrice / actualPrice) * 100;
+    const discountPercent = 100 - (discountPrice / actualPrice) * 100;
     return (
         <Card
             shadow="sm"

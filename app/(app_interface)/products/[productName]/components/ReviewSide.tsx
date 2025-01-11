@@ -140,7 +140,7 @@ function CreateReview({
                             review,
                         };
                         const res = await reviewSendAction(payload);
-                        if (res.status === 201) {
+                        if (res.status === 200) {
                             toast.success(res.message);
                         } else {
                             toast.error(`Error(${res.status}): ` + res.message);

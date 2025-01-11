@@ -19,7 +19,6 @@ import {
 import { cn, paginate } from "@/lib/utils";
 import numeral from "numeral";
 import moment from "moment";
-import { inBound } from "@/app/(app_interface)/companies/components/ViewCompanies";
 import { useSession } from "next-auth/react";
 import { UserContext } from "@/contexts/UserContext";
 import { reviewSendAction } from "./reviewSendAction";
@@ -31,7 +30,14 @@ type Props = {
     productId: number;
 };
 
-const colors = ["success", "primary", "warning", "warning", "danger"] as const;
+const colors = [
+    "danger",
+    "danger",
+    "warning",
+    "warning",
+    "primary",
+    "success",
+] as const;
 const PER_PAGE = 5;
 const sortOptions = [
     {
@@ -140,7 +146,7 @@ function CreateReview({
                             review,
                         };
                         const res = await reviewSendAction(payload);
-                        if (res.status === 200) {
+                        if (res.status === 200 || res.status === 201) {
                             toast.success(res.message);
                         } else {
                             toast.error(`Error(${res.status}): ` + res.message);

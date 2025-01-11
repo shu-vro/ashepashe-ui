@@ -32,11 +32,16 @@ export default function Header() {
                 </NavbarBrand>
             </NavbarContent>
 
-            {/* <NavbarContent
-                className="hidden sm:flex gap-4 grow"
-                justify="center">
-                <NavbarItem className="w-full">
-                    <SearchDesktop products={products} />
+            {/* <NavbarContent className="hidden sm:flex gap-4 grow" justify="end">
+                <NavbarItem>
+                    <NextLink as={Link} href="/home">
+                        Home
+                    </NextLink>
+                </NavbarItem>
+                <NavbarItem>
+                    <NextLink as={Link} href="/products">
+                        Search
+                    </NextLink>
                 </NavbarItem>
             </NavbarContent> */}
 

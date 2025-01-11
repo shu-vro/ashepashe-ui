@@ -38,7 +38,7 @@ export async function AppSidebar() {
                                 />
                                 <AppSidebarItems
                                     item={{
-                                        title: "All Products",
+                                        title: "Advanced Search",
                                         url: `/products`,
                                     }}
                                 />

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { Key, useMemo, useState } from "react";
+import React, { Key, useEffect, useMemo, useState } from "react";
 import { Rating } from "@smastrom/react-rating";
 import {
     Card,
@@ -60,6 +60,7 @@ function sortby(key: (typeof sortOptions)[number]["key"], reviews: Review[]) {
 export default function ReviewSide({ reviews }: Props) {
     const [selected, setSelected] = useState<Key>("recent");
     const [currentPage, setCurrentPage] = useState(1);
+    const [reviewers, setReviewers] = useState([]);
 
     const { selectedReviews, reviewNum } = useMemo(() => {
         let sortedReviews = sortby(selected as string, reviews);
@@ -79,7 +80,13 @@ export default function ReviewSide({ reviews }: Props) {
         return { rating, groupRating };
     }, [reviews, selectedReviews]);
 
-    const loggedIn = true;
+    useEffect(() => {
+        const userSet = Array.from(
+            new Set(selectedReviews.map((review) => review.user_id))
+        );
+        console.log(userSet);
+    }, []);
+
     return (
         <div className="grid-in-review my-12 mx-4 flex flex-col gap-6">
             <div className="top flex flex-row justify-between items-center gap-4">
@@ -142,7 +149,7 @@ export default function ReviewSide({ reviews }: Props) {
                     <div key={review.id}>
                         <Card shadow="none" className="bg-content2">
                             <CardHeader className="justify-between">
-                                <User
+                                {/* <User
                                     name={review.user.name}
                                     description={moment(
                                         review.created_at
@@ -153,7 +160,7 @@ export default function ReviewSide({ reviews }: Props) {
                                         isBordered: true,
                                         showFallback: true,
                                     }}
-                                />
+                                /> */}
                                 <Rating
                                     style={{ maxWidth: 75 }}
                                     readOnly

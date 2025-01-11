@@ -4,8 +4,8 @@ import { Metadata } from "next";
 import { API_URL } from "@/lib/var";
 
 export const metadata: Metadata = {
-    title: "All Products",
-    description: "All products",
+    title: "Advanced Search",
+    description: "Search products with advanced search options",
     keywords: "products, all products",
 };
 

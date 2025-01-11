@@ -9,6 +9,8 @@ import {
     Image,
     Tabs,
     Tab,
+    Input,
+    Tooltip,
 } from "@nextui-org/react";
 import Link from "next/link";
 import { SidebarTrigger } from "@/components/ui/sidebar";
@@ -20,6 +22,9 @@ import ResponsiveButtons from "./ResponsiveSearch";
 import SearchDesktop from "./SearchDesktop";
 import { getSidebarItems } from "../AppSidebar";
 import { usePathname } from "next/navigation";
+import { IoSearchOutline } from "react-icons/io5";
+import SearchMobile from "./SearchMobile";
+import { FaRegKeyboard } from "react-icons/fa6";
 
 async function getAllProducts() {
     const response = await fetch(`${API_URL}/products`);
@@ -34,7 +39,7 @@ export default function Header() {
     const [sidebarItems, setSidebarItems] = useState<SidebarItem[]>([
         { id: "/", name: "Home" },
         { id: "/companies", name: "All Companies" },
-        { id: "/products", name: "All Products" },
+        { id: "/products", name: "Advanced Search" },
     ]);
     const pathName = usePathname();
 
@@ -94,7 +99,34 @@ export default function Header() {
                 </NavbarContent>
 
                 <NavbarContent justify="end">
-                    <ResponsiveButtons products={products} />
+                    <ResponsiveButtons />
+                </NavbarContent>
+            </Navbar>
+            <Navbar
+                isBordered
+                shouldHideOnScroll
+                maxWidth="full"
+                className="overflow-x-auto w-full top-[5.5rem] opacity-1 data-[hidden=true]:opacity-0 data-[hidden=true]:pointer-events-none transition-all z-30 sm:hidden">
+                <NavbarContent justify="center" className="mx-auto w-full">
+                    <SearchMobile products={products}>
+                        <Input
+                            variant="flat"
+                            // label="Search"
+                            radius="md"
+                            placeholder="Search"
+                            fullWidth
+                            className="z-40 w-full"
+                            // onBlur={() => setSearchOpen(false)}
+                            startContent={<IoSearchOutline fontSize="1.3rem" />}
+                            endContent={
+                                <Tooltip content="Advanced Search">
+                                    <Link href="/products">
+                                        <FaRegKeyboard fontSize="1.3rem" />
+                                    </Link>
+                                </Tooltip>
+                            }
+                        />
+                    </SearchMobile>
                 </NavbarContent>
             </Navbar>
 

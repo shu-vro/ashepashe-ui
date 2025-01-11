@@ -5,6 +5,7 @@ import CompanyCard from "./CompanyCard";
 import { Metadata, ResolvingMetadata } from "next";
 import CategorySlide from "@/app/components/CategorySlide";
 import { API_URL } from "@/lib/var";
+import { groupBy } from "lodash";
 
 export default async function Page(props: Props) {
     const params = await props.params;
@@ -18,10 +19,10 @@ export default async function Page(props: Props) {
         company,
     }));
 
-    const group = Object.groupBy(companyProducts, (item) => item.section_id);
+    const group = groupBy(companyProducts, (item) => item.section_id);
     return (
         <div className="grid grid-areas-companyLayoutNoLap grid-cols-productLayoutNoLap lap:grid-cols-productLayoutLap lap:grid-areas-companyLayoutLap gap-4">
-            <CompanyBanner src={company.image} />
+            <CompanyBanner src={company.image} alt={company?.name} />
             <CompanyCard company={company} />
             <div className="grid-in-name text-center">
                 <h2 className="text-5xl font-bold my-3">{company.name}</h2>
@@ -32,10 +33,16 @@ export default async function Page(props: Props) {
             {companyProducts.length > 0 && (
                 <div className="grid-in-product">
                     {Object.entries(group).map(([key, value]) => {
-                        const section = sections.find(
+                        let section = sections.find(
                             (section) => section.id === Number(key)
                         );
-                        if (!section || !value) return null;
+                        if (!value) return null;
+                        if (!section) {
+                            section = {
+                                id: Math.random(),
+                                name: "Others",
+                            } as Category;
+                        }
                         return (
                             <div
                                 key={section.id}
@@ -61,8 +68,8 @@ export default async function Page(props: Props) {
 async function getCompany(name: string) {
     const response = await fetch(`${API_URL}/company/${name}`);
     const company: Company = await response.json();
-    const response2 = await fetch(`${API_URL}/sections`);
-    const sections: Category[] = await response2.json();
+    const response2 = await fetch(`${API_URL}/company-sections/${company.id}`);
+    const sections: Category[] = (await response2.json()).sections;
     return { company, sections };
 }
 

@@ -7,9 +7,11 @@ import { Rating } from "@smastrom/react-rating";
 import { IoLocationOutline } from "react-icons/io5";
 import { MdOutlineCall } from "react-icons/md";
 import { PiFacebookLogoBold } from "react-icons/pi";
-import { removeTags } from "@/lib/utils";
+import { extractIframeUrl, removeTags } from "@/lib/utils";
 
 export default function CompanyCard({ company }: { company: Company }) {
+    const iframe = extractIframeUrl(company.iframe);
+    console.log(iframe, company.iframe);
     return (
         <Card
             className="static lap:sticky top-24 grid-in-company h-min mt-6 ml-6 max-lap:mr-6 p-4 mb-10"
@@ -50,13 +52,13 @@ export default function CompanyCard({ company }: { company: Company }) {
                     <span>(0)</span>
                 </div>
                 <div className="flex justify-around items-stretch pt-2 gap-8">
-                    <Button
-                        onClick={() => {
-                            window.open(company.iframe);
-                        }}
-                        className="w-full">
-                        View Location
-                    </Button>
+                    <iframe
+                        src={`${iframe}`}
+                        className="w-full"
+                        height="400"
+                        allowFullScreen
+                        loading="lazy"
+                        referrerPolicy="no-referrer-when-downgrade"></iframe>
                 </div>
             </CardBody>
         </Card>

@@ -24,6 +24,18 @@ export function first_n(products: Product["product"][], n = 8) {
     return products.slice(0, n);
 }
 
+export function dataURLtoFile(dataurl: string, filename: string) {
+    var arr = dataurl.split(","),
+        mime = arr[0].match(/:(.*?);/)?.[1] || "",
+        bstr = atob(arr[arr.length - 1]),
+        n = bstr.length,
+        u8arr = new Uint8Array(n);
+    while (n--) {
+        u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new File([u8arr], filename, { type: mime });
+}
+
 export function dynamicFakeImageGenerator() {
     return `https://nextui.org/images/fruit-${
         Math.floor(Math.random() * 7) + 1
@@ -49,4 +61,82 @@ export function toValidUrl(url: string) {
     } catch {
         return BASE_URL + "/" + url;
     }
+}
+
+interface ImageUploadParams {
+    e: React.ChangeEvent<HTMLInputElement>;
+    setImageFile: (file: string) => void;
+    imageEl?: HTMLElement | null;
+    DIM?: number;
+}
+
+export const onImageUpload = ({
+    e,
+    setImageFile,
+    imageEl,
+    DIM = 1200,
+}: ImageUploadParams) => {
+    const canvas = document.createElement("canvas");
+    const c = canvas.getContext("2d")!;
+    canvas.width = DIM;
+    canvas.height = DIM;
+    let file = e.target.files![0];
+    if (!file) return console.log("no file");
+    let fr = new FileReader();
+    fr.onload = (e) => {
+        let du = e.target!.result as string;
+        let im = document.createElement("img");
+        im.src = du;
+        im.onload = () => {
+            if (imageEl) {
+                imageEl.style.backgroundImage = `url(${du})`;
+            }
+            c.clearRect(0, 0, DIM, DIM);
+            let big = Math.max(im.width, im.height);
+            let propotion = DIM < big ? DIM / big : 1;
+            let w = im.width * propotion,
+                h = im.height * propotion;
+            canvas.width = w;
+            canvas.height = h;
+            c.drawImage(im, 0, 0, w, h);
+            let dataURL = canvas.toDataURL("image/webp");
+            // const newFile = dataURLtoFile(dataURL, file.type);
+            setImageFile(dataURL);
+            canvas.remove();
+        };
+    };
+    fr.readAsDataURL(file);
+};
+
+export function extractIframeUrl(iframeString: string | null): string {
+    if (!iframeString) return "";
+    const regex =
+        /<iframe[^>]+src="https:\/\/www\.google\.com\/maps\/embed([^"|^\\]+)"[^>]*>/;
+    const match = iframeString.match(regex);
+    // return match ? match[1] : null;
+
+    let url = "";
+
+    if (!match) {
+        const regex2 = /https:\/\/maps\.google\.com\/maps([^"|^\\]+)/;
+        const match2 = iframeString.match(regex2);
+        url = match2 ? "https://maps.google.com/maps" + match2[1] : "";
+    } else {
+        url = "https://www.google.com/maps/embed" + match[1];
+    }
+    return url;
+}
+
+export function validatePhoneNumber(phoneNumber: string): string | null {
+    // Example regex for validating phone numbers (adjust as needed)
+    const phoneRegex =
+        /(?:([+]\d{1,4})[-.\s]?)?(?:[(](\d{1,3})[)][-.\s]?)?(\d{1,4})[-.\s]?(\d{1,4})[-.\s]?(\d{1,9})/;
+    const match = phoneNumber.match(phoneRegex);
+    if (match) {
+        if (match[0] !== phoneNumber) {
+            return null;
+        }
+        return match[0];
+    }
+    return null;
 }

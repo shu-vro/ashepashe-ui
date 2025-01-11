@@ -25,6 +25,7 @@ import {
 import { CiShoppingCart } from "react-icons/ci";
 import Link from "next/link";
 import NextImage from "next/image";
+import { useRouter } from "next/navigation";
 
 interface ProductCardProps {
     name: string;
@@ -54,30 +55,34 @@ export function ProductCard({
     sellerLink = "#",
     ...rest
 }: ProductCardProps & CardProps) {
+    const { push } = useRouter();
     const discountPercent = ((discountPrice / actualPrice) * 100).toFixed(0);
     return (
         <Card
             shadow="sm"
-            isPressable
-            as={"div"}
+            // isPressable
             {...rest}
-            className={cn("w-52 md:w-72 p-0", rest?.className || "")}>
+            as={"div"}
+            className={cn("w-52 md:w-64 p-0", rest?.className || "")}>
             <CardBody
                 className="overflow-visible relative"
                 as={Link}
-                href={link}>
+                href={link}
+                onClick={(e) => {
+                    e.stopPropagation();
+                    push(link);
+                    console.log("clicked");
+                }}>
                 <Image
-                    shadow="sm"
+                    shadow="none"
                     radius="lg"
                     isZoomed
                     alt={name}
                     className="w-full aspect-[4/3] object-cover !h-auto"
                     src={toValidUrl(imageUrl)}
                     isBlurred
-                    // fill={true}
                     width={400}
                     height={300}
-                    // quality={70}
                     as={NextImage}
                     fallbackSrc={dynamicFakeImageGenerator()}
                 />
@@ -86,6 +91,7 @@ export function ProductCard({
                 <div className="flex flex-col items-start w-full">
                     <Link
                         href={link}
+                        onClick={(e) => e.stopPropagation()}
                         className="capitalize not-italic font-bold text-xl line-clamp-2 h-[4ch]">
                         {name}{" "}
                         {/* <Chip

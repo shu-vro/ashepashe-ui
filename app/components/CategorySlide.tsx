@@ -18,37 +18,47 @@ export default function CategorySlide({
     selected: Product["product"][];
     disableCompany?: boolean;
 } & React.ComponentProps<"div">) {
-    console.log(selected);
     return (
         <SwiperWrapper {...rest}>
-            {selected.map((select, index) => (
-                <SwiperSlide key={select.id} className="w-fit p-4">
-                    <ProductCard
-                        name={select.name}
-                        // imageUrl={`https://nextui.org/images/fruit-${
-                        //     (index % 8) + 1
-                        // }.jpeg`}
-                        imageUrl={toValidUrl(select.image1!)}
-                        discountPrice={select.price}
-                        actualPrice={500}
-                        rating={
-                            select.rating
-                                ? select.rating.reduce(
-                                      (a, b) => a + b.rating,
-                                      0
-                                  ) / select.rating.length
-                                : 0
-                        }
-                        seller={select.company.name}
-                        sellerAvatar={toValidUrl(select.company.image)}
-                        // sellerAvatar="https://i.pravatar.cc/150?u=a04258114e29026702d"
-                        // className="min-h-[370px]"
-                        link={`/products/${select.slug}`}
-                        sellerLink={`/companies/${select.company.slug}`}
-                        disableCompany={disableCompany}
-                    />
-                </SwiperSlide>
-            ))}
+            {selected.map((select) => {
+                const offer = select.offers?.find(
+                    (offer) => new Date(offer.validity).getTime() > Date.now()
+                );
+                return (
+                    <SwiperSlide key={select.id} className="w-fit p-4">
+                        <ProductCard
+                            name={select.name}
+                            description={select?.description}
+                            // imageUrl={`https://nextui.org/images/fruit-${
+                            //     (index % 8) + 1
+                            // }.jpeg`}
+                            imageUrl={toValidUrl(select.image1!)}
+                            discountPrice={
+                                !offer
+                                    ? select.price
+                                    : ((100 - offer.offer_percent) / 100) *
+                                      select.price
+                            }
+                            actualPrice={select.price}
+                            rating={
+                                select.rating
+                                    ? select.rating.reduce(
+                                          (a, b) => a + b.rating,
+                                          0
+                                      ) / select.rating.length
+                                    : 0
+                            }
+                            seller={select.company.name}
+                            sellerAvatar={toValidUrl(select.company.image)}
+                            // sellerAvatar="https://i.pravatar.cc/150?u=a04258114e29026702d"
+                            // className="min-h-[370px]"
+                            link={`/products/${select.slug}`}
+                            sellerLink={`/companies/${select.company.slug}`}
+                            disableCompany={disableCompany}
+                        />
+                    </SwiperSlide>
+                );
+            })}
         </SwiperWrapper>
     );
 }

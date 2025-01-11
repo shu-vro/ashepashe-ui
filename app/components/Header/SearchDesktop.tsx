@@ -2,13 +2,21 @@
 
 import { cn, dynamicFakeImageGenerator, toValidUrl } from "@/lib/utils";
 import { DEBOUNCE_DELAY } from "@/lib/var";
-import { Card, CardBody, Input, ScrollShadow } from "@nextui-org/react";
+import {
+    Card,
+    CardBody,
+    Input,
+    ScrollShadow,
+    Tooltip,
+} from "@nextui-org/react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { Suspense, useEffect, useMemo, useState } from "react";
 import { IoSearchOutline } from "react-icons/io5";
 import SearchItems from "./SearchItems";
 import { debounce } from "lodash";
+import { FaRegKeyboard } from "react-icons/fa6";
+import Link from "next/link";
 
 export default function SearchDesktop({
     products,
@@ -54,7 +62,14 @@ export default function SearchDesktop({
                     className="max-w-[500px] z-40"
                     onFocus={() => onSearchOpen(true)}
                     // onBlur={() => setSearchOpen(false)}
-                    endContent={<IoSearchOutline fontSize="1.3rem" />}
+                    startContent={<IoSearchOutline fontSize="1.3rem" />}
+                    endContent={
+                        <Tooltip content="Advanced Search">
+                            <Link href="/products">
+                                <FaRegKeyboard fontSize="1.3rem" />
+                            </Link>
+                        </Tooltip>
+                    }
                 />
                 <AnimatePresence>
                     {searchOpen && selectedProducts.length && (

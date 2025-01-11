@@ -18,8 +18,9 @@ interface User {
     email: string;
     role: string;
     email_verified_at: string | null;
-    created_at: string;
-    updated_at: string;
+    created_at: Date;
+    updated_at: Date;
+    company: Company[];
 }
 
 interface Category {
@@ -47,12 +48,22 @@ interface Company {
     status: number;
     phone: string | null;
     fb_page: string | null;
-    products: Product[];
+    products: Product["product"][];
 }
 
 interface Category {
     id: number | string;
     name: string;
+    created_at: string;
+    updated_at: string;
+}
+
+interface Offer {
+    id: number;
+    product_id: number;
+    offer_percent: number;
+    offer_buy: number | null;
+    validity: string;
     created_at: string;
     updated_at: string;
 }
@@ -73,5 +84,6 @@ interface Product {
         section_id: number;
         company: Company;
         rating: Review[];
+        offers: Offer[];
     };
 }

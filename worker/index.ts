@@ -2,7 +2,7 @@
 
 // @ts-expect-error
 self.__WB_DISABLE_DEV_LOGS = true;
-const PREFIX = "RODE";
+const PREFIX = "ASEPASHE";
 
 import { registerRoute } from "workbox-routing";
 import {
@@ -54,6 +54,27 @@ registerRoute(
     })
 );
 
+// Cache CSS, JS, and Web Worker requests with a Stale While Revalidate strategy
+registerRoute(
+    // Check to see if the request's destination is style for stylesheets, script for JavaScript, or worker for web worker
+    ({ request }) => request.destination === "font",
+    // Use a Stale While Revalidate caching strategy
+    new CacheFirst({
+        // Put all cached files in a cache named 'assets'
+        cacheName: `${PREFIX}-assets`,
+        plugins: [
+            // Ensure that only requests that result in a 200 status are cached
+            new CacheableResponsePlugin({
+                statuses: [200],
+            }),
+            // Ensure that only requests that result in a 200 status are cached
+            new CacheableResponsePlugin({
+                statuses: [200],
+            }),
+        ],
+    })
+);
+
 // Cache images with a Cache First strategy
 registerRoute(
     // Check to see if the request's destination is style for an image
@@ -67,9 +88,9 @@ registerRoute(
             new CacheableResponsePlugin({
                 statuses: [200],
             }),
-            // Don't cache more than 50 items, and expire them after 30 days
+            // Don't cache more than 200 items, and expire them after 30 days
             new ExpirationPlugin({
-                maxEntries: 50,
+                maxEntries: 200,
                 maxAgeSeconds: 60 * 60 * 24 * 30, // 30 Days
             }),
         ],

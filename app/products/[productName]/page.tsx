@@ -15,14 +15,12 @@ export default async function ProductPage({ params }: Props) {
     const { productName } = await params;
     const productDetails = await getProduct(productName);
     const product = productDetails.product;
-    console.log(product);
     const company = product.company;
 
     const company_full = await getCompanyProducts(company.slug);
     const companyProducts =
         company_full.products as unknown as Product["product"][];
-
-    const reviews = await getReviews(product.id);
+    const reviews = product?.rating;
     return (
         <div className="relative grid grid-areas-productLayoutNoLap grid-cols-productLayoutNoLap lap:grid-areas-productLayoutLap lap:grid-cols-productLayoutLap">
             <CompanySide company={company} />
@@ -43,13 +41,6 @@ export default async function ProductPage({ params }: Props) {
     );
 }
 
-async function getReviews(productId: number) {
-    const request = await fetch(`${API_URL}/reviews/${productId}`);
-    const reviews = (await request.json()) as Review[];
-
-    return reviews;
-}
-
 async function getCompanyProducts(name: string) {
     const response = await fetch(`${API_URL}/company/${name}`);
     const company: Company = await response.json();
@@ -57,7 +48,6 @@ async function getCompanyProducts(name: string) {
         ...product,
         company,
     }));
-    <div>ReviewSide</div>;
     return company;
 }
 

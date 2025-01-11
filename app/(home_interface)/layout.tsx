@@ -1,5 +1,17 @@
 import type { Metadata, Viewport } from "next";
 import { Montserrat } from "next/font/google";
+import ThemeProvider from "@/contexts/theme-provider";
+import Header from "./components/Header";
+import Gradient from "../(app_interface)/components/Gradient";
+import { SidebarProvider } from "@/components/ui/sidebar";
+import "@smastrom/react-rating/style.css";
+import "../(app_interface)/globals.css";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/zoom";
+import Sonner from "../(app_interface)/components/Sonner";
+import { SessionProvider } from "next-auth/react";
+import UserProvider from "@/contexts/UserContext";
 
 const font = Montserrat({
     subsets: ["latin"],
@@ -61,8 +73,27 @@ export default function RootLayout({
     children: React.ReactNode;
 }) {
     return (
-        <html lang="en" className="scroll-smooth max-sm:text-[12px]">
-            <body className={`${font.className} antialiased`}>{children}</body>
-        </html>
+        <SessionProvider>
+            <html lang="en" className="scroll-smooth max-sm:text-[12px]">
+                <body className={`${font.className} antialiased`}>
+                    <ThemeProvider
+                        attribute="class"
+                        defaultTheme="system"
+                        enableSystem
+                        disableTransitionOnChange>
+                        <SidebarProvider>
+                            <UserProvider>
+                                <main className="w-full lap:max-w-screen-lap mx-auto">
+                                    <Header />
+                                    <Gradient />
+                                    {children}
+                                    <Sonner />
+                                </main>
+                            </UserProvider>
+                        </SidebarProvider>
+                    </ThemeProvider>
+                </body>
+            </html>
+        </SessionProvider>
     );
 }

@@ -1,6 +1,8 @@
 "use client";
 
-import ResponsiveButtons from "@/app/(app_interface)/components/Header/ResponsiveSearch";
+import ResponsiveButtons, {
+    CustomDivider,
+} from "@/app/(app_interface)/components/Header/ResponsiveSearch";
 import {
     Image,
     Navbar,
@@ -11,6 +13,9 @@ import {
 import Link from "next/link";
 import React from "react";
 import AppIcon from "@/assets/she.png";
+import ThemeButton from "@/app/(app_interface)/components/ThemeButton";
+import LoginButton from "@/app/(app_interface)/components/Header/LoginButton";
+import UserDropdown from "@/app/(app_interface)/components/Header/UserDropdown";
 
 export default function Header() {
     return (
@@ -46,7 +51,14 @@ export default function Header() {
             </NavbarContent> */}
 
             <NavbarContent justify="end">
-                <ResponsiveButtons />
+                <NavbarItem>
+                    <ThemeButton />
+                </NavbarItem>
+                <CustomDivider />
+                <NavbarItem>
+                    <LoginButton />
+                    <UserDropdown />
+                </NavbarItem>
             </NavbarContent>
         </Navbar>
     );

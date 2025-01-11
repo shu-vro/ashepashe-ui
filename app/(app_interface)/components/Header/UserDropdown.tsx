@@ -89,8 +89,6 @@ export function CreateStoreModal({
                                         user!.id
                                     );
 
-                                    console.log(ans);
-
                                     if (ans.status == 200) {
                                         toast.success(
                                             "Store Created Successfully.",
@@ -99,6 +97,7 @@ export function CreateStoreModal({
                                                     "Redirecting to your store...",
                                             }
                                         );
+                                        useUser.ticktock();
                                         push("/my-store/update");
                                         onClose();
                                     } else {

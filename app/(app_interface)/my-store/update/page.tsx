@@ -28,6 +28,7 @@ import { UserContext } from "@/contexts/UserContext";
 import CreateSection from "./components/CreateSection";
 import AllCategories from "./components/AllCategories";
 import { uploadImageAction } from "./components/uploadImageAction";
+import IndividualLink from "./components/IndividualLink";
 
 export default function Page() {
     const useUser = use(UserContext);
@@ -217,6 +218,7 @@ export default function Page() {
                             </WritableField>
                         </div>
                     </div>
+                    <IndividualLink slug={useUser?.userCompany?.slug || ""} />
                     <Autocomplete
                         allowsCustomValue
                         label="Select Category"
@@ -407,7 +409,7 @@ export default function Page() {
                     }
                 }}
                 startContent={<GrSave />}>
-                Save
+                Publish
             </Button>
         </div>
     );

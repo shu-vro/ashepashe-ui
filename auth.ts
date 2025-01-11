@@ -14,23 +14,25 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             try {
                 const existRes = await fetch(`${API_URL}/user/${user.email}`);
                 const exist = await existRes.json();
-                if (exist) {
+                if (exist.status === "success") {
                     return true;
                 }
-                await fetch(`${API_URL}/user/update`, {
+                const myHeaders = new Headers();
+                myHeaders.append("Content-Type", "application/json");
+                const payload = {
+                    name: user.name || "",
+                    email: user.email || "",
+                    google_id: "abcd",
+                    image: user.image || "",
+                };
+                const res = await fetch(`${API_URL}/user/update`, {
                     method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        name: user.name || "",
-                        email: user.email || "",
-                        google_id: "",
-                        image: user.image || "",
-                    }),
+                    headers: myHeaders,
+                    body: JSON.stringify(payload),
+                    redirect: "follow",
                 });
-                // console.log(success.json())
-                return true; // Allow sign in
+                const json = await res.json();
+                return Boolean(json?.success); // Allow sign in
             } catch (error) {
                 console.log("error", error);
                 return false;

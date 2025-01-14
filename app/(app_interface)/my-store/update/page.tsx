@@ -37,9 +37,7 @@ export default function Page() {
     const [phoneNumber, setPhoneNumber] = useState("01xxxxxxxxx");
     const [fbPage, setFbPage] = useState("Fb Page Link");
     const [map, setMap] = useState("Some Address");
-    const [companyDescription, setCompanyDescription] = useState(
-        "Lorem ipsum dolor sit amet consectetur adipisicingelit. Reprehenderit itaque adipisci nemo, ducimusfacere fugit! Minima tempora cupiditate explicaboconsequuntur quis ex odit officia, at quod ipsum utquaerat repellat."
-    );
+    const [companyDescription, setCompanyDescription] = useState("");
     const [division, setDivision] = useState<Selection>(
         new Set<string>(["Rajshahi"])
     );
@@ -164,14 +162,16 @@ export default function Page() {
                         {companyName}
                     </WritableField>
                 </h1>
-                <div className="italic text-neutral-500 w-7/12 mx-auto">
+                <div className="italic text-neutral-500 w-7/12 text-center mx-auto">
                     <WritableField
                         component={Textarea}
                         props={{
                             inputProps: {
                                 // placeholder: "Facebook Page",
                                 label: "Description",
-                                value: companyDescription,
+                                value:
+                                    companyDescription ||
+                                    "Write your company description here",
                                 onValueChange: setCompanyDescription,
                             },
                             textProps: {

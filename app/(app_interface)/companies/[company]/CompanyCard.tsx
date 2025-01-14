@@ -11,6 +11,7 @@ import { extractIframeUrl, removeTags } from "@/lib/utils";
 
 export default function CompanyCard({ company }: { company: Company }) {
     const iframe = extractIframeUrl(company.iframe);
+    console.log(company);
     return (
         <Card
             className="static lap:sticky top-24 grid-in-company h-min mt-6 ml-6 max-lap:mr-6 p-4 mb-10"
@@ -51,13 +52,17 @@ export default function CompanyCard({ company }: { company: Company }) {
                     <span>(0)</span>
                 </div>
                 <div className="flex justify-around items-stretch pt-2 gap-8">
-                    <iframe
-                        src={`${iframe}`}
-                        className="w-full"
-                        height="400"
-                        allowFullScreen
-                        loading="lazy"
-                        referrerPolicy="no-referrer-when-downgrade"></iframe>
+                    {company.lati || company.longi ? (
+                        <iframe
+                            src={`${iframe}`}
+                            className="w-full"
+                            height="400"
+                            allowFullScreen
+                            loading="lazy"
+                            referrerPolicy="no-referrer-when-downgrade"></iframe>
+                    ) : (
+                        "No map available."
+                    )}
                 </div>
             </CardBody>
         </Card>

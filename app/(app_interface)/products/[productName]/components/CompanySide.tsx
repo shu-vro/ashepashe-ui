@@ -83,13 +83,17 @@ export default function CompanySide({ company }: Prop) {
                         <span>(0)</span>
                     </div>
                     <div className="flex justify-around items-stretch flex-col pt-2 gap-8">
-                        <iframe
-                            src={`${iframe}`}
-                            className="w-full"
-                            height="350"
-                            allowFullScreen
-                            loading="lazy"
-                            referrerPolicy="no-referrer-when-downgrade"></iframe>
+                        {company.lati || company.longi ? (
+                            <iframe
+                                src={`${iframe}`}
+                                className="w-full"
+                                height="400"
+                                allowFullScreen
+                                loading="lazy"
+                                referrerPolicy="no-referrer-when-downgrade"></iframe>
+                        ) : (
+                            "No map available."
+                        )}
                         <Button
                             as={Link}
                             href={`/companies/${company.slug}`}

@@ -48,6 +48,8 @@ interface Company {
     status: number;
     phone: string | null;
     fb_page: string | null;
+    lati: number;
+    longi: number;
     products: Product["product"][];
 }
 

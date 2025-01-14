@@ -62,6 +62,7 @@ export function CreateStoreModal({
     onOpenChange,
 }: CreateStoreModalProps) {
     const useUser = use(UserContext);
+    const [loading, setLoading] = useState(false);
     const { push } = useRouter();
     return (
         <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
@@ -76,34 +77,41 @@ export function CreateStoreModal({
                                 validationBehavior="native"
                                 onSubmit={async (e) => {
                                     e.preventDefault();
-                                    const formData = new FormData(
-                                        e.target as HTMLFormElement
-                                    );
-                                    const data = Object.fromEntries(
-                                        formData.entries()
-                                    );
-                                    if (!useUser) return;
-                                    const user = useUser.user;
-                                    const ans: any = await createStoreAction(
-                                        data as any,
-                                        user!.id
-                                    );
+                                    setLoading(true);
+                                    try {
+                                        const formData = new FormData(
+                                            e.target as HTMLFormElement
+                                        );
+                                        const data = Object.fromEntries(
+                                            formData.entries()
+                                        );
+                                        if (!useUser) return;
+                                        const user = useUser.user;
+                                        const ans: any =
+                                            await createStoreAction(
+                                                data as any,
+                                                user!.id
+                                            );
 
-                                    if (ans.status == 200) {
-                                        toast.success(
-                                            "Store Created Successfully.",
-                                            {
-                                                description:
-                                                    "Redirecting to your store...",
-                                            }
-                                        );
-                                        useUser.ticktock();
-                                        push("/my-store/update");
-                                        onClose();
-                                    } else {
-                                        toast.error(
-                                            `Error(${ans.status}): ${ans.message}`
-                                        );
+                                        if (ans.status == 200) {
+                                            toast.success(
+                                                "Store Created Successfully.",
+                                                {
+                                                    description:
+                                                        "Redirecting to your store...",
+                                                }
+                                            );
+                                            useUser.ticktock();
+                                            push("/my-store/update");
+                                            onClose();
+                                        } else {
+                                            toast.error(
+                                                `Error(${ans.status}): ${ans.message}`
+                                            );
+                                        }
+                                    } catch (error) {
+                                    } finally {
+                                        setLoading(false);
                                     }
                                 }}>
                                 <Input
@@ -119,7 +127,10 @@ export function CreateStoreModal({
                                     <Button color="danger" onPress={onClose}>
                                         Close
                                     </Button>
-                                    <Button color="primary" type="submit">
+                                    <Button
+                                        color="primary"
+                                        type="submit"
+                                        isLoading={loading}>
                                         Create Store
                                     </Button>
                                 </ModalFooter>

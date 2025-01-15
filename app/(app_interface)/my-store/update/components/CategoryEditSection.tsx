@@ -57,7 +57,7 @@ function UpdateCategory({ section }: { section: CompanySection }) {
                             }
                             const res = await updateSectionAction({
                                 name: sectionName,
-                                sectionId: section.id,
+                                sectionId: section.id as number,
                             });
 
                             if (res.status === 200) {
@@ -106,7 +106,8 @@ function UpdateCategory({ section }: { section: CompanySection }) {
                                             onPress={async () => {
                                                 const res =
                                                     await deleteSectionAction({
-                                                        sectionId: section.id,
+                                                        sectionId:
+                                                            section.id as number,
                                                     });
 
                                                 if (res.status === 200) {

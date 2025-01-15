@@ -24,7 +24,7 @@ export default function AllCategories({
 
         // Initialize sectionMap with existing company sections
         companySections.forEach((section) => {
-            sectionMap[section.id] = { ...section, products: [] };
+            sectionMap[section.id as number] = { ...section, products: [] };
         });
 
         // Group products by their section_id

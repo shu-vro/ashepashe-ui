@@ -13,10 +13,12 @@ import { cn, toValidUrl } from "@/lib/utils";
 export default function CategorySlide({
     selected,
     disableCompany = true,
+    specialized = false,
     ...rest
 }: {
     selected: Product["product"][];
     disableCompany?: boolean;
+    specialized?: boolean;
 } & React.ComponentProps<"div">) {
     return (
         <SwiperWrapper {...rest}>
@@ -54,8 +56,12 @@ export default function CategorySlide({
                             sellerAvatar={toValidUrl(select.company.image)}
                             // sellerAvatar="https://i.pravatar.cc/150?u=a04258114e29026702d"
                             // className="min-h-[370px]"
-                            link={`/products/${select.slug}`}
-                            sellerLink={`/companies/${select.company.slug}`}
+                            link={`${specialized ? "/p" : "/products"}/${
+                                select.slug
+                            }`}
+                            sellerLink={`${specialized ? "/a" : "/companies"}/${
+                                select.company.slug
+                            }`}
                             disableCompany={disableCompany}
                         />
                     </SwiperSlide>

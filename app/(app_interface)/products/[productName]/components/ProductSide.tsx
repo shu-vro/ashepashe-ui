@@ -25,9 +25,10 @@ import confetti from "canvas-confetti";
 
 type Prop = {
     product: Product["product"];
+    specialized?: boolean;
 };
 
-export default function ProductSide({ product }: Prop) {
+export default function ProductSide({ product, specialized = false }: Prop) {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
     const handleCartClick = (
@@ -196,7 +197,9 @@ export default function ProductSide({ product }: Prop) {
                         <Button
                             color="warning"
                             as={Link}
-                            href={`/companies/${product.company.slug}`}
+                            href={`${specialized ? "/a" : "/companies"}/${
+                                product.company.slug
+                            }`}
                             className="w-full">
                             Go To Store
                         </Button>

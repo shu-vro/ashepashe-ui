@@ -24,14 +24,14 @@ import NextImage from "next/image";
 
 type Prop = {
     company: Company;
+    specialized?: boolean;
 };
 
-export default function CompanySide({ company }: Prop) {
+export default function CompanySide({ company, specialized = false }: Prop) {
     const iframe = extractIframeUrl(company.iframe);
 
     return (
         <div className="company grid-in-company relative max-md:hidden">
-            {/* flex-col sm:flex-row md:flex-row lap:flex-col */}
             <Card
                 className="sticky top-24 h-min p-3 m-4 flex-col max-sm:flex-col max-lg:flex-col max-lap:flex-row"
                 shadow="sm">
@@ -96,7 +96,9 @@ export default function CompanySide({ company }: Prop) {
                         )}
                         <Button
                             as={Link}
-                            href={`/companies/${company.slug}`}
+                            href={`${specialized ? "/a" : "/companies"}/${
+                                company.slug
+                            }`}
                             className="w-full">
                             Go To Store
                         </Button>

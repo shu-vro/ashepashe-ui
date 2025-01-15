@@ -51,6 +51,7 @@ export default async function Page(props: Props) {
                                     {section.name} ({value.length})
                                 </h2>
                                 <CategorySlide
+                                    specialized
                                     selected={value}
                                     className={cn(
                                         "w-full max-lap:w-[95vw] max-[760px]:w-[95vw]"

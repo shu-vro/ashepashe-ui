@@ -1,9 +1,11 @@
 "use client";
-import React from "react";
+import React, { use } from "react";
 import { Button, Image } from "@nextui-org/react";
 import Link from "next/link";
+import { UserContext } from "@/contexts/UserContext";
 
 export default function Home() {
+    const useUser = use(UserContext);
     // const { products, companies } = await getAllProducts();
     return (
         <div className="my-4">
@@ -21,7 +23,9 @@ export default function Home() {
                     <Button
                         className="my-2 bg-gradient-to-tr from-green-500 to-green-400 text-white shadow-lg text-xl font-bold"
                         as={Link}
-                        href="/my-store/create"
+                        href={`/my-store/${
+                            useUser?.userCompany ? "update" : "create"
+                        }`}
                         // size="large"
                     >
                         Get Started

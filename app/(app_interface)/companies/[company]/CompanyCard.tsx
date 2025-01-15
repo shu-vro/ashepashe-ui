@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Card, CardBody } from "@nextui-org/react";
+import { Card, CardBody } from "@nextui-org/react";
 import React from "react";
 import Link from "next/link";
 import { Rating } from "@smastrom/react-rating";

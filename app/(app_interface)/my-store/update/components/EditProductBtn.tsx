@@ -44,19 +44,19 @@ export default function EditProductBtn({ defaultProps }: Props) {
                             <ProductForm
                                 onClose={onClose}
                                 onSubmit={async (payload) => {
-                                    if (!payload.image) {
-                                        return toast.error(
-                                            "Please upload an image."
-                                        );
-                                    }
+                                    // if (!payload.image) {
+                                    //     return toast.error(
+                                    //         "Please upload an image."
+                                    //     );
+                                    // }
                                     if (
                                         !useUser ||
                                         !useUser.user ||
                                         !useUser.userCompany ||
                                         !payload ||
                                         !payload.price ||
-                                        !payload.name ||
-                                        !payload.image
+                                        !payload.name
+                                        // !payload.image
                                     )
                                         return toast.error(
                                             "Some Fields are missing.",

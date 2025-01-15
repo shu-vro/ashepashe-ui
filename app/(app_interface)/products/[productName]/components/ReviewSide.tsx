@@ -63,8 +63,8 @@ function sortby(key: (typeof sortOptions)[number]["key"], reviews: Review[]) {
         case "recent":
             return reviews.sort(
                 (a, b) =>
-                    new Date(b.created_at).getTime() -
-                    new Date(a.created_at).getTime()
+                    new Date(b.updated_at).getTime() -
+                    new Date(a.updated_at).getTime()
             );
         default:
             return reviews;

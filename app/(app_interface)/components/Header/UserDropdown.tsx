@@ -85,7 +85,10 @@ export function CreateStoreModal({
                                         const data = Object.fromEntries(
                                             formData.entries()
                                         );
-                                        if (!useUser) return;
+                                        if (!useUser || !useUser.user)
+                                            return toast.error(
+                                                "User not found."
+                                            );
                                         const user = useUser.user;
                                         const ans: any =
                                             await createStoreAction(

@@ -26,7 +26,6 @@ export default function SearchItems({
     slug: string;
     onSearchOpen: (b: boolean) => void;
 } & CardProps) {
-    console.log(actualPrice, discountPrice);
     return (
         <Card
             className="mt-2 p-2 w-full hover:bg-content3 transition-all"

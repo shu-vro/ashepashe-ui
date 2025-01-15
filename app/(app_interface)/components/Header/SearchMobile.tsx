@@ -1,3 +1,5 @@
+"use client";
+
 import { dynamicFakeImageGenerator, toValidUrl } from "@/lib/utils";
 import { Button, Input, ScrollShadow, Tooltip } from "@nextui-org/react";
 import { useMemo, useState } from "react";

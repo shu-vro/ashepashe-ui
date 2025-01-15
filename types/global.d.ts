@@ -24,7 +24,7 @@ interface User {
 }
 
 interface Category {
-    id: number;
+    id: string | number;
     name: string;
     company_id: number;
     created_at: string;
@@ -51,13 +51,6 @@ interface Company {
     lati: number;
     longi: number;
     products: Product["product"][];
-}
-
-interface Category {
-    id: number | string;
-    name: string;
-    created_at: string;
-    updated_at: string;
 }
 
 interface Offer {

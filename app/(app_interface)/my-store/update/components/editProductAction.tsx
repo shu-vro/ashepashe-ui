@@ -10,12 +10,12 @@ export async function editProductAction(
     if (!slug) {
         return { status: 400, message: "Invalid product slug." };
     }
-    if (!data.image1) {
-        return {
-            status: 400,
-            message: "Product image is required.",
-        };
-    }
+    // if (!data.image1) {
+    //     return {
+    //         status: 400,
+    //         message: "Product image is required.",
+    //     };
+    // }
     revalidatePath("/");
     const options = {
         method: "POST",

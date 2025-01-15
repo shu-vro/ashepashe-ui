@@ -29,7 +29,8 @@
         ".next/types/**/*.ts",
         "next.config.ts",
         "app/(app_interface)/companies/index.tsc",
-        "types/global.d.ts"
+        "types/global.d.ts",
+        "app/(app_interface)/components/Header/NavbarWrapper.tsx"
     ],
     "exclude": ["node_modules"]
 }

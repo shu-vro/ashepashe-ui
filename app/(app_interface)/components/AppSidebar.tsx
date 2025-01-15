@@ -71,6 +71,6 @@ export async function AppSidebar() {
 
 export async function getSidebarItems() {
     const response = await fetch(`${API_URL}/categories`);
-    const data: Category[] = await response.json();
+    const data = (await response.json()) as Category[];
     return data;
 }

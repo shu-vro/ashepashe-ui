@@ -228,9 +228,9 @@ export default function Page() {
                                 ? selectedCategory
                                 : undefined
                         }
-                        onSelectionChange={(key) =>
-                            setSelectedCategory(key as Key | undefined)
-                        }
+                        onSelectionChange={(key) => {
+                            setSelectedCategory(key as Key | undefined);
+                        }}
                         defaultItems={categories}>
                         {(item: Category) => (
                             <AutocompleteItem key={item.id}>
@@ -394,7 +394,10 @@ export default function Page() {
                         fb_page: fbPage,
                         lati: location.lat,
                         longi: location.long,
-                        category: selectedCategory,
+                        category:
+                            categories
+                                .find((e) => e.id == selectedCategory)
+                                ?.id.toString() || "",
                     };
                     console.log(payload);
                     const x: any = await updateStoreAction({

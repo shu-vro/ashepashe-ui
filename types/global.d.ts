@@ -48,8 +48,8 @@ interface Company {
     status: number;
     phone: string | null;
     fb_page: string | null;
-    lati: number;
-    longi: number;
+    lati: number | null;
+    longi: number | null;
     products: Product["product"][];
 }
 
@@ -80,5 +80,6 @@ interface Product {
         company: Company;
         rating: Review[];
         offers: Offer[];
+        company: Company;
     };
 }

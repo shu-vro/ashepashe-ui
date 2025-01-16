@@ -41,7 +41,6 @@ export default async function Header() {
         name: item.name,
     }));
     sidebarItems = [...defaultSidebarItems, ...sidebarItems] as Category[];
-    console.log(sidebarItems);
 
     return (
         <>

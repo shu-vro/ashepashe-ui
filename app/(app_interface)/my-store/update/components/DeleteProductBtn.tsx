@@ -7,7 +7,7 @@ import {
     ModalFooter,
     Button,
     useDisclosure,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { CiTrash } from "react-icons/ci";
 import { deleteProductAction } from "./deleteProductAction";
 import { UserContext } from "@/contexts/UserContext";

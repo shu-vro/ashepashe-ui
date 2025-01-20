@@ -15,7 +15,7 @@ import {
     Textarea,
     Tooltip,
     User,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { cn, paginate } from "@/lib/utils";
 import numeral from "numeral";
 import moment from "moment";

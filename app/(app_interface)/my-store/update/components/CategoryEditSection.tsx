@@ -8,7 +8,7 @@ import {
     ModalFooter,
     ModalHeader,
     useDisclosure,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { WritableField } from "./Writable";
 import { use, useState } from "react";
 import EditProduct from "./EditProduct";

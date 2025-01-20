@@ -11,7 +11,7 @@ import {
     Divider,
     Image,
     User,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import React from "react";
 import { CiBookmark } from "react-icons/ci";
 import { FaStar } from "react-icons/fa6";

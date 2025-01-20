@@ -1,6 +1,6 @@
 "use client";
 
-import { Code, Tooltip } from "@nextui-org/react";
+import { Code, Tooltip } from "@heroui/react";
 import React, { useMemo } from "react";
 
 export default function IndividualLink({ slug }: { slug: string }) {

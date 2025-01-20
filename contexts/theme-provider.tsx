@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { NextUIProvider } from "@nextui-org/react";
+import { HeroUIProvider } from "@heroui/react";
 const NextThemesProvider = dynamic(
     () => import("next-themes").then((e) => e.ThemeProvider),
     {
@@ -20,7 +20,7 @@ export default function ThemeProvider({
     const router = useRouter();
     return (
         <NextThemesProvider {...props}>
-            <NextUIProvider navigate={router.push}>{children}</NextUIProvider>
+            <HeroUIProvider navigate={router.push}>{children}</HeroUIProvider>
         </NextThemesProvider>
     );
 }

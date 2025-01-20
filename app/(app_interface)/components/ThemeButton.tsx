@@ -8,7 +8,7 @@ import {
     DropdownItem,
     Button,
     ButtonProps,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { useTheme } from "next-themes";
 import { PiMoonThin } from "react-icons/pi";
 import { RxSun } from "react-icons/rx";

@@ -1,7 +1,7 @@
 import { UserContext } from "@/contexts/UserContext";
 import { use, useState } from "react";
 import { WritableField } from "./Writable";
-import { Button, Input } from "@nextui-org/react";
+import { Button, Input } from "@heroui/react";
 import { createSectionAction } from "./createSectionAction";
 import { toast } from "sonner";
 

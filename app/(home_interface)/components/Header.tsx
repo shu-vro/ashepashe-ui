@@ -9,7 +9,7 @@ import {
     NavbarContent,
     NavbarItem,
     useDisclosure,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import Link from "next/link";
 import React, { use } from "react";
 import AppIcon from "@/assets/she.png";

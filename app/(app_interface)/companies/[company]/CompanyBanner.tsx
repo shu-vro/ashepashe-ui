@@ -1,6 +1,6 @@
 "use client";
 
-import { Image } from "@nextui-org/react";
+import { Image } from "@heroui/react";
 import React from "react";
 import { cn, dynamicFakeImageGenerator, toValidUrl } from "@/lib/utils";
 import NextImage from "next/image";

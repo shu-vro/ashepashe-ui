@@ -8,7 +8,7 @@ import {
     Input,
     ScrollShadow,
     Tooltip,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { Suspense, useEffect, useMemo, useState } from "react";

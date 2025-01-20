@@ -1,7 +1,7 @@
 "use client";
 
 import LoginButton from "@/app/(app_interface)/components/Header/LoginButton";
-import { Button, Card, CardBody, Image } from "@nextui-org/react";
+import { Button, Card, CardBody, Image } from "@heroui/react";
 import { useSession, signOut } from "next-auth/react";
 import React from "react";
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { Tab, Tabs } from "@nextui-org/react";
+import { Tab, Tabs } from "@heroui/react";
 import React, { Suspense, useState } from "react";
 import CategorySlide from "./CategorySlide";
 import Loader from "./Loader";

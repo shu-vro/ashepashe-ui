@@ -10,7 +10,7 @@ import {
     Selection,
     Textarea,
     useDisclosure,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import React, { useEffect, useMemo, useState, Key, useRef, use } from "react";
 import { IoLocationOutline } from "react-icons/io5";
 import { MdOutlineCall } from "react-icons/md";

@@ -18,8 +18,8 @@ import {
     TooltipProvider,
     TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { VisuallyHidden } from "@nextui-org/react";
-import { Button as ButtonNui } from "@nextui-org/react";
+import { VisuallyHidden } from "@heroui/react";
+import { Button as ButtonNui } from "@heroui/react";
 
 const SIDEBAR_COOKIE_NAME = "sidebar:state";
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7;

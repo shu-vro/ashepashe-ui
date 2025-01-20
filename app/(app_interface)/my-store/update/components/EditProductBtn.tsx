@@ -12,7 +12,7 @@ import {
     Input,
     Textarea,
     Image,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { TbCurrencyTaka } from "react-icons/tb";
 import { BsUpload } from "react-icons/bs";
 import { onImageUpload } from "@/lib/utils";

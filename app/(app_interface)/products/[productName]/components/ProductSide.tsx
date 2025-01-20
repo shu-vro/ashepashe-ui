@@ -13,7 +13,7 @@ import {
     ModalContent,
     ModalHeader,
     useDisclosure,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import React, { useMemo } from "react";
 import Link from "next/link";
 import { Rating } from "@smastrom/react-rating";

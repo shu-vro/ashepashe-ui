@@ -2,7 +2,7 @@
 
 import ThemeButton from "../ThemeButton";
 import { CiBookmark } from "react-icons/ci";
-import { NavbarItem, Button, Divider, useDisclosure } from "@nextui-org/react";
+import { NavbarItem, Button, Divider, useDisclosure } from "@heroui/react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import LoginButton from "./LoginButton";

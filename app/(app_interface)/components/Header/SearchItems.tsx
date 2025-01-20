@@ -1,4 +1,4 @@
-import { Card, CardBody, CardProps, Image } from "@nextui-org/react";
+import { Card, CardBody, CardProps, Image } from "@heroui/react";
 import Link from "next/link";
 import NextImage from "next/image";
 import { dynamicFakeImageGenerator } from "@/lib/utils";

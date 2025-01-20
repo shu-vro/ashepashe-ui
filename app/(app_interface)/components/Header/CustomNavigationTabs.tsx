@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Tabs, Tab } from "@nextui-org/react";
+import { Tabs, Tab } from "@heroui/react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 

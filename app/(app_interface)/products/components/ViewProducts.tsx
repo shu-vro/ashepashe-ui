@@ -12,7 +12,7 @@ import {
     Slider,
     Tab,
     Tabs,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import React, { useMemo, useState } from "react";
 import { dynamicFakeImageGenerator, paginate, toValidUrl } from "@/lib/utils";
 import { ProductCard } from "@/app/(app_interface)/components/ProductCard";
@@ -33,7 +33,7 @@ import {
     DrawerBody,
     DrawerFooter,
     useDisclosure,
-} from "@nextui-org/react";
+} from "@heroui/react";
 
 const PER_PAGE = 12 as const;
 const PRICE_RANGE = Object.freeze([0, 2000]);

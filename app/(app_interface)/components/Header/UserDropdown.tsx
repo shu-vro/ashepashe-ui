@@ -14,7 +14,7 @@ import {
     Button,
     Form,
     Input,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { useSession, signOut } from "next-auth/react";
 import { createStoreAction } from "./createStoreAction";
 import { UserContext } from "@/contexts/UserContext";

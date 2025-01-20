@@ -2,7 +2,7 @@
 
 import CompanyTile from "@/app/(app_interface)/companies/components/CompanyTile";
 import React, { useState } from "react";
-import { Pagination } from "@nextui-org/react";
+import { Pagination } from "@heroui/react";
 import { dynamicFakeImageGenerator, paginate, toValidUrl } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 

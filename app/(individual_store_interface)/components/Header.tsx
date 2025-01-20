@@ -7,7 +7,7 @@ import {
     NavbarBrand,
     NavbarContent,
     NavbarItem,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import Link from "next/link";
 import React from "react";
 import AppIcon from "@/assets/she.png";

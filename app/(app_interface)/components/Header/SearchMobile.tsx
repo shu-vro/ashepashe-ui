@@ -1,7 +1,7 @@
 "use client";
 
 import { dynamicFakeImageGenerator, toValidUrl } from "@/lib/utils";
-import { Button, Input, ScrollShadow, Tooltip } from "@nextui-org/react";
+import { Button, Input, ScrollShadow, Tooltip } from "@heroui/react";
 import { useMemo, useState } from "react";
 import { IoSearchOutline } from "react-icons/io5";
 import { debounce } from "lodash";

@@ -1,6 +1,6 @@
 "use client";
 
-import { Input, Select, SelectItem, Textarea } from "@nextui-org/react";
+import { Input, Select, SelectItem, Textarea } from "@heroui/react";
 import { useState } from "react";
 import { CiEdit } from "react-icons/ci";
 

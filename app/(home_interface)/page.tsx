@@ -1,6 +1,6 @@
 "use client";
 import React, { use } from "react";
-import { Button, Image } from "@nextui-org/react";
+import { Button, Image } from "@heroui/react";
 import Link from "next/link";
 import { UserContext } from "@/contexts/UserContext";
 

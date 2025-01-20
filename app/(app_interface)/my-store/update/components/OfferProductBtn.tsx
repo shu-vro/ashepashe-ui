@@ -10,7 +10,7 @@ import {
     ModalFooter,
     ModalHeader,
     useDisclosure,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import React, { use, useMemo, useState } from "react";
 import { MdOutlineLocalOffer } from "react-icons/md";
 import { TbCurrencyTaka } from "react-icons/tb";

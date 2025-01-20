@@ -13,7 +13,7 @@ import {
     CardFooter,
     CardProps,
     Image,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import Link from "next/link";
 import React from "react";
 import { GrLocation } from "react-icons/gr";

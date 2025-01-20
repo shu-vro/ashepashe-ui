@@ -6,7 +6,7 @@ import {
     Chip,
     Divider,
     Image,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import NextImage from "next/image";
 import DeleteProductBtn from "./DeleteProductBtn";
 import EditProductBtn from "./EditProductBtn";

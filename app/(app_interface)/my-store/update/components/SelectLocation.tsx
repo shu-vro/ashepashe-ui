@@ -8,7 +8,7 @@ import {
     ModalBody,
     ModalFooter,
     Button,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import mapboxgl, { Map } from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import MapboxExample from "./MapboxExample";

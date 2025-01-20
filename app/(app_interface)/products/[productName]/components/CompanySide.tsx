@@ -13,7 +13,7 @@ import {
     CardFooter,
     CardHeader,
     Image,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import React from "react";
 import { IoLocationOutline } from "react-icons/io5";
 import { MdOutlineCall } from "react-icons/md";

@@ -108,7 +108,7 @@ export async function generateMetadata(
                     alt: company.name,
                 },
             ],
-            siteName: "AsePashe",
+            siteName: "AAmarStore",
             releaseDate: company.created_at,
         },
     };

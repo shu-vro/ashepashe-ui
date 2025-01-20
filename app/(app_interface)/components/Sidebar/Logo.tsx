@@ -7,7 +7,7 @@ export default function () {
     return (
         <Image
             src={AppIcon.src}
-            alt="AsePashe"
+            alt="AAmarStore"
             className="block mx-auto object-cover h-16"
             removeWrapper
         />

@@ -14,15 +14,17 @@ import "swiper/css/zoom";
 import Sonner from "./components/Sonner";
 import { SessionProvider } from "next-auth/react";
 import UserProvider from "@/contexts/UserContext";
+import OrderSidebar from "./components/OrderSidebar";
+import OrderDrawerProvider from "@/contexts/OrderDrawerContext";
 
 const font = Montserrat({
     subsets: ["latin"],
     weight: ["100", "300", "400", "500", "700", "900"],
 });
 
-const APP_NAME = "AsePashe";
-const APP_DEFAULT_TITLE = "AsePashe";
-const APP_TITLE_TEMPLATE = "%s • AsePashe";
+const APP_NAME = "AAmarStore";
+const APP_DEFAULT_TITLE = "AAmarStore";
+const APP_TITLE_TEMPLATE = "%s • AAmarStore";
 const APP_DESCRIPTION = "Best app in the world!";
 
 export const metadata: Metadata = {
@@ -85,14 +87,17 @@ export default function RootLayout({
                         disableTransitionOnChange>
                         <SidebarProvider>
                             <UserProvider>
-                                <AppSidebar />
-                                <main className="w-full lap:max-w-screen-lap mx-auto">
-                                    <Header />
-                                    <Gradient />
-                                    {children}
-                                    <Sonner />
-                                    <ConfigComponent />
-                                </main>
+                                <OrderDrawerProvider>
+                                    <AppSidebar />
+                                    <main className="w-full lap:max-w-screen-lap mx-auto">
+                                        <Header />
+                                        <Gradient />
+                                        {children}
+                                        <Sonner />
+                                        <OrderSidebar />
+                                        <ConfigComponent />
+                                    </main>
+                                </OrderDrawerProvider>
                             </UserProvider>
                         </SidebarProvider>
                     </ThemeProvider>

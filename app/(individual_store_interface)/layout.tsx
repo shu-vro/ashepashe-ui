@@ -12,15 +12,17 @@ import "swiper/css/zoom";
 import Sonner from "../(app_interface)/components/Sonner";
 import { SessionProvider } from "next-auth/react";
 import UserProvider from "@/contexts/UserContext";
+import OrderDrawerProvider from "@/contexts/OrderDrawerContext";
+import OrderSidebar from "../(app_interface)/components/OrderSidebar";
 
 const font = Montserrat({
     subsets: ["latin"],
     weight: ["100", "300", "400", "500", "700", "900"],
 });
 
-const APP_NAME = "AsePashe";
-const APP_DEFAULT_TITLE = "AsePashe";
-const APP_TITLE_TEMPLATE = "%s • AsePashe";
+const APP_NAME = "AAmarStore";
+const APP_DEFAULT_TITLE = "AAmarStore";
+const APP_TITLE_TEMPLATE = "%s • AAmarStore";
 const APP_DESCRIPTION = "Best app in the world!";
 
 export const metadata: Metadata = {
@@ -83,12 +85,15 @@ export default function RootLayout({
                         disableTransitionOnChange>
                         <SidebarProvider>
                             <UserProvider>
-                                <main className="w-full lap:max-w-screen-lap mx-auto">
-                                    <Header />
-                                    <Gradient />
-                                    {children}
-                                    <Sonner />
-                                </main>
+                                <OrderDrawerProvider>
+                                    <main className="w-full lap:max-w-screen-lap mx-auto">
+                                        <Header />
+                                        <Gradient />
+                                        {children}
+                                        <Sonner />
+                                        <OrderSidebar />
+                                    </main>
+                                </OrderDrawerProvider>
                             </UserProvider>
                         </SidebarProvider>
                     </ThemeProvider>

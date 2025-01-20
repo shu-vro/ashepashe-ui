@@ -35,7 +35,7 @@ export default function Header() {
                     <Link href="#" className="block">
                         <Image
                             src={AppIcon.src}
-                            alt="AsePashe"
+                            alt="AAmarStore"
                             className="block mx-auto object-cover h-16"
                             classNames={{
                                 wrapper: "block w-full h-16",

@@ -18,9 +18,9 @@ const font = Montserrat({
     weight: ["100", "300", "400", "500", "700", "900"],
 });
 
-const APP_NAME = "AsePashe";
-const APP_DEFAULT_TITLE = "AsePashe";
-const APP_TITLE_TEMPLATE = "%s • AsePashe";
+const APP_NAME = "AAmarStore";
+const APP_DEFAULT_TITLE = "AAmarStore";
+const APP_TITLE_TEMPLATE = "%s • AAmarStore";
 const APP_DESCRIPTION = "Best app in the world!";
 
 export const metadata: Metadata = {

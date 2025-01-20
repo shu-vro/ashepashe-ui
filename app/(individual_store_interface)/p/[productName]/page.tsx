@@ -96,7 +96,7 @@ export async function generateMetadata(
                 url: product.image1!,
                 alt: product.name,
             },
-            siteName: "AsePashe",
+            siteName: "AAmarStore",
         },
     };
 }

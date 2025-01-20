@@ -3,16 +3,9 @@
 import React, { useEffect, useState } from "react";
 import {
     Button,
-    ButtonGroup,
-    Card,
-    CardBody,
-    CardFooter,
-    CardHeader,
     Form,
-    Image,
     Input,
     Textarea,
-    ScrollShadow,
     Selection,
     Table,
     TableHeader,
@@ -20,13 +13,11 @@ import {
     TableBody,
     TableRow,
     TableCell,
-    User,
     Chip,
-    Tooltip,
 } from "@heroui/react";
-import { dynamicFakeImageGenerator } from "@/lib/utils";
-import { FaPlus, FaMinus } from "react-icons/fa6";
-import { FaRegTrashAlt } from "react-icons/fa";
+import QuantityButtons from "./components/QuantityButtons";
+import ProductTableCell from "./components/ProductTableCell";
+import ActionButtons from "./components/ActionButtons";
 
 const columns = [
     {
@@ -47,56 +38,45 @@ const columns = [
     },
 ];
 
-function QuantityButtons({
+function TableCellCustom({
     item,
     setItems,
+    columnId,
 }: {
     item: any;
-    setItems: (arg0: any) => any;
+    setItems: any;
+    columnId: string;
 }) {
-    return (
-        <ButtonGroup size="sm">
-            <Button
-                isIconOnly
-                onPress={() => {
-                    setItems((prev: any) => {
-                        const index = prev.findIndex(
-                            (i: any) => i.item.id === item.item.id
-                        );
-                        prev[index].count -= 1;
-                        return prev;
-                    });
-                }}>
-                <FaMinus />
-            </Button>
-            <Button isIconOnly disabled>
-                {item.count}
-            </Button>
-            <Button
-                isIconOnly
-                onPress={() => {
-                    setItems((prev: any) => {
-                        const index = prev.findIndex(
-                            (i: any) => i.item.id === item.item.id
-                        );
-                        prev[index].count += 1;
-                        return prev;
-                    });
-                }}>
-                <FaPlus />
-            </Button>
-        </ButtonGroup>
-    );
+    if (columnId === "product") {
+        return (
+            <ProductTableCell
+                name={item.item.name}
+                price={item.item.price}
+                image1={item.item.image1}
+            />
+        );
+    } else if (columnId === "quantity") {
+        return <QuantityButtons item={item} setItems={setItems} />;
+    } else if (columnId === "total") {
+        return (
+            <Chip color="warning" variant="flat" size="sm">
+                Price: ৳ {item.item.price * item.count}
+            </Chip>
+        );
+    } else if (columnId === "action") {
+        return <ActionButtons id={item.item.id} setItems={setItems} />;
+    }
+    return null;
 }
 
-function OrderTable({}) {
+export function OrderTable({}) {
     const [items, setItems] = useState<any[]>([
         {
             count: 1,
             item: {
                 id: 34,
                 company_id: 18,
-                name: "AVA meal 1",
+                name: "AVA meal 1 Gluten-free, contains dairy.Price: $15.99",
                 description: "Gluten-free, contains dairy.Price: $15.99",
                 price: 200,
                 image1: "http://jinishpati.asepashe.com/products/1732819305_7489045loaded-beef-nachos-recipe-lutzflcat4x3-6c7ba4f55c514056894c920446cfd0b2.jpg",
@@ -236,23 +216,28 @@ function OrderTable({}) {
             },
         },
     ]);
+
     const [selected, setSelected] = useState<Selection>(new Set<string>([]));
-    const DeleteSelected = () => {
+    const TableTopBar = () => {
         return (
-            <Button
-                color="danger"
-                onPress={() => {
-                    setItems((prev: any) =>
-                        prev.filter(
-                            (i: any) =>
-                                !(selected as Set<string>).has(
-                                    i.item.id.toString()
-                                )
-                        )
-                    );
-                }}>
-                Delete Selected
-            </Button>
+            <div className="flex justify-between items-center w-full">
+                <Button
+                    color="danger"
+                    onPress={() => {
+                        if (selected === "all") {
+                            setItems([]);
+                            return;
+                        }
+                        setItems((prev: any) =>
+                            prev.filter(
+                                (i: any) => !selected.has(i.item.id.toString())
+                            )
+                        );
+                    }}>
+                    Delete Selected
+                </Button>
+                <div className="text-warning text-2xl">Price: 1122</div>
+            </div>
         );
     };
 
@@ -264,11 +249,7 @@ function OrderTable({}) {
             classNames={{
                 wrapper: "max-h-[500px]",
             }}
-            topContent={
-                <div>
-                    <DeleteSelected />
-                </div>
-            }
+            topContent={<TableTopBar />}
             topContentPlacement="outside"
             onSelectionChange={(selected) => {
                 setSelected(selected);
@@ -284,91 +265,18 @@ function OrderTable({}) {
                     </TableColumn>
                 )}
             </TableHeader>
-            <TableBody items={items}>
+            <TableBody items={items} emptyContent="No items found in cart">
                 {(item) => (
                     <TableRow key={item.item.id}>
-                        <TableCell>
-                            <div className="flex justify-start">
-                                <User
-                                    avatarProps={{
-                                        radius: "lg",
-                                        src: item.item.image1!,
-                                    }}
-                                    description={"৳ " + item.item.price}
-                                    name={item.item.name}
-                                    classNames={{
-                                        name: "text-start",
-                                        description: "text-start",
-                                    }}
+                        {(columnId) => (
+                            <TableCell>
+                                <TableCellCustom
+                                    item={item}
+                                    setItems={setItems}
+                                    columnId={columnId as string}
                                 />
-                            </div>
-                        </TableCell>
-                        <TableCell>
-                            <ButtonGroup size="sm">
-                                <Button
-                                    isIconOnly
-                                    onPress={() => {
-                                        setItems((prevItems) => {
-                                            let prev = [...prevItems];
-                                            const index = prev.findIndex(
-                                                (i) =>
-                                                    i.item.id === item.item.id
-                                            );
-                                            prev[index].count -= 1;
-                                            return prev;
-                                        });
-                                    }}>
-                                    <FaMinus />
-                                </Button>
-                                <Button isIconOnly disabled>
-                                    {item.count}
-                                </Button>
-                                <Button
-                                    isIconOnly
-                                    onPress={() => {
-                                        setItems((prevItems) => {
-                                            let prev = [...prevItems];
-                                            const index = prev.findIndex(
-                                                (i) =>
-                                                    i.item.id === item.item.id
-                                            );
-                                            prev[index].count += 1;
-                                            return prev;
-                                        });
-                                    }}>
-                                    <FaPlus />
-                                </Button>
-                            </ButtonGroup>
-                        </TableCell>
-                        <TableCell>
-                            <Chip color="primary" size="sm">
-                                ৳ {item.item.price * item.count}
-                            </Chip>
-                        </TableCell>
-                        <TableCell>
-                            <div className="relative flex items-center gap-2 justify-end">
-                                <Tooltip
-                                    color="danger"
-                                    content="Remove From Cart">
-                                    <Button
-                                        isIconOnly
-                                        size="sm"
-                                        color="danger"
-                                        variant="flat"
-                                        onPress={() => {
-                                            setItems((prev: any) =>
-                                                prev.filter(
-                                                    (i: any) =>
-                                                        i.item.id !==
-                                                        item.item.id
-                                                )
-                                            );
-                                        }}>
-                                        <FaRegTrashAlt />
-                                    </Button>
-                                </Tooltip>
-                            </div>
-                        </TableCell>
+                            </TableCell>
+                        )}
                     </TableRow>
                 )}
             </TableBody>
@@ -419,10 +327,6 @@ export default function Page() {
             </Form>
             <div className="w-full">
                 <OrderTable />
-                <div className="flex justify-between items-center w-full mt-4">
-                    <div className="grow" />
-                    <div className="text-warning text-2xl">Price: 1122</div>
-                </div>
             </div>
         </div>
     );

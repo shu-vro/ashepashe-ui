@@ -1,6 +1,6 @@
 "use client";
 
-import { OrderTable } from "@/app/(individual_store_interface)/place-order/page";
+import OrderTable from "@/app/(individual_store_interface)/place-order/components/OrderTable";
 import { OrderDrawerContext } from "@/contexts/OrderDrawerContext";
 import {
     Button,

@@ -1,0 +1,57 @@
+/* Style the ribbon */
+.ribbon {
+    width: 120px;
+    height: 120px;
+    overflow: hidden;
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    transform: rotate(-90deg);
+    z-index: 11;
+    user-select: none;
+    pointer-events: none;
+}
+
+.ribbon__content {
+    left: -22px;
+    top: 30px;
+    transform: rotate(45deg);
+    position: absolute;
+    display: block;
+    width: 205px;
+    padding: 4px 0;
+    background-color: #8e0027;
+    box-shadow: 0 0px 10px rgba(0, 0, 0, 0.2);
+    color: #fff;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+    text-transform: uppercase;
+    text-align: center;
+    border: 2px dotted #fff;
+    outline: 5px solid #f5cd79;
+}
+
+/* Pseudo-elements for ribbon corners */
+.ribbon::before,
+.ribbon::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    border-style: solid;
+    border-width: 5px;
+}
+
+.ribbon::before {
+    top: 0;
+    left: 0;
+    border-top-color: transparent;
+    border-right-color: transparent;
+    border-color: #f19066;
+}
+
+.ribbon::after {
+    bottom: 0;
+    right: 0;
+    border-top-color: transparent;
+    border-right-color: transparent;
+    border-color: #f19066;
+}

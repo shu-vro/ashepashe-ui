@@ -26,6 +26,7 @@ import { CiShoppingCart } from "react-icons/ci";
 import Link from "next/link";
 import NextImage from "next/image";
 import { useRouter } from "next/navigation";
+import Ribbon from "./Ribbon";
 
 interface ProductCardProps {
     name: string;
@@ -63,7 +64,10 @@ export function ProductCard({
             // isPressable
             {...rest}
             as={"div"}
-            className={cn("w-52 md:w-64 p-0", rest?.className || "")}>
+            className={cn(
+                "w-52 md:w-64 p-0 overflow-visible",
+                rest?.className || ""
+            )}>
             <CardBody
                 className="overflow-visible relative"
                 as={Link}
@@ -72,6 +76,9 @@ export function ProductCard({
                     e.stopPropagation();
                     push(link);
                 }}>
+                {discountPercent !== 0 && (
+                    <Ribbon>{discountPercent.toFixed(0)}% off</Ribbon>
+                )}
                 <Image
                     shadow="none"
                     radius="lg"
@@ -133,21 +140,12 @@ export function ProductCard({
                         color="warning">
                         {(rating || 0)?.toFixed(1)}
                     </Chip>
-                    <Button isIconOnly variant="light" className="text-xl">
+                    {/* <Button isIconOnly variant="light" className="text-xl">
                         <CiBookmark />
-                    </Button>
+                    </Button> */}
                     <Button isIconOnly variant="light" className="text-xl">
                         <CiShoppingCart />
                     </Button>
-                    {discountPercent !== 0 && (
-                        <Chip
-                            color="success"
-                            variant="bordered"
-                            radius="sm"
-                            size="sm">
-                            {discountPercent.toFixed(0)}%
-                        </Chip>
-                    )}
                 </div>
                 <div className="w-full">
                     {!disableCompany && (

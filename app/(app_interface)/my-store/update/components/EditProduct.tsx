@@ -13,6 +13,7 @@ import EditProductBtn from "./EditProductBtn";
 import OfferProductBtn from "./OfferProductBtn";
 import { useMemo } from "react";
 import Link from "next/link";
+import Ribbon from "@/app/(app_interface)/components/Ribbon";
 
 export default function EditProduct({
     product,
@@ -33,11 +34,14 @@ export default function EditProduct({
             shadow="sm"
             isPressable
             as={"div"}
-            className={cn("w-52 md:w-72 p-0")}>
+            className={cn("w-52 md:w-72 p-0 overflow-visible")}>
             <CardBody
                 className="overflow-visible relative"
                 as={Link}
                 href={`/products/${product.slug}`}>
+                {discountPercent !== "0" && (
+                    <Ribbon>{discountPercent}% off</Ribbon>
+                )}
                 <Image
                     shadow="sm"
                     radius="lg"

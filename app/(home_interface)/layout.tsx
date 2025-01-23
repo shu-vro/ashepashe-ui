@@ -2,7 +2,6 @@ import type { Metadata, Viewport } from "next";
 import { Montserrat } from "next/font/google";
 import ThemeProvider from "@/contexts/theme-provider";
 import Header from "./components/Header";
-import Gradient from "../(app_interface)/components/Gradient";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import "@smastrom/react-rating/style.css";
 import "../(app_interface)/globals.css";
@@ -85,7 +84,6 @@ export default function RootLayout({
                             <UserProvider>
                                 <main className="w-full lap:max-w-screen-lap mx-auto">
                                     <Header />
-                                    <Gradient />
                                     {children}
                                     <Sonner />
                                 </main>

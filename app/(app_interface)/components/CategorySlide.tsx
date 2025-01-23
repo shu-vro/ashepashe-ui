@@ -29,40 +29,9 @@ export default function CategorySlide({
                 return (
                     <SwiperSlide key={select.id} className="w-fit p-4">
                         <ProductCard
-                            name={select.name}
-                            description={select?.description}
-                            // imageUrl={`https://nextui.org/images/fruit-${
-                            //     (index % 8) + 1
-                            // }.jpeg`}
-                            imageUrl={toValidUrl(select.image1!)}
-                            discountPrice={
-                                !offer
-                                    ? select.price
-                                    : Math.round(
-                                          ((100 - offer.offer_percent) / 100) *
-                                              select.price
-                                      )
-                            }
-                            actualPrice={select.price}
-                            rating={
-                                select.rating
-                                    ? select.rating.reduce(
-                                          (a, b) => a + b.rating,
-                                          0
-                                      ) / select.rating.length
-                                    : 0
-                            }
-                            seller={select.company.name}
-                            sellerAvatar={toValidUrl(select.company.image)}
-                            // sellerAvatar="https://i.pravatar.cc/150?u=a04258114e29026702d"
-                            // className="min-h-[370px]"
-                            link={`${specialized ? "/p" : "/products"}/${
-                                select.slug
-                            }`}
-                            sellerLink={`${specialized ? "/a" : "/companies"}/${
-                                select.company.slug
-                            }`}
+                            product={select}
                             disableCompany={disableCompany}
+                            specialized={specialized}
                         />
                     </SwiperSlide>
                 );

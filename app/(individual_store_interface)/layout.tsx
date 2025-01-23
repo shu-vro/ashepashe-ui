@@ -2,7 +2,6 @@ import type { Metadata, Viewport } from "next";
 import { Montserrat } from "next/font/google";
 import ThemeProvider from "@/contexts/theme-provider";
 import Header from "./components/Header";
-import Gradient from "../(app_interface)/components/Gradient";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import "@smastrom/react-rating/style.css";
 import "../(app_interface)/globals.css";
@@ -14,6 +13,7 @@ import { SessionProvider } from "next-auth/react";
 import UserProvider from "@/contexts/UserContext";
 import OrderDrawerProvider from "@/contexts/OrderDrawerContext";
 import OrderSidebar from "../(app_interface)/components/OrderSidebar";
+import CartProvider from "@/contexts/CartContext";
 
 const font = Montserrat({
     subsets: ["latin"],
@@ -86,13 +86,14 @@ export default function RootLayout({
                         <SidebarProvider>
                             <UserProvider>
                                 <OrderDrawerProvider>
-                                    <main className="w-full lap:max-w-screen-lap mx-auto">
-                                        <Header />
-                                        <Gradient />
-                                        {children}
-                                        <Sonner />
-                                        <OrderSidebar />
-                                    </main>
+                                    <CartProvider>
+                                        <main className="w-full lap:max-w-screen-lap mx-auto">
+                                            <Header />
+                                            {children}
+                                            <Sonner />
+                                            <OrderSidebar />
+                                        </main>
+                                    </CartProvider>
                                 </OrderDrawerProvider>
                             </UserProvider>
                         </SidebarProvider>

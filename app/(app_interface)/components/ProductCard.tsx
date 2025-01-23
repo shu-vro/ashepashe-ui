@@ -12,7 +12,7 @@ import {
     Image,
     User,
 } from "@heroui/react";
-import React from "react";
+import React, { use, useMemo } from "react";
 import { CiBookmark } from "react-icons/ci";
 import { FaStar } from "react-icons/fa6";
 import "@smastrom/react-rating/style.css";
@@ -27,37 +27,43 @@ import Link from "next/link";
 import NextImage from "next/image";
 import { useRouter } from "next/navigation";
 import Ribbon from "./Ribbon";
+import useLocalStorage from "@/hooks/useLocalStorage";
+import { CartContext } from "@/contexts/CartContext";
 
 interface ProductCardProps {
-    name: string;
-    actualPrice: number;
-    discountPrice: number;
-    seller: string;
-    sellerAvatar: string;
-    rating: number;
-    imageUrl: string;
-    description?: string;
     disableCompany?: boolean;
-    link: string;
-    sellerLink?: string;
+    specialized?: boolean;
+    product: Product["product"];
 }
 
 export function ProductCard({
-    name,
-    imageUrl,
-    actualPrice,
-    discountPrice,
-    seller,
-    sellerAvatar,
-    rating,
-    description,
-    link,
+    product,
     disableCompany = false,
-    sellerLink = "#",
+    specialized = false,
     ...rest
 }: ProductCardProps & CardProps) {
     const { push } = useRouter();
-    const discountPercent = 100 - (discountPrice / actualPrice) * 100;
+    const useCart = use(CartContext);
+    const { discountPercent, discountPrice } = useMemo(() => {
+        const offer = product.offers?.find(
+            (offer) => new Date(offer.validity).getTime() > Date.now()
+        );
+        const discountPrice = !offer
+            ? product.price
+            : ((100 - offer.offer_percent) / 100) * product.price;
+
+        const discountPercent = 100 - (discountPrice / product.price) * 100;
+        return { discountPercent, discountPrice: Math.round(discountPrice) };
+    }, [product.offers, product.price]);
+
+    const rating = useMemo(() => {
+        return product.rating
+            ? product.rating.reduce((a, b) => a + b.rating, 0) /
+                  product.rating.length
+            : 0;
+    }, [product.rating]);
+
+    const link = `${specialized ? "/p" : "/products"}/${product.slug}`;
     return (
         <Card
             shadow="sm"
@@ -83,9 +89,9 @@ export function ProductCard({
                     shadow="none"
                     radius="lg"
                     isZoomed
-                    alt={name}
+                    alt={product.name}
                     className="w-full aspect-[4/3] object-cover !h-auto"
-                    src={toValidUrl(imageUrl)}
+                    src={toValidUrl(product.image1!)}
                     isBlurred
                     width={400}
                     height={300}
@@ -99,7 +105,7 @@ export function ProductCard({
                         href={link}
                         onClick={(e) => e.stopPropagation()}
                         className="capitalize not-italic font-bold text-xl line-clamp-2 h-[4ch]">
-                        {name}{" "}
+                        {product.name}{" "}
                         {/* <Chip
                             color="success"
                             variant="bordered"
@@ -113,7 +119,7 @@ export function ProductCard({
                     <Link
                         href={link}
                         className="text-neutral-500 text-sm line-clamp-2 h-[4ch]">
-                        {description && removeTags(description)}
+                        {product.description && removeTags(product.description)}
                     </Link>
                 </div>
                 <CustomDivider />
@@ -121,7 +127,7 @@ export function ProductCard({
                     <div>
                         {discountPercent !== 0 && (
                             <del className="text-default-500 text-sm">
-                                {actualPrice}৳
+                                {product.price}৳
                             </del>
                         )}{" "}
                         <span className="text-xl font-bold">
@@ -143,7 +149,13 @@ export function ProductCard({
                     {/* <Button isIconOnly variant="light" className="text-xl">
                         <CiBookmark />
                     </Button> */}
-                    <Button isIconOnly variant="light" className="text-xl">
+                    <Button
+                        isIconOnly
+                        variant="light"
+                        className="text-xl"
+                        onPress={() => {
+                            useCart!.addToCart(product.id, 1);
+                        }}>
                         <CiShoppingCart />
                     </Button>
                 </div>
@@ -152,14 +164,16 @@ export function ProductCard({
                         <>
                             <CustomDivider />
                             <User
-                                name={seller}
+                                name={product.company.name}
                                 avatarProps={{
                                     className: "w-8 h-8 grow",
-                                    src: sellerAvatar,
+                                    src: product.company.image,
                                 }}
                                 className="grow-0"
                                 as={Link}
-                                href={sellerLink}
+                                href={`${specialized ? "/a" : "/companies"}/${
+                                    product.company.slug
+                                }`}
                             />
                         </>
                     )}

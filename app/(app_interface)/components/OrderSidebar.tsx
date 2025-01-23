@@ -11,6 +11,7 @@ import {
     DrawerFooter,
     DrawerHeader,
 } from "@heroui/react";
+import Link from "next/link";
 import React, { use } from "react";
 
 export default function OrderSidebar() {
@@ -35,13 +36,25 @@ export default function OrderSidebar() {
                         </div>
                         <DrawerFooter className="flex justify-between items-center flex-wrap flex-row">
                             <div />
-                            <Button
-                                color="warning"
-                                onPress={onClose}
-                                // className="sticky bottom-0"
-                            >
-                                Close
-                            </Button>
+                            <div>
+                                <Button
+                                    color="warning"
+                                    onPress={onClose}
+                                    // className="sticky bottom-0"
+                                >
+                                    Close
+                                </Button>
+                                <Button
+                                    color="primary"
+                                    as={Link}
+                                    href="/place-order"
+                                    onPress={onClose}
+                                    className="ml-2"
+                                    // className="sticky bottom-0"
+                                >
+                                    Place Order
+                                </Button>
+                            </div>
                         </DrawerFooter>
                     </DrawerBody>
                 )}

@@ -2,7 +2,13 @@
 
 import ThemeButton from "../ThemeButton";
 import { CiBookmark, CiShoppingCart } from "react-icons/ci";
-import { NavbarItem, Button, Divider, useDisclosure } from "@heroui/react";
+import {
+    NavbarItem,
+    Button,
+    Divider,
+    useDisclosure,
+    Badge,
+} from "@heroui/react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import LoginButton from "./LoginButton";
@@ -12,6 +18,7 @@ import { use } from "react";
 import { UserContext } from "@/contexts/UserContext";
 import { useSession } from "next-auth/react";
 import { OrderDrawerContext } from "@/contexts/OrderDrawerContext";
+import { CartContext } from "@/contexts/CartContext";
 
 export default function ResponsiveButtons({}) {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -19,22 +26,29 @@ export default function ResponsiveButtons({}) {
     const useUser = use(UserContext);
     const { status } = useSession();
     const useOrderDrawer = use(OrderDrawerContext);
+    const useCart = use(CartContext);
     return (
         <>
             <NavbarItem>
-                <Button
-                    as={Link}
-                    color="primary"
-                    href="#"
-                    variant="flat"
-                    isIconOnly
-                    className="text-xl mob:text-2xl"
-                    onPress={() => {
-                        if (!useOrderDrawer) return;
-                        useOrderDrawer.onOrderDrawerOpenChange(true);
-                    }}>
-                    <CiShoppingCart />
-                </Button>
+                <Badge
+                    color="warning"
+                    size="lg"
+                    content={useCart?.cart?.length}
+                    isInvisible={useCart?.cart?.length === 0}>
+                    <Button
+                        as={Link}
+                        color="primary"
+                        href="#"
+                        variant="flat"
+                        isIconOnly
+                        className="text-xl mob:text-2xl"
+                        onPress={() => {
+                            if (!useOrderDrawer) return;
+                            useOrderDrawer.onOrderDrawerOpenChange(true);
+                        }}>
+                        <CiShoppingCart />
+                    </Button>
+                </Badge>
             </NavbarItem>
             <CustomDivider />
             <NavbarItem>

@@ -2,6 +2,7 @@
 
 import { Code, Tooltip } from "@heroui/react";
 import React, { useMemo } from "react";
+import { toast } from "sonner";
 
 export default function IndividualLink({ slug }: { slug: string }) {
     const individualUrl = useMemo(() => {
@@ -17,6 +18,7 @@ export default function IndividualLink({ slug }: { slug: string }) {
                     className="text-wrap cursor-pointer"
                     onClick={() => {
                         navigator.clipboard.writeText(individualUrl);
+                        toast.success("Link copied to clipboard");
                     }}>
                     {individualUrl}
                 </Code>

@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { CreateStoreModal } from "../../components/Header/UserDropdown";
+import { CreateStoreModal } from "../../../(app_interface)/components/Header/UserDropdown";
 import { useRouter } from "next/navigation";
 
 export default function page() {

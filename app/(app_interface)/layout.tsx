@@ -2,7 +2,6 @@ import type { Metadata, Viewport } from "next";
 import { Montserrat } from "next/font/google";
 import ThemeProvider from "@/contexts/theme-provider";
 import Header from "./components/Header";
-import Gradient from "./components/Gradient";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "./components/AppSidebar";
 import ConfigComponent from "./components/ConfigComponent";
@@ -16,6 +15,7 @@ import { SessionProvider } from "next-auth/react";
 import UserProvider from "@/contexts/UserContext";
 import OrderSidebar from "./components/OrderSidebar";
 import OrderDrawerProvider from "@/contexts/OrderDrawerContext";
+import CartProvider, { CartContext } from "@/contexts/CartContext";
 
 const font = Montserrat({
     subsets: ["latin"],
@@ -88,15 +88,16 @@ export default function RootLayout({
                         <SidebarProvider>
                             <UserProvider>
                                 <OrderDrawerProvider>
-                                    <AppSidebar />
-                                    <main className="w-full lap:max-w-screen-lap mx-auto">
-                                        <Header />
-                                        <Gradient />
-                                        {children}
-                                        <Sonner />
-                                        <OrderSidebar />
-                                        <ConfigComponent />
-                                    </main>
+                                    <CartProvider>
+                                        <AppSidebar />
+                                        <main className="w-full lap:max-w-screen-lap mx-auto">
+                                            <Header />
+                                            {children}
+                                            <Sonner />
+                                            <OrderSidebar />
+                                            <ConfigComponent />
+                                        </main>
+                                    </CartProvider>
                                 </OrderDrawerProvider>
                             </UserProvider>
                         </SidebarProvider>

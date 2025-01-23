@@ -351,38 +351,7 @@ export default function ViewProducts({
                             new Date(offer.validity).getTime() > Date.now()
                     );
                     return (
-                        <ProductCard
-                            key={product.slug}
-                            className="!w-full h-fit max-sm:min-h-96 max-w-96"
-                            name={product.name}
-                            description={product?.description}
-                            // imageUrl={`https://nextui.org/images/fruit-${
-                            //     (index % 8) + 1
-                            // }.jpeg`}
-                            imageUrl={toValidUrl(product.image1!)}
-                            discountPrice={
-                                !offer
-                                    ? product.price
-                                    : ((100 - offer.offer_percent) / 100) *
-                                      product.price
-                            }
-                            actualPrice={product.price}
-                            rating={
-                                product.rating
-                                    ? product.rating.reduce(
-                                          (a, b) => a + b.rating,
-                                          0
-                                      ) / product.rating.length
-                                    : 0
-                            }
-                            seller={product.company.name}
-                            sellerAvatar={toValidUrl(product.company.image)}
-                            // sellerAvatar="https://i.pravatar.cc/150?u=a04258114e29026702d"
-                            // className="min-h-[370px]"
-                            link={`/products/${product.slug}`}
-                            sellerLink={`/companies/${product.company.slug}`}
-                            disableCompany={false}
-                        />
+                        <ProductCard product={product} disableCompany={false} />
                     );
                 })}
             </div>

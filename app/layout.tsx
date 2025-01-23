@@ -1,5 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Montserrat } from "next/font/google";
+import Gradient from "./(app_interface)/components/Gradient";
+import "./(app_interface)/globals.css";
 
 const font = Montserrat({
     subsets: ["latin"],
@@ -62,7 +64,10 @@ export default function RootLayout({
 }) {
     return (
         <html lang="en" className="scroll-smooth max-sm:text-[12px]">
-            <body className={`${font.className} antialiased`}>{children}</body>
+            <body className={`${font.className} antialiased`}>
+                <Gradient />
+                {children}
+            </body>
         </html>
     );
 }

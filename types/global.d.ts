@@ -83,3 +83,8 @@ interface Product {
         company: Company;
     };
 }
+
+interface Cart {
+    productId: number;
+    count: number;
+}

@@ -166,6 +166,7 @@ export default function OrderTable({
                                 (i: any) => !selected.has(i.item.id.toString())
                             )
                         );
+                        setSelected(new Set<string>([]));
                     }}>
                     Delete Selected
                 </Button>

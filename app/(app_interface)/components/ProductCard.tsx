@@ -154,7 +154,7 @@ export function ProductCard({
                         variant="light"
                         className="text-xl"
                         onPress={() => {
-                            useCart!.addToCart(product.id, 1);
+                            useCart!.addToCart(product, 1);
                         }}>
                         <CiShoppingCart />
                     </Button>

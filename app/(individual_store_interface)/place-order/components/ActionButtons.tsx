@@ -1,5 +1,6 @@
+import { CartContext } from "@/contexts/CartContext";
 import { Button, Tooltip } from "@heroui/react";
-import React from "react";
+import React, { use } from "react";
 import { FaRegTrashAlt } from "react-icons/fa";
 
 export default function ActionButtons({
@@ -7,8 +8,11 @@ export default function ActionButtons({
     id,
 }: {
     setItems: React.Dispatch<React.SetStateAction<any[]>>;
-    id: string;
+    id: number;
 }) {
+    const useCart = use(CartContext);
+    if (!useCart) return null;
+
     return (
         <>
             <div className="relative flex items-center gap-2 justify-end">
@@ -19,9 +23,7 @@ export default function ActionButtons({
                         color="danger"
                         variant="flat"
                         onPress={() => {
-                            setItems((prev: any) =>
-                                prev.filter((i: any) => i.item.id !== id)
-                            );
+                            useCart.deleteFromCart(id);
                         }}>
                         <FaRegTrashAlt />
                     </Button>

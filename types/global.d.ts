@@ -85,6 +85,6 @@ interface Product {
 }
 
 interface Cart {
-    productId: number;
+    item: Product["product"];
     count: number;
 }

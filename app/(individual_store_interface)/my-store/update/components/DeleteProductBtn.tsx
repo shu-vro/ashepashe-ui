@@ -1,4 +1,4 @@
-import React, { use } from "react";
+import React, { use, useState } from "react";
 import {
     Modal,
     ModalContent,
@@ -20,6 +20,7 @@ type Props = {
 export default function DeleteProductBtn({ slug }: Props) {
     const useUser = use(UserContext);
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
+    const [loading, setLoading] = useState(false);
 
     return (
         <>
@@ -50,20 +51,29 @@ export default function DeleteProductBtn({ slug }: Props) {
                                 </Button>
                                 <Button
                                     color="danger"
+                                    isLoading={loading}
                                     onPress={async () => {
-                                        const res = await deleteProductAction(
-                                            {
-                                                user_id: useUser?.user?.id,
-                                            },
-                                            slug
-                                        );
-                                        if (res.status === 200) {
-                                            toast.success(res.message);
-                                            useUser?.ticktock();
-                                        } else {
-                                            toast.error(res.message);
+                                        try {
+                                            setLoading(true);
+                                            const res =
+                                                await deleteProductAction(
+                                                    {
+                                                        user_id:
+                                                            useUser?.user?.id,
+                                                    },
+                                                    slug
+                                                );
+                                            if (res.status === 200) {
+                                                toast.success(res.message);
+                                                useUser?.ticktock();
+                                            } else {
+                                                toast.error(res.message);
+                                            }
+                                            onClose();
+                                        } catch (error) {
+                                        } finally {
+                                            setLoading(false);
                                         }
-                                        onClose();
                                     }}>
                                     Delete
                                 </Button>

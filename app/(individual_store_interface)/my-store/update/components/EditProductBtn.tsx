@@ -19,7 +19,6 @@ import { onImageUpload } from "@/lib/utils";
 import { UserContext } from "@/contexts/UserContext";
 import { toast } from "sonner";
 import { editProductAction } from "./editProductAction";
-import { API_URL } from "@/lib/var";
 
 type Props = {
     defaultProps: Product["product"];
@@ -106,6 +105,7 @@ export function ProductForm({
     onSubmit: (arg0: any) => Promise<any>;
 } & Partial<Props>) {
     const [imageUrl, setImageUrl] = useState("");
+    const [loading, setLoading] = useState(false);
     const validatePrice = (value: string) => {
         const regex = /(^\d*$)/;
         const match = value.match(regex);
@@ -125,6 +125,7 @@ export function ProductForm({
             validationBehavior="native"
             onSubmit={async (e) => {
                 e.preventDefault();
+                setLoading(true);
                 const formData = new FormData(e.target as HTMLFormElement);
                 const payload = Object.fromEntries(formData);
                 payload["image"] = imageUrl;
@@ -133,6 +134,8 @@ export function ProductForm({
                     onClose();
                 } catch (e: any) {
                     toast.error(e.message, { description: e.cause });
+                } finally {
+                    setLoading(false);
                 }
             }}>
             <ModalBody>
@@ -199,7 +202,7 @@ export function ProductForm({
                 <Button color="danger" variant="light" onPress={onClose}>
                     Close
                 </Button>
-                <Button color="primary" type="submit">
+                <Button color="primary" type="submit" isLoading={loading}>
                     {submitText}
                 </Button>
             </ModalFooter>

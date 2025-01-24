@@ -85,6 +85,7 @@ function CreateReview({
     const useUser = use(UserContext);
     const [review, setReview] = useState(defaultReview || "");
     const [rating, setRating] = useState(defaultRating || 0);
+    const [loading, setLoading] = useState(false);
     useEffect(() => {
         setRating(defaultRating || 0);
         setReview(defaultReview || "");
@@ -113,18 +114,25 @@ function CreateReview({
                         variant="shadow"
                         color="danger"
                         className="mr-4"
+                        isLoading={loading}
                         onPress={async () => {
-                            const res = await deleteReviewAction({
-                                userId: useUser?.user?.id,
-                                reviewId: defaultReviewId,
-                            });
+                            setLoading(true);
+                            try {
+                                const res = await deleteReviewAction({
+                                    userId: useUser?.user?.id,
+                                    reviewId: defaultReviewId,
+                                });
 
-                            if (res.status === 200) {
-                                toast.success(res.message);
-                            } else {
-                                toast.error(
-                                    `Error(${res.status}): ` + res.message
-                                );
+                                if (res.status === 200) {
+                                    toast.success(res.message);
+                                } else {
+                                    toast.error(
+                                        `Error(${res.status}): ` + res.message
+                                    );
+                                }
+                            } catch (error) {
+                            } finally {
+                                setLoading(false);
                             }
                         }}>
                         Delete
@@ -133,23 +141,32 @@ function CreateReview({
                 <Button
                     variant="shadow"
                     color="success"
+                    isLoading={loading}
                     onPress={async () => {
-                        if (rating < 1 || rating > 5) {
-                            return toast.error(
-                                "Rating must be at least 1 and at most 5"
-                            );
-                        }
-                        const payload = {
-                            user_id: useUser?.user?.id,
-                            product_id: productId,
-                            rating,
-                            review,
-                        };
-                        const res = await reviewSendAction(payload);
-                        if (res.status === 200 || res.status === 201) {
-                            toast.success(res.message);
-                        } else {
-                            toast.error(`Error(${res.status}): ` + res.message);
+                        setLoading(true);
+                        try {
+                            if (rating < 1 || rating > 5) {
+                                return toast.error(
+                                    "Rating must be at least 1 and at most 5"
+                                );
+                            }
+                            const payload = {
+                                user_id: useUser?.user?.id,
+                                product_id: productId,
+                                rating,
+                                review,
+                            };
+                            const res = await reviewSendAction(payload);
+                            if (res.status === 200 || res.status === 201) {
+                                toast.success(res.message);
+                            } else {
+                                toast.error(
+                                    `Error(${res.status}): ` + res.message
+                                );
+                            }
+                        } catch (error) {
+                        } finally {
+                            setLoading(false);
                         }
                     }}>
                     Submit

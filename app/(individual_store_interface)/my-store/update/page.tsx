@@ -38,6 +38,7 @@ export default function Page() {
     const [fbPage, setFbPage] = useState("Fb Page Link");
     const [map, setMap] = useState("Some Address");
     const [companyDescription, setCompanyDescription] = useState("");
+    const [loading, setLoading] = useState(false);
     const [division, setDivision] = useState<Selection>(
         new Set<string>(["Rajshahi"])
     );
@@ -378,38 +379,45 @@ export default function Page() {
                 color="success"
                 className="fixed bottom-4 right-4 font-bold"
                 size="lg"
+                isLoading={loading}
                 onPress={async () => {
-                    const phone = validatePhoneNumber(phoneNumber);
-                    if (!phone) {
-                        return toast.error("Phone number is not valid.");
-                    }
-                    const payload = {
-                        name: companyName,
-                        city: [...district][0],
-                        description: companyDescription,
-                        division: [...division][0],
-                        map: map,
-                        iframe: `https://maps.google.com/maps?q=${location.lat},${location.long}&hl=es;z=132m&output=embed`,
-                        phone,
-                        fb_page: fbPage,
-                        lati: location.lat,
-                        longi: location.long,
-                        category:
-                            categories
-                                .find((e) => e.id == selectedCategory)
-                                ?.id.toString() || "",
-                    };
-                    console.log(payload);
-                    const x: any = await updateStoreAction({
-                        data: payload,
-                        store_slug: useUser?.userCompany?.slug,
-                        userId: useUser?.user?.id,
-                    });
-                    if (x.status === 200) {
-                        toast.success(x.message);
-                        useUser?.ticktock();
-                    } else {
-                        toast.error(`Error(${x.status}): ` + x.message);
+                    try {
+                        setLoading(true);
+                        const phone = validatePhoneNumber(phoneNumber);
+                        if (!phone) {
+                            return toast.error("Phone number is not valid.");
+                        }
+                        const payload = {
+                            name: companyName,
+                            city: [...district][0],
+                            description: companyDescription,
+                            division: [...division][0],
+                            map: map,
+                            iframe: `https://maps.google.com/maps?q=${location.lat},${location.long}&hl=es;z=132m&output=embed`,
+                            phone,
+                            fb_page: fbPage,
+                            lati: location.lat,
+                            longi: location.long,
+                            category:
+                                categories
+                                    .find((e) => e.id == selectedCategory)
+                                    ?.id.toString() || "",
+                        };
+                        console.log(payload);
+                        const x: any = await updateStoreAction({
+                            data: payload,
+                            store_slug: useUser?.userCompany?.slug,
+                            userId: useUser?.user?.id,
+                        });
+                        if (x.status === 200) {
+                            toast.success(x.message);
+                            useUser?.ticktock();
+                        } else {
+                            toast.error(`Error(${x.status}): ` + x.message);
+                        }
+                    } catch (error) {
+                    } finally {
+                        setLoading(false);
                     }
                 }}
                 startContent={<GrSave />}>

@@ -8,6 +8,7 @@ import { toast } from "sonner";
 export default function CreateSection() {
     const useUser = use(UserContext);
     const [newSectionName, setNewSectionName] = useState("");
+    const [loading, setLoading] = useState(false);
 
     return (
         <div className="w-full">
@@ -28,23 +29,30 @@ export default function CreateSection() {
                     </span>
                     <Button
                         color="secondary"
+                        isLoading={loading}
                         onPress={async () => {
-                            if (!newSectionName) {
-                                return toast.error("Name is required");
-                            }
-                            const res = await createSectionAction({
-                                name: newSectionName,
-                                companyId: useUser?.userCompany?.id,
-                            });
+                            setLoading(true);
+                            try {
+                                if (!newSectionName) {
+                                    return toast.error("Name is required");
+                                }
+                                const res = await createSectionAction({
+                                    name: newSectionName,
+                                    companyId: useUser?.userCompany?.id,
+                                });
 
-                            if (res.status === 200) {
-                                toast.success(res.message);
-                                setNewSectionName("");
-                                useUser?.ticktock();
-                            } else {
-                                toast.error(
-                                    `Error(${res.status}): ` + res.message
-                                );
+                                if (res.status === 200) {
+                                    toast.success(res.message);
+                                    setNewSectionName("");
+                                    useUser?.ticktock();
+                                } else {
+                                    toast.error(
+                                        `Error(${res.status}): ` + res.message
+                                    );
+                                }
+                            } catch (error) {
+                            } finally {
+                                setLoading(false);
                             }
                         }}>
                         Create

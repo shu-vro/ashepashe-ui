@@ -37,6 +37,7 @@ export default function OfferProductBtn({
     currentPrice?: number;
 }) {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
+    const [loading, setLoading] = useState(false);
     const [discountPrice, setDiscountPrice] = useState(
         currentPrice?.toString() ||
             (
@@ -57,6 +58,7 @@ export default function OfferProductBtn({
             <Button
                 isIconOnly
                 onPress={onOpen}
+                isLoading={loading}
                 color={currentOffer ? "success" : "default"}>
                 <MdOutlineLocalOffer />
             </Button>
@@ -69,70 +71,76 @@ export default function OfferProductBtn({
                             className="block"
                             onSubmit={async (e) => {
                                 e.preventDefault();
-                                if (!useUser || !useUser.user?.id) {
-                                    toast.error("User not found.");
-                                    return;
-                                }
-                                if (currentOffer) {
-                                    // {
-                                    //     "product_id" : 34,
-                                    //     "offer_percent": 22,
-                                    //     "offer_buy" : "offer_buy",
-                                    //     "validity" : "2025-01-09T19:10:39.000000Z",
-                                    //         "user_id": 1
-                                    // }
-                                    const payload = {
-                                        user_id: useUser.user?.id,
-                                        product_id: productId,
-                                        offer_percent: discountPercent,
-                                        validity: validity
-                                            ? new Date(
-                                                  validity.toString()
-                                              ).toISOString()
-                                            : null,
-                                    };
-                                    const res: any =
-                                        await updateProductOfferAction(
-                                            payload,
-                                            currentOffer.id
-                                        );
-                                    if (res.status === 200) {
-                                        toast.success(res.message);
-                                        useUser.ticktock();
-                                        onClose();
-                                    } else {
-                                        toast.error(
-                                            `Error(${res.status}) ` +
-                                                res.message
-                                        );
+                                setLoading(true);
+                                try {
+                                    if (!useUser || !useUser.user?.id) {
+                                        toast.error("User not found.");
+                                        return;
                                     }
-                                } else {
-                                    const payload = {
-                                        user_id: useUser.user?.id,
-                                        product_id: productId,
-                                        offer_percent: discountPercent,
-                                        validity: validity
-                                            ? new Date(
-                                                  validity.toString()
-                                              ).toISOString()
-                                            : null,
-                                    };
-                                    // return console.log(payload);
-                                    const res: any =
-                                        await createProductOffersAction(
-                                            payload
-                                        );
+                                    if (currentOffer) {
+                                        // {
+                                        //     "product_id" : 34,
+                                        //     "offer_percent": 22,
+                                        //     "offer_buy" : "offer_buy",
+                                        //     "validity" : "2025-01-09T19:10:39.000000Z",
+                                        //         "user_id": 1
+                                        // }
+                                        const payload = {
+                                            user_id: useUser.user?.id,
+                                            product_id: productId,
+                                            offer_percent: discountPercent,
+                                            validity: validity
+                                                ? new Date(
+                                                      validity.toString()
+                                                  ).toISOString()
+                                                : null,
+                                        };
+                                        const res: any =
+                                            await updateProductOfferAction(
+                                                payload,
+                                                currentOffer.id
+                                            );
+                                        if (res.status === 200) {
+                                            toast.success(res.message);
+                                            useUser.ticktock();
+                                            onClose();
+                                        } else {
+                                            toast.error(
+                                                `Error(${res.status}) ` +
+                                                    res.message
+                                            );
+                                        }
+                                    } else {
+                                        const payload = {
+                                            user_id: useUser.user?.id,
+                                            product_id: productId,
+                                            offer_percent: discountPercent,
+                                            validity: validity
+                                                ? new Date(
+                                                      validity.toString()
+                                                  ).toISOString()
+                                                : null,
+                                        };
+                                        // return console.log(payload);
+                                        const res: any =
+                                            await createProductOffersAction(
+                                                payload
+                                            );
 
-                                    if (res.status === 201) {
-                                        toast.success(res.message);
-                                        useUser.ticktock();
-                                        onClose();
-                                    } else {
-                                        toast.error(
-                                            `Error(${res.status}) ` +
-                                                res.message
-                                        );
+                                        if (res.status === 201) {
+                                            toast.success(res.message);
+                                            useUser.ticktock();
+                                            onClose();
+                                        } else {
+                                            toast.error(
+                                                `Error(${res.status}) ` +
+                                                    res.message
+                                            );
+                                        }
                                     }
+                                } catch (error) {
+                                } finally {
+                                    setLoading(false);
                                 }
                             }}>
                             <ModalHeader className="flex flex-col gap-1">
@@ -181,34 +189,49 @@ export default function OfferProductBtn({
                                     <Button
                                         autoFocus
                                         color="danger"
+                                        isLoading={loading}
                                         onPress={async () => {
-                                            if (!currentOffer?.id || !useUser) {
-                                                return toast.error(
-                                                    "Offer not found."
-                                                );
-                                            }
-                                            const res = await deleteOfferAction(
-                                                {
-                                                    offerId: currentOffer?.id,
-                                                    userId: useUser?.user?.id,
+                                            setLoading(true);
+                                            try {
+                                                if (
+                                                    !currentOffer?.id ||
+                                                    !useUser
+                                                ) {
+                                                    return toast.error(
+                                                        "Offer not found."
+                                                    );
                                                 }
-                                            );
+                                                const res =
+                                                    await deleteOfferAction({
+                                                        offerId:
+                                                            currentOffer?.id,
+                                                        userId: useUser?.user
+                                                            ?.id,
+                                                    });
 
-                                            if (res.status === 200) {
-                                                toast.success(res.message);
-                                                useUser.ticktock();
-                                                onClose();
-                                            } else {
-                                                toast.error(
-                                                    `Error(${res.status}) ` +
-                                                        res.message
-                                                );
+                                                if (res.status === 200) {
+                                                    toast.success(res.message);
+                                                    useUser.ticktock();
+                                                    onClose();
+                                                } else {
+                                                    toast.error(
+                                                        `Error(${res.status}) ` +
+                                                            res.message
+                                                    );
+                                                }
+                                            } catch (error) {
+                                            } finally {
+                                                setLoading(false);
                                             }
                                         }}>
                                         Delete Offer
                                     </Button>
                                 )}
-                                <Button autoFocus color="success" type="submit">
+                                <Button
+                                    autoFocus
+                                    color="success"
+                                    type="submit"
+                                    isLoading={loading}>
                                     {currentOffer
                                         ? "Update Offer"
                                         : "Create Offer"}

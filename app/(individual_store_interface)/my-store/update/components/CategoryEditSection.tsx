@@ -22,6 +22,7 @@ import { createProductAction } from "./createProductAction";
 
 function UpdateCategory({ section }: { section: CompanySection }) {
     const [sectionName, setSectionName] = useState(section.name || "");
+    const [sectionLoading, setSectionLoading] = useState(false);
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const {
         isOpen: isCreateProductOpen,
@@ -50,21 +51,28 @@ function UpdateCategory({ section }: { section: CompanySection }) {
                     <Button
                         color="secondary"
                         variant="flat"
+                        isLoading={sectionLoading}
                         onPress={async () => {
-                            if (sectionName === section.name) {
-                                toast.error("No changes detected.");
-                                return;
-                            }
-                            const res = await updateSectionAction({
-                                name: sectionName,
-                                sectionId: section.id as number,
-                            });
+                            try {
+                                setSectionLoading(true);
+                                if (sectionName === section.name) {
+                                    toast.error("No changes detected.");
+                                    return;
+                                }
+                                const res = await updateSectionAction({
+                                    name: sectionName,
+                                    sectionId: section.id as number,
+                                });
 
-                            if (res.status === 200) {
-                                toast.success(res.message);
-                                useUser?.ticktock();
-                            } else {
-                                toast.error(res.message);
+                                if (res.status === 200) {
+                                    toast.success(res.message);
+                                    useUser?.ticktock();
+                                } else {
+                                    toast.error(res.message);
+                                }
+                            } catch (error) {
+                            } finally {
+                                setSectionLoading(false);
                             }
                         }}>
                         Update
@@ -103,18 +111,31 @@ function UpdateCategory({ section }: { section: CompanySection }) {
                                         </Button>
                                         <Button
                                             color="danger"
+                                            isLoading={sectionLoading}
                                             onPress={async () => {
-                                                const res =
-                                                    await deleteSectionAction({
-                                                        sectionId:
-                                                            section.id as number,
-                                                    });
+                                                setSectionLoading(true);
+                                                try {
+                                                    const res =
+                                                        await deleteSectionAction(
+                                                            {
+                                                                sectionId:
+                                                                    section.id as number,
+                                                            }
+                                                        );
 
-                                                if (res.status === 200) {
-                                                    toast.success(res.message);
-                                                    useUser?.ticktock();
-                                                } else {
-                                                    toast.error(res.message);
+                                                    if (res.status === 200) {
+                                                        toast.success(
+                                                            res.message
+                                                        );
+                                                        useUser?.ticktock();
+                                                    } else {
+                                                        toast.error(
+                                                            res.message
+                                                        );
+                                                    }
+                                                } catch (error) {
+                                                } finally {
+                                                    setSectionLoading(false);
                                                 }
                                             }}>
                                             Delete

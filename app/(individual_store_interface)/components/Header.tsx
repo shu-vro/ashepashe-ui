@@ -1,6 +1,7 @@
 "use client";
 
 import ResponsiveButtons from "@/app/(app_interface)/components/Header/ResponsiveSearch";
+import Logo from "@/app/(app_interface)/components/Sidebar/Logo";
 import {
     Image,
     Navbar,
@@ -10,7 +11,6 @@ import {
 } from "@heroui/react";
 import Link from "next/link";
 import React from "react";
-import AppIcon from "@/assets/she.png";
 
 export default function Header() {
     return (
@@ -19,15 +19,7 @@ export default function Header() {
                 <NavbarItem className="md:hidden"></NavbarItem>
                 <NavbarBrand>
                     <Link href="#" className="block">
-                        <Image
-                            src={AppIcon.src}
-                            alt="AAmarStore"
-                            className="block mx-auto object-cover h-16"
-                            classNames={{
-                                wrapper: "block w-full h-16",
-                            }}
-                            removeWrapper
-                        />
+                        <Logo />
                     </Link>
                 </NavbarBrand>
             </NavbarContent>

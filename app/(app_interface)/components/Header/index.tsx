@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import "@smastrom/react-rating/style.css";
-import AppIcon from "@/assets/she.png";
+import AppIcon from "@/assets/favicon.svg";
 import { PiSidebarSimpleLight } from "react-icons/pi";
 import { API_URL } from "@/lib/var";
 import ResponsiveButtons from "./ResponsiveSearch";
@@ -20,6 +20,7 @@ import {
     Input,
     Tooltip,
 } from "./NavbarWrapper";
+import Logo from "../Sidebar/Logo";
 
 async function getAllProducts() {
     const response = await fetch(`${API_URL}/products`);
@@ -53,15 +54,7 @@ export default async function Header() {
                     </NavbarItem>
                     <NavbarBrand>
                         <Link href="/home" className="block">
-                            <Image
-                                src={AppIcon.src}
-                                alt="AAmarStore"
-                                className="block mx-auto object-cover h-16"
-                                classNames={{
-                                    wrapper: "block w-full h-16",
-                                }}
-                                removeWrapper
-                            />
+                            <Logo />
                         </Link>
                     </NavbarBrand>
                 </NavbarContent>

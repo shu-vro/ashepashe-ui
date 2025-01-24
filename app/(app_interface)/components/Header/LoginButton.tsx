@@ -15,7 +15,7 @@ export default function LoginButton({}: Props) {
             href="#"
             variant="flat"
             size={"md"}
-            onClick={async () => {
+            onPress={async () => {
                 await signIn("google", {
                     redirectTo: location.href,
                     redirect: false,

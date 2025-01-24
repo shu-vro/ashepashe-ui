@@ -16,6 +16,7 @@ import UserProvider from "@/contexts/UserContext";
 import OrderSidebar from "./components/OrderSidebar";
 import OrderDrawerProvider from "@/contexts/OrderDrawerContext";
 import CartProvider, { CartContext } from "@/contexts/CartContext";
+import Gradient from "./components/Gradient";
 
 const font = Montserrat({
     subsets: ["latin"],
@@ -92,6 +93,7 @@ export default function RootLayout({
                                         <AppSidebar />
                                         <main className="w-full lap:max-w-screen-lap mx-auto">
                                             <Header />
+                                            <Gradient />
                                             {children}
                                             <Sonner />
                                             <OrderSidebar />

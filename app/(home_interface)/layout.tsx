@@ -11,6 +11,7 @@ import "swiper/css/zoom";
 import Sonner from "../(app_interface)/components/Sonner";
 import { SessionProvider } from "next-auth/react";
 import UserProvider from "@/contexts/UserContext";
+import Gradient from "../(app_interface)/components/Gradient";
 
 const font = Montserrat({
     subsets: ["latin"],
@@ -84,6 +85,7 @@ export default function RootLayout({
                             <UserProvider>
                                 <main className="w-full lap:max-w-screen-lap mx-auto">
                                     <Header />
+                                    <Gradient />
                                     {children}
                                     <Sonner />
                                 </main>

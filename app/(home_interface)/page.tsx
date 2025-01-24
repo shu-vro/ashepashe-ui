@@ -3,6 +3,7 @@ import React, { use } from "react";
 import { Button, Image } from "@heroui/react";
 import Link from "next/link";
 import { UserContext } from "@/contexts/UserContext";
+import { signIn } from "next-auth/react";
 
 export default function Home() {
     const useUser = use(UserContext);
@@ -22,10 +23,20 @@ export default function Home() {
                     </p>
                     <Button
                         className="my-2 bg-gradient-to-tr from-green-500 to-green-400 text-white shadow-lg text-xl font-bold"
-                        as={Link}
-                        href={`/my-store/${
-                            useUser?.userCompany ? "update" : "create"
-                        }`}
+                        as={useUser?.user ? Link : Button}
+                        onPress={async () => {
+                            await signIn("google", {
+                                redirectTo: location.href,
+                                redirect: false,
+                            });
+                        }}
+                        href={
+                            useUser?.user
+                                ? `/my-store/${
+                                      useUser?.userCompany ? "update" : "create"
+                                  }`
+                                : "/"
+                        }
                         // size="large"
                     >
                         Get Started

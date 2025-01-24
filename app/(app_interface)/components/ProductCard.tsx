@@ -168,6 +168,11 @@ export function ProductCard({
                                 avatarProps={{
                                     className: "w-8 h-8 grow",
                                     src: product.company.image,
+                                    ImgComponent: Image,
+                                    imgProps: {
+                                        width: 32,
+                                        height: 32,
+                                    },
                                 }}
                                 className="grow-0"
                                 as={Link}

@@ -25,10 +25,12 @@ export default function Home() {
                         className="my-2 bg-gradient-to-tr from-green-500 to-green-400 text-white shadow-lg text-xl font-bold"
                         as={useUser?.user ? Link : Button}
                         onPress={async () => {
-                            await signIn("google", {
-                                redirectTo: location.href,
-                                redirect: false,
-                            });
+                            if (!useUser?.user)
+                                await signIn("google", {
+                                    redirectTo:
+                                        location.href + "/my-store/create",
+                                    redirect: false,
+                                });
                         }}
                         href={
                             useUser?.user
@@ -39,7 +41,11 @@ export default function Home() {
                         }
                         // size="large"
                     >
-                        Get Started
+                        {useUser?.user
+                            ? useUser.userCompany
+                                ? "Update Your Store"
+                                : "Create Your Store"
+                            : "Get Started"}
                     </Button>
                 </div>
                 <div>

@@ -63,7 +63,7 @@ export default function Header() {
                 <NavbarItem>
                     <ThemeButton />
                 </NavbarItem>
-                {status === "authenticated" && (
+                {/* {status === "authenticated" && (
                     <>
                         <CustomDivider />
                         <Button
@@ -83,7 +83,7 @@ export default function Header() {
                     </>
                 )}
                 <CreateStoreModal isOpen={isOpen} onOpenChange={onOpenChange} />
-                <CustomDivider />
+                <CustomDivider /> */}
                 <NavbarItem>
                     <LoginButton />
                     <UserDropdown />

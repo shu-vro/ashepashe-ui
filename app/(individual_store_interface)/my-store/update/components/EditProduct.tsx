@@ -38,7 +38,7 @@ export default function EditProduct({
             <CardBody
                 className="overflow-visible relative"
                 as={Link}
-                href={`/products/${product.slug}`}>
+                href={`/p/${product.slug}`}>
                 {discountPercent !== "0" && (
                     <Ribbon>{discountPercent}% off</Ribbon>
                 )}

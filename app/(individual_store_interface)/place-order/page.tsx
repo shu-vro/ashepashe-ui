@@ -43,6 +43,7 @@ export default function Page() {
                         if (res.status === 201) {
                             toast.success(res.message);
                             useCart.setCart([]);
+                            useUser?.ticktock();
                         } else {
                             toast.error(res.message);
                         }

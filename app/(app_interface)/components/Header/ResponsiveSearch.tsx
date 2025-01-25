@@ -14,7 +14,7 @@ import { cn } from "@/lib/utils";
 import LoginButton from "./LoginButton";
 import UserDropdown, { CreateStoreModal } from "./UserDropdown";
 import { useRouter } from "next/navigation";
-import { use } from "react";
+import { use, useMemo } from "react";
 import { UserContext } from "@/contexts/UserContext";
 import { useSession } from "next-auth/react";
 import { OrderDrawerContext } from "@/contexts/OrderDrawerContext";
@@ -27,6 +27,13 @@ export default function ResponsiveButtons({}) {
     const { status } = useSession();
     const useOrderDrawer = use(OrderDrawerContext);
     const useCart = use(CartContext);
+
+    const ordersLength = useMemo(() => {
+        return useUser?.orders.reduce(
+            (prev, curr) => prev + curr.order_items.length,
+            0
+        );
+    }, [useUser?.orders]);
     return (
         <>
             <NavbarItem>
@@ -44,6 +51,24 @@ export default function ResponsiveButtons({}) {
                             if (!useOrderDrawer) return;
                             useOrderDrawer.onOrderDrawerOpenChange(true);
                         }}>
+                        <CiBookmark />
+                    </Button>
+                </Badge>
+            </NavbarItem>
+            <CustomDivider />
+            <NavbarItem>
+                <Badge
+                    color="warning"
+                    size="lg"
+                    content={ordersLength}
+                    isInvisible={ordersLength === 0}>
+                    <Button
+                        as={Link}
+                        href="/my-orders"
+                        color="primary"
+                        variant="flat"
+                        isIconOnly
+                        className="text-xl mob:text-2xl">
                         <CiShoppingCart />
                     </Button>
                 </Badge>

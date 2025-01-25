@@ -1,6 +1,6 @@
 "use client";
 
-import { Image } from "@heroui/react";
+import Image from "next/image";
 import AppIcon from "@/assets/favicon.png";
 
 export default function () {
@@ -10,13 +10,11 @@ export default function () {
                 src={AppIcon.src}
                 alt="AAmarStore"
                 className="block mx-auto object-cover h-10 max-mob:h-8 rounded-none"
-                classNames={{
-                    wrapper: "block w-full h-10 max-mob:h-8",
-                }}
+                width={40}
+                height={40}
                 style={{
                     fill: "dodgerblue",
                 }}
-                removeWrapper
             />
             <div className="text-3xl max-mob:text-xl font-bold">
                 <span className="text-red-500">Amar</span>

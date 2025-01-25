@@ -15,6 +15,8 @@ export type UserContextType = {
     setCompanySections: React.Dispatch<
         React.SetStateAction<UserContextType["companySections"]>
     >;
+    orders: Order[];
+    setOrders: React.Dispatch<React.SetStateAction<UserContextType["orders"]>>;
     ticktock: () => void;
 };
 
@@ -31,6 +33,7 @@ export default function UserProvider({
     const [companySections, setCompanySections] = useState<
         UserContextType["companySections"]
     >([]);
+    const [orders, setOrders] = useState<UserContextType["orders"]>([]);
     const [tick, setTick] = useState(false);
     const ticktock = () => {
         setTick((p) => !p);
@@ -52,6 +55,11 @@ export default function UserProvider({
                 if (!userData && x.status !== "success") {
                     return;
                 }
+                const orderRes = await fetch(
+                    `${API_URL}/user-order/${userData.id}`
+                );
+                const order = (await orderRes.json()).data;
+                setOrders(order);
                 const companyData = userData.company?.[0] as Company;
                 if (!companyData) {
                     setUser(userData);
@@ -88,6 +96,8 @@ export default function UserProvider({
                 setUserCompany,
                 companySections,
                 setCompanySections,
+                orders,
+                setOrders,
                 ticktock,
             }}>
             {children}

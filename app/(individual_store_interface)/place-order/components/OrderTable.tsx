@@ -63,7 +63,13 @@ function TableCellCustom({
             </Chip>
         );
     } else if (columnId === "action") {
-        return <ActionButtons id={item.item.id} setItems={setItems} />;
+        return (
+            <ActionButtons
+                id={item.item.id}
+                setItems={setItems}
+                slug={item.item.slug}
+            />
+        );
     }
     return null;
 }

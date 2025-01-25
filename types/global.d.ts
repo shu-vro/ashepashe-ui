@@ -88,3 +88,25 @@ interface Cart {
     item: Product["product"];
     count: number;
 }
+
+interface Order {
+    id: number;
+    user_id: number;
+    name: string;
+    phone: string;
+    address: string;
+    store_id: number | null;
+    created_at: string;
+    updated_at: string;
+    order_items: OrderItem[];
+}
+
+interface OrderItem {
+    id: number;
+    order_id: number;
+    product_id: number;
+    quantity: number;
+    created_at: string;
+    updated_at: string;
+    products: Product["product"];
+}

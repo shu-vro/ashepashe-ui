@@ -14,7 +14,7 @@ import {
     ModalHeader,
     useDisclosure,
 } from "@heroui/react";
-import React, { useMemo } from "react";
+import React, { use, useMemo } from "react";
 import Link from "next/link";
 import { Rating } from "@smastrom/react-rating";
 import NextImage from "next/image";
@@ -22,6 +22,7 @@ import { MdZoomOutMap } from "react-icons/md";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Zoom } from "swiper/modules";
 import confetti from "canvas-confetti";
+import { CartContext } from "@/contexts/CartContext";
 
 type Prop = {
     product: Product["product"];
@@ -30,6 +31,7 @@ type Prop = {
 
 export default function ProductSide({ product, specialized = false }: Prop) {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
+    const useCart = use(CartContext);
 
     const handleCartClick = (
         e: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -74,6 +76,7 @@ export default function ProductSide({ product, specialized = false }: Prop) {
             spread: 120,
             startVelocity: 45,
         });
+        useCart?.addToCart(product, 1);
     };
 
     const offer = useMemo(

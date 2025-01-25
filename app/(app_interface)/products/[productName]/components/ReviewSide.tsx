@@ -118,7 +118,7 @@ function CreateReview({
                         onPress={async () => {
                             setLoading(true);
                             try {
-                                const res = await deleteReviewAction({
+                                const res: any = await deleteReviewAction({
                                     userId: useUser?.user?.id,
                                     reviewId: defaultReviewId,
                                 });
@@ -156,7 +156,7 @@ function CreateReview({
                                 rating,
                                 review,
                             };
-                            const res = await reviewSendAction(payload);
+                            const res: any = await reviewSendAction(payload);
                             if (res.status === 200 || res.status === 201) {
                                 toast.success(res.message);
                             } else {

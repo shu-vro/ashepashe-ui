@@ -59,7 +59,7 @@ export default function EditProduct({
                 />
             </CardBody>
             <CardFooter className="pt-0 text-start flex-col">
-                <Link className="w-full" href={`/products/${product.slug}`}>
+                <Link className="w-full" href={`/p/${product.slug}`}>
                     <div className="capitalize not-italic font-bold text-xl line-clamp-2 h-[4ch]">
                         {product.name}{" "}
                         <Chip

@@ -14,6 +14,7 @@ import {
     Button,
     Form,
     Input,
+    ModalProps,
 } from "@heroui/react";
 import { useSession, signOut } from "next-auth/react";
 import { createStoreAction } from "./createStoreAction";
@@ -60,12 +61,13 @@ interface CreateStoreModalProps {
 export function CreateStoreModal({
     isOpen,
     onOpenChange,
-}: CreateStoreModalProps) {
+    ...rest
+}: CreateStoreModalProps & Partial<ModalProps>) {
     const useUser = use(UserContext);
     const [loading, setLoading] = useState(false);
     const { push } = useRouter();
     return (
-        <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+        <Modal isOpen={isOpen} onOpenChange={onOpenChange} {...rest}>
             <ModalContent>
                 {(onClose) => (
                     <>

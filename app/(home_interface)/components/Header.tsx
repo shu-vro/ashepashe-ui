@@ -14,19 +14,18 @@ import Link from "next/link";
 import React, { use } from "react";
 import ThemeButton from "@/app/(app_interface)/components/ThemeButton";
 import LoginButton from "@/app/(app_interface)/components/Header/LoginButton";
-import UserDropdown, {
-    CreateStoreModal,
-} from "@/app/(app_interface)/components/Header/UserDropdown";
-import { useRouter } from "next/navigation";
-import { UserContext } from "@/contexts/UserContext";
-import { useSession } from "next-auth/react";
+import UserDropdown from // CreateStoreModal,
+"@/app/(app_interface)/components/Header/UserDropdown";
+// import { useRouter } from "next/navigation";
+// import { UserContext } from "@/contexts/UserContext";
+// import { useSession } from "next-auth/react";
 import Logo from "@/app/(app_interface)/components/Sidebar/Logo";
 
 export default function Header() {
-    const { isOpen, onOpen, onOpenChange } = useDisclosure();
-    const { push } = useRouter();
-    const useUser = use(UserContext);
-    const { status } = useSession();
+    // const { isOpen, onOpen, onOpenChange } = useDisclosure();
+    // const { push } = useRouter();
+    // const useUser = use(UserContext);
+    // const { status } = useSession();
     return (
         <Navbar isBordered maxWidth="full" className="py-3">
             <NavbarContent justify="start" className="grow">

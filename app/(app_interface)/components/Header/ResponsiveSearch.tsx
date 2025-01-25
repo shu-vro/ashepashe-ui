@@ -36,9 +36,7 @@ export default function ResponsiveButtons({}) {
                     content={useCart?.cart?.length}
                     isInvisible={useCart?.cart?.length === 0}>
                     <Button
-                        as={Link}
                         color="primary"
-                        href="#"
                         variant="flat"
                         isIconOnly
                         className="text-xl mob:text-2xl"

@@ -9,6 +9,19 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             clientSecret: process.env.GOOGLE_CLIENT_SECRET,
         }),
     ],
+    useSecureCookies: process.env.NODE_ENV === "production", // Key for production!
+    cookies: {
+        sessionToken: {
+            name: `next-auth.session-token`,
+            options: {
+                httpOnly: true,
+                sameSite: "strict", // Or 'none' if you have cross-site needs (with secure: true)
+                path: "/",
+                secure: process.env.NODE_ENV === "production", // Very important!
+            },
+        },
+        // ... other cookies if needed
+    },
     callbacks: {
         async signIn({ user }) {
             try {

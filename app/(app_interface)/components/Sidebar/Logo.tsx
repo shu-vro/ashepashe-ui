@@ -9,7 +9,7 @@ export default function () {
             <Image
                 src={AppIcon.src}
                 alt="AAmarStore"
-                className="block mx-auto object-cover h-10 max-mob:h-8"
+                className="block mx-auto object-cover h-10 max-mob:h-8 rounded-none"
                 classNames={{
                     wrapper: "block w-full h-10 max-mob:h-8",
                 }}

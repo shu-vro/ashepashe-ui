@@ -344,14 +344,14 @@ export default function ViewProducts({
                     )}
                 </DrawerContent>
             </DrawerRoot>
-            <div className="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] max-sm:grid-cols-2 gap-4 place-items-center py-4">
+            <div className="grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] max-sm:grid-cols-2 gap-4 gap-y-8 place-items-center py-4">
                 {paginate(products, currentPage, PER_PAGE).map((product) => {
-                    const offer = product.offers?.find(
-                        (offer) =>
-                            new Date(offer.validity).getTime() > Date.now()
-                    );
                     return (
-                        <ProductCard product={product} disableCompany={false} />
+                        <ProductCard
+                            product={product}
+                            disableCompany={false}
+                            key={product.id}
+                        />
                     );
                 })}
             </div>

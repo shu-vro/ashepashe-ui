@@ -1,4 +1,4 @@
-import React, { use, useEffect, useState } from "react";
+import React, { use, useEffect, useMemo, useState } from "react";
 import {
     Dropdown,
     DropdownTrigger,
@@ -15,12 +15,14 @@ import {
     Form,
     Input,
     ModalProps,
+    Chip,
 } from "@heroui/react";
 import { useSession, signOut } from "next-auth/react";
 import { createStoreAction } from "./createStoreAction";
 import { UserContext } from "@/contexts/UserContext";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { CartContext } from "@/contexts/CartContext";
 type Props = {};
 
 /**
@@ -156,8 +158,18 @@ export default function UserDropdown({}: Props) {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const useUser = use(UserContext);
     const { push } = useRouter();
+    const useCart = use(CartContext);
 
-    const handleInstall = async () => {
+    const ordersLength = useMemo(() => {
+        return useUser?.orders.reduce((prev, curr) => {
+            const validCount = curr.order_items.filter(
+                (f) => f.status !== "cancelled"
+            );
+            return prev + validCount.length;
+        }, 0);
+    }, [useUser?.orders]);
+
+    const handleInstall = React.useCallback(async () => {
         if (!deferredPrompt) return;
         await deferredPrompt.prompt();
         const { outcome } = await deferredPrompt.userChoice;
@@ -165,7 +177,7 @@ export default function UserDropdown({}: Props) {
             setDeferredPrompt(undefined);
             setIsInstallable(false);
         }
-    };
+    }, [deferredPrompt]);
 
     useEffect(() => {
         const cb = (e: Event) => {
@@ -187,7 +199,7 @@ export default function UserDropdown({}: Props) {
                         src={session.user?.image || ""}
                     />
                 </DropdownTrigger>
-                <DropdownMenu aria-label="Profile Actions" variant="flat">
+                <DropdownMenu aria-label="Profile Actions" variant="solid">
                     <DropdownItem key="profile" className="h-14 gap-2">
                         <p className="font-semibold">Signed in as</p>
                         <p className="font-semibold">{session.user?.name}</p>
@@ -203,10 +215,40 @@ export default function UserDropdown({}: Props) {
                         }}>
                         {!useUser?.userCompany ? "Create Store" : "My Store"}
                     </DropdownItem>
+                    {useUser?.userCompany ? (
+                        <DropdownItem
+                            key="store_orders"
+                            onPress={() => {
+                                push("/my-store/list-orders");
+                            }}>
+                            Incoming Orders
+                        </DropdownItem>
+                    ) : null}
                     <DropdownItem key="profile_link" href={"/profile/me"}>
                         View Profile
                     </DropdownItem>
-                    <DropdownItem key="bookmarks">Bookmarks</DropdownItem>
+                    <DropdownItem
+                        key="cart"
+                        onPress={() => {
+                            if (!useCart) return;
+                            push("/place-order");
+                        }}
+                        endContent={
+                            useCart?.cart ? (
+                                <Chip size="sm">{useCart?.cart.length}</Chip>
+                            ) : null
+                        }>
+                        My Cart
+                    </DropdownItem>
+                    <DropdownItem
+                        key="orders"
+                        onPress={() => {
+                            if (!useCart) return;
+                            push("/my-orders");
+                        }}
+                        endContent={<Chip size="sm">{ordersLength}</Chip>}>
+                        My Orders
+                    </DropdownItem>
                     <DropdownItem key="install" onPress={handleInstall}>
                         {deferredPrompt
                             ? isInstallable

@@ -12,6 +12,9 @@ const nextConfig: NextConfig = {
                 hostname: "**asepashe.com",
             },
             {
+                hostname: "**googleusercontent.com",
+            },
+            {
                 hostname: "nextui.org",
             },
         ],

@@ -14,6 +14,11 @@ const APP_DESCRIPTION = "Best app in the world!";
 
 export const metadata: Metadata = {
     applicationName: APP_NAME,
+    icons: [
+        {
+            url: "/android/android-launchericon-48-48.png",
+        },
+    ],
     title: {
         default: APP_DEFAULT_TITLE,
         template: APP_TITLE_TEMPLATE,

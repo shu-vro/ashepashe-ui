@@ -29,10 +29,12 @@ export default function ResponsiveButtons({}) {
     const useCart = use(CartContext);
 
     const ordersLength = useMemo(() => {
-        return useUser?.orders.reduce(
-            (prev, curr) => prev + curr.order_items.length,
-            0
-        );
+        return useUser?.orders.reduce((prev, curr) => {
+            const validCount = curr.order_items.filter(
+                (f) => f.status !== "cancelled"
+            );
+            return prev + validCount.length;
+        }, 0);
     }, [useUser?.orders]);
     return (
         <>

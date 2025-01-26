@@ -92,12 +92,14 @@ interface Cart {
 interface Order {
     id: number;
     user_id: number;
+    user: User;
     name: string;
     phone: string;
     address: string;
     store_id: number | null;
     created_at: string;
     updated_at: string;
+    status: "pending" | "processing" | "completed" | "cancelled";
     order_items: OrderItem[];
 }
 

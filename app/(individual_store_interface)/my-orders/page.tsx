@@ -25,6 +25,7 @@ import { RxExternalLink } from "react-icons/rx";
 import { GoPencil } from "react-icons/go";
 import { deleteOrderItemAction } from "./components/deleteOrderItemAction";
 import { toast } from "sonner";
+import { deleteOrderAction } from "./components/deleteOrderAction";
 
 const columns = [
     {
@@ -49,6 +50,19 @@ const columns = [
     },
 ];
 
+function chooseColor(status: string) {
+    if (status === "pending") {
+        return "warning";
+    }
+    if (status === "completed") {
+        return "success";
+    }
+    if (status === "cancelled") {
+        return "danger";
+    }
+    return "secondary";
+}
+
 function TableCellCustom({
     item,
     columnId,
@@ -66,15 +80,11 @@ function TableCellCustom({
             />
         );
     } else if (columnId === "quantity") {
-        return (
-            <Chip color="success" variant="flat" size="sm">
-                Quantity: {item.quantity}
-            </Chip>
-        );
+        return item.quantity + " pcs";
     } else if (columnId === "status") {
         return (
-            <Chip color="warning" variant="flat" size="sm">
-                Status: {item.status}
+            <Chip color={chooseColor(item.status)} variant="flat" size="sm">
+                {item.status}
             </Chip>
         );
     } else if (columnId === "total") {
@@ -93,6 +103,10 @@ function TableCellCustom({
                             size="sm"
                             color="secondary"
                             variant="flat"
+                            isDisabled={
+                                item.status === "completed" ||
+                                item.status === "cancelled"
+                            }
                             onPress={() => {
                                 // useCart.deleteFromCart(id);
                             }}>
@@ -105,6 +119,10 @@ function TableCellCustom({
                             size="sm"
                             color="primary"
                             variant="flat"
+                            isDisabled={
+                                item.status === "completed" ||
+                                item.status === "cancelled"
+                            }
                             as={Link}
                             href={`/p/${item.products.slug}`}>
                             <RxExternalLink />
@@ -116,6 +134,10 @@ function TableCellCustom({
                             size="sm"
                             color="danger"
                             variant="flat"
+                            isDisabled={
+                                item.status === "completed" ||
+                                item.status === "cancelled"
+                            }
                             onPress={async () => {
                                 const res: any = await deleteOrderItemAction({
                                     order_item_id: item.id,
@@ -143,10 +165,12 @@ function FieldValue({
     name,
     phone,
     address,
+    status,
 }: {
     name: React.ReactNode;
     phone: React.ReactNode;
     address: React.ReactNode;
+    status: React.ReactNode;
 }) {
     return (
         <>
@@ -165,10 +189,53 @@ function FieldValue({
             <Code
                 color="secondary"
                 size="sm"
-                className="text-wrap cursor-pointer w-fit rounded-t-none">
+                className="text-wrap cursor-pointer w-fit rounded-t-none rounded-bl-none">
                 Address: {address}
             </Code>
+            {status && (
+                <Code
+                    color={chooseColor(status as string)}
+                    size="sm"
+                    className="text-wrap cursor-pointer w-fit rounded-t-none">
+                    {status}
+                </Code>
+            )}
         </>
+    );
+}
+
+function TableTopBar({
+    orderId,
+    userId,
+    ticktock,
+}: {
+    orderId: number;
+    userId?: number;
+    ticktock: () => void;
+}) {
+    return (
+        <div className="mt-8 flex gap-2">
+            <Button
+                color="danger"
+                onPress={async () => {
+                    const res: any = await deleteOrderAction({
+                        order_id: orderId,
+                        user_id: userId,
+                    });
+                    if (res.status === 200) {
+                        toast.success(res.message);
+                        ticktock();
+                    } else {
+                        toast.error(res.message);
+                        console.log(res);
+                    }
+                }}>
+                Delete Order
+            </Button>
+            <Button color="danger" variant="flat">
+                Delete Selected
+            </Button>
+        </div>
     );
 }
 
@@ -195,6 +262,7 @@ export default function Page() {
                                       name={order.name}
                                       phone={order.phone}
                                       address={order.address}
+                                      status={order.status}
                                   />
 
                                   <Table
@@ -204,7 +272,13 @@ export default function Page() {
                                       classNames={{
                                           wrapper: cn("max-h-full"),
                                       }}
-                                      // topContent={<TableTopBar />}
+                                      topContent={
+                                          <TableTopBar
+                                              orderId={order.id}
+                                              userId={useUser.user?.id}
+                                              ticktock={useUser.ticktock}
+                                          />
+                                      }
                                       topContentPlacement="outside"
                                       onSelectionChange={(selected) => {
                                           setSelected(selected);

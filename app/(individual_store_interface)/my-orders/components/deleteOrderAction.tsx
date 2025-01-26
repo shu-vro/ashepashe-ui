@@ -1,12 +1,11 @@
-// /api/delete-orderitem/{order_item id}
-
 "use server";
+// https://asepashe.com/api/delete-order/12
 
 import { API_URL } from "@/lib/var";
 import { revalidatePath } from "next/cache";
 
-export async function deleteOrderItemAction(payload: {
-    order_item_id: number;
+export async function deleteOrderAction(payload: {
+    order_id: number;
     user_id?: number;
 }) {
     revalidatePath("/");
@@ -16,15 +15,16 @@ export async function deleteOrderItemAction(payload: {
             message: "User ID is required",
         };
     }
+    console.log(payload.order_id);
     const options = {
         method: "POST",
         headers: { "content-type": "application/json" },
-        // body: JSON.stringify({ user_id: payload.user_id }),
+        body: JSON.stringify({ user_id: payload.user_id }),
     };
 
     try {
         const response: Response = await fetch(
-            `${API_URL}/delete-orderitem/${payload.order_item_id}`,
+            `${API_URL}/delete-order/${payload.order_id}`,
             options
         );
         const data = await response.json();

@@ -106,6 +106,7 @@ interface OrderItem {
     order_id: number;
     product_id: number;
     quantity: number;
+    status: "pending" | "processing" | "completed" | "cancelled";
     created_at: string;
     updated_at: string;
     products: Product["product"];

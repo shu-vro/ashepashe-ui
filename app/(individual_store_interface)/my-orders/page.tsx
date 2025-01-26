@@ -24,6 +24,7 @@ import Link from "next/link";
 import { RxExternalLink } from "react-icons/rx";
 import { GoPencil } from "react-icons/go";
 import { deleteOrderItemAction } from "./components/deleteOrderItemAction";
+import { toast } from "sonner";
 
 const columns = [
     {
@@ -48,7 +49,7 @@ const columns = [
     },
 ];
 
-export function TableCellCustom({
+function TableCellCustom({
     item,
     columnId,
 }: {
@@ -73,7 +74,7 @@ export function TableCellCustom({
     } else if (columnId === "status") {
         return (
             <Chip color="warning" variant="flat" size="sm">
-                Status: {"Pending"}
+                Status: {item.status}
             </Chip>
         );
     } else if (columnId === "total") {
@@ -115,12 +116,18 @@ export function TableCellCustom({
                             size="sm"
                             color="danger"
                             variant="flat"
-                            onPress={() => {
-                                deleteOrderItemAction({
+                            onPress={async () => {
+                                const res: any = await deleteOrderItemAction({
                                     order_item_id: item.id,
                                     user_id: useUser?.user?.id as number,
                                 });
-                                useUser?.ticktock();
+                                if (res.status === 200) {
+                                    toast.success(res.message);
+                                    useUser?.ticktock();
+                                } else {
+                                    toast.error(res.message);
+                                    console.log(res);
+                                }
                             }}>
                             <FaRegTrashAlt />
                         </Button>

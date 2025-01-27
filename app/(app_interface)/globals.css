@@ -14,10 +14,6 @@ body {
     /* overflow-x: hidden; */
 }
 
-* {
-    /* border: 1px solid red; */
-}
-
 @layer base {
     :root {
         --background: 0 0% 100%;

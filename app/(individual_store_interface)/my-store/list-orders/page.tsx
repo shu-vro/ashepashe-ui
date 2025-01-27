@@ -72,7 +72,7 @@ export default function Page() {
     return (
         <div>
             <h1 className="my-3 text-3xl font-bold">My Orders:</h1>
-            <div className="mt-8">
+            <div className="mt-8 mx-3">
                 <CompanyOrderTable data={orders} />
             </div>
         </div>

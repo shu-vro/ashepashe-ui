@@ -377,7 +377,7 @@ export default function CompanyOrderTable({ data }: { data: any[] }) {
                     />
                     <div className="flex gap-3">
                         <Dropdown>
-                            <DropdownTrigger className="hidden sm:flex">
+                            <DropdownTrigger>
                                 <Button
                                     endContent={
                                         <ChevronDownIcon className="text-small" />
@@ -404,7 +404,7 @@ export default function CompanyOrderTable({ data }: { data: any[] }) {
                             </DropdownMenu>
                         </Dropdown>
                         <Dropdown>
-                            <DropdownTrigger className="hidden sm:flex">
+                            <DropdownTrigger>
                                 <Button
                                     endContent={
                                         <ChevronDownIcon className="text-small" />

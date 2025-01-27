@@ -170,9 +170,9 @@ export default function Page() {
                             inputProps: {
                                 // placeholder: "Facebook Page",
                                 label: "Description",
-                                value:
-                                    companyDescription ||
+                                placeholder:
                                     "Write your company description here",
+                                value: companyDescription,
                                 onValueChange: setCompanyDescription,
                             },
                             textProps: {
@@ -421,7 +421,7 @@ export default function Page() {
                     }
                 }}
                 startContent={<GrSave />}>
-                Publish
+                Save
             </Button>
         </div>
     );

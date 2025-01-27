@@ -242,6 +242,7 @@ export default function UserDropdown({}: Props) {
                     </DropdownItem>
                     <DropdownItem
                         key="orders"
+                        href="/my-orders"
                         onPress={() => {
                             if (!useCart) return;
                             push("/my-orders");
@@ -254,10 +255,15 @@ export default function UserDropdown({}: Props) {
                             ? isInstallable
                                 ? "Install App"
                                 : "Installed"
-                            : "Not Ready"}
+                            : "App Not Ready"}
                     </DropdownItem>
-                    <DropdownItem key="help_and_feedback">
-                        Help & Feedback
+                    <DropdownItem
+                        key="report"
+                        href={"/report"}
+                        onPress={() => {
+                            push("/report");
+                        }}>
+                        Report a Problem
                     </DropdownItem>
                     <DropdownItem
                         key="logout"

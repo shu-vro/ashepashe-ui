@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Montserrat } from "next/font/google";
 import "./(app_interface)/globals.css";
+import Script from "next/script";
 
 const font = Montserrat({
     subsets: ["latin"],
@@ -68,6 +69,20 @@ export default function RootLayout({
 }) {
     return (
         <html lang="en" className="scroll-smooth max-sm:text-[12px]">
+            <head>
+                <Script
+                    async
+                    src="https://www.googletagmanager.com/gtag/js?id=G-JB1GVQCD1G"></Script>
+                <Script id="gtag" strategy="lazyOnload">
+                    {`
+                        window.dataLayer = window.dataLayer || [];
+                        function gtag(){dataLayer.push(arguments);}
+                        gtag('js', new Date());
+
+                        gtag('config', 'G-JB1GVQCD1G');
+                    `}
+                </Script>
+            </head>
             <body className={`${font.className} antialiased`}>{children}</body>
         </html>
     );

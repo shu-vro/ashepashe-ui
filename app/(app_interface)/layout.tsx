@@ -17,6 +17,7 @@ import OrderSidebar from "./components/OrderSidebar";
 import OrderDrawerProvider from "@/contexts/OrderDrawerContext";
 import CartProvider, { CartContext } from "@/contexts/CartContext";
 import Gradient from "./components/Gradient";
+import Script from "next/script";
 
 const font = Montserrat({
     subsets: ["latin"],
@@ -80,6 +81,20 @@ export default function RootLayout({
     return (
         <SessionProvider>
             <html lang="en" className="scroll-smooth max-sm:text-[12px]">
+                <head>
+                    <Script
+                        async
+                        src="https://www.googletagmanager.com/gtag/js?id=G-JB1GVQCD1G"></Script>
+                    <Script id="gtag" strategy="lazyOnload">
+                        {`
+                        window.dataLayer = window.dataLayer || [];
+                        function gtag(){dataLayer.push(arguments);}
+                        gtag('js', new Date());
+
+                        gtag('config', 'G-JB1GVQCD1G');
+                    `}
+                    </Script>
+                </head>
                 <body className={`${font.className} antialiased`}>
                     <ThemeProvider
                         attribute="class"

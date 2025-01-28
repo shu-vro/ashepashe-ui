@@ -5,7 +5,6 @@ import {
     Card,
     CardBody,
     CardFooter,
-    CardHeader,
     CardProps,
     Chip,
     Divider,
@@ -13,7 +12,6 @@ import {
     User,
 } from "@heroui/react";
 import React, { use, useMemo } from "react";
-import { CiBookmark } from "react-icons/ci";
 import { FaStar } from "react-icons/fa6";
 import "@smastrom/react-rating/style.css";
 import {
@@ -27,7 +25,6 @@ import Link from "next/link";
 import NextImage from "next/image";
 import { useRouter } from "next/navigation";
 import Ribbon from "./Ribbon";
-import useLocalStorage from "@/hooks/useLocalStorage";
 import { CartContext } from "@/contexts/CartContext";
 
 interface ProductCardProps {
@@ -63,7 +60,9 @@ export function ProductCard({
             : 0;
     }, [product.rating]);
 
-    const link = `${specialized ? "/p" : "/products"}/${product.slug}`;
+    const link = `${specialized ? `/${product.company.slug}` : "/products"}/${
+        product.slug
+    }`;
     return (
         <Card
             shadow="sm"

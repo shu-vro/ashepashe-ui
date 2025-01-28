@@ -220,8 +220,13 @@ export default function UserDropdown({}: Props) {
                             key="store_orders"
                             onPress={() => {
                                 push("/my-store/list-orders");
-                            }}>
-                            Incoming Orders
+                            }}
+                            endContent={
+                                <Chip size="sm" color="success">
+                                    for you
+                                </Chip>
+                            }>
+                            Company Orders
                         </DropdownItem>
                     ) : null}
                     <DropdownItem key="profile_link" href={"/profile/me"}>

@@ -16,12 +16,13 @@ export default function Header() {
     return (
         <Navbar isBordered maxWidth="full" className="py-3">
             <NavbarContent justify="start" className="grow">
-                <NavbarItem className="md:hidden"></NavbarItem>
-                <NavbarBrand>
-                    <Link href="#" className="block">
-                        <Logo />
-                    </Link>
-                </NavbarBrand>
+                <NavbarItem>
+                    <NavbarBrand>
+                        <Link href="#" className="block">
+                            <Logo />
+                        </Link>
+                    </NavbarBrand>
+                </NavbarItem>
             </NavbarContent>
 
             {/* <NavbarContent

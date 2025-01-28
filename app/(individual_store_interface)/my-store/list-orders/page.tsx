@@ -65,7 +65,7 @@ export default function Page() {
                     product_id: order.products.id,
                     // others: order,
                 }));
-                console.log(importantData, serializedData, res);
+                // console.log(importantData, serializedData, res);
                 setOrders(serializedData);
             } catch (error) {
                 console.log(error);

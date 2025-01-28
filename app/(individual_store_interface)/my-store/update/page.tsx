@@ -54,6 +54,7 @@ export default function Page() {
     const [selectedCategory, setSelectedCategory] = useState<
         React.Key | undefined
     >("");
+    const [selectedCategoryText, setSelectedCategoryText] = useState("");
 
     const districts = useMemo(() => {
         const selectedDistricts =
@@ -100,10 +101,7 @@ export default function Page() {
             fb_page: fbPage,
             lati: location.lat,
             longi: location.long,
-            category:
-                categories
-                    .find((e) => e.id == selectedCategory)
-                    ?.id.toString() || "",
+            category: selectedCategoryText,
         };
 
         const beforePayload = {
@@ -159,7 +157,7 @@ export default function Page() {
         division,
         district,
         location,
-        selectedCategory,
+        selectedCategoryText,
         categories,
     ]);
 
@@ -187,6 +185,9 @@ export default function Page() {
         setFbPage(useUser.userCompany.fb_page || fbPage);
         setMap(useUser.userCompany.map || map);
         setSelectedCategory(useUser.userCompany.category || selectedCategory);
+        setSelectedCategoryText(
+            useUser.userCompany.category || selectedCategoryText
+        );
         setLocation({
             lat: useUser.userCompany.lati || location.lat,
             long: useUser.userCompany.longi || location.long,
@@ -259,7 +260,7 @@ export default function Page() {
         division,
         district,
         location,
-        selectedCategory,
+        selectedCategoryText,
         categories,
     ]);
 
@@ -361,17 +362,16 @@ export default function Page() {
                         allowsCustomValue
                         label="Select Category"
                         className="max-w-xs"
-                        selectedKey={
-                            typeof selectedCategory === "string"
-                                ? selectedCategory
-                                : undefined
-                        }
+                        defaultInputValue={selectedCategoryText}
+                        onValueChange={(key) => {
+                            setSelectedCategoryText(key);
+                        }}
                         onSelectionChange={(key) => {
                             setSelectedCategory(key as Key | undefined);
                         }}
                         defaultItems={categories}>
                         {(item: Category) => (
-                            <AutocompleteItem key={item.id}>
+                            <AutocompleteItem key={item.name}>
                                 {item.name}
                             </AutocompleteItem>
                         )}

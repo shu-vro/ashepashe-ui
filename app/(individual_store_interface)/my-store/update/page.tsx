@@ -362,12 +362,13 @@ export default function Page() {
                         allowsCustomValue
                         label="Select Category"
                         className="max-w-xs"
-                        defaultInputValue={selectedCategoryText}
+                        inputValue={selectedCategoryText}
                         onValueChange={(key) => {
                             setSelectedCategoryText(key);
                         }}
                         onSelectionChange={(key) => {
                             setSelectedCategory(key as Key | undefined);
+                            setSelectedCategoryText(key as string);
                         }}
                         defaultItems={categories}>
                         {(item: Category) => (

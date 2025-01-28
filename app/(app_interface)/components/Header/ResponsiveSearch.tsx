@@ -50,6 +50,7 @@ export default function ResponsiveButtons({}) {
                         isIconOnly
                         className="text-xl mob:text-2xl"
                         onPress={() => {
+                            console.log("hi");
                             if (!useOrderDrawer) return;
                             useOrderDrawer.onOrderDrawerOpenChange(true);
                         }}>

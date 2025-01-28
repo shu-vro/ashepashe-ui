@@ -1,12 +1,11 @@
 "use client";
 
-import React, { createContext } from "react";
-import { useDisclosure } from "@heroui/react";
+import React, { createContext, useState } from "react";
 
 export type OrderDrawerContextType = {
     isOrderDrawerOpen: boolean;
     onOrderDrawerOpenChange: (isOpen: boolean) => void;
-    onOrderDrawerClose: () => void;
+    // onOrderDrawerClose: () => void;
 };
 
 export const OrderDrawerContext = createContext<OrderDrawerContextType | null>(
@@ -18,17 +17,18 @@ export default function OrderDrawerProvider({
 }: {
     children: React.ReactNode;
 }) {
-    const {
-        isOpen: isOrderDrawerOpen,
-        onOpenChange: onOrderDrawerOpenChange,
-        onClose: onOrderDrawerClose,
-    } = useDisclosure();
+    // const {
+    //     isOpen: isOrderDrawerOpen,
+    //     onOpenChange: onOrderDrawerOpenChange,
+    //     onClose: onOrderDrawerClose,
+    // } = useDisclosure();
+    const [isOrderDrawerOpen, onOrderDrawerOpenChange] = useState(false);
     return (
         <OrderDrawerContext.Provider
             value={{
                 isOrderDrawerOpen,
                 onOrderDrawerOpenChange,
-                onOrderDrawerClose,
+                // onOrderDrawerClose,
             }}>
             {children}
         </OrderDrawerContext.Provider>

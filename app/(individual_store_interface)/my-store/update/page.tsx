@@ -29,7 +29,7 @@ import CreateSection from "./components/CreateSection";
 import AllCategories from "./components/AllCategories";
 import { uploadImageAction } from "./components/uploadImageAction";
 import IndividualLink from "./components/IndividualLink";
-import { isEqual } from "lodash";
+import { functions, isEqual } from "lodash";
 
 export default function Page() {
     const useUser = use(UserContext);
@@ -69,45 +69,70 @@ export default function Page() {
 
     const [categories, setCategories] = useState<Category[]>([]);
 
+    const comparator = (): [
+        null | {
+            name: string;
+            city: Key;
+            description: string;
+            division: Key;
+            map: string;
+            iframe: string;
+            phone: string;
+            fb_page: string;
+            lati: number;
+            longi: number;
+            category: string;
+        },
+        boolean
+    ] => {
+        const phone = validatePhoneNumber(phoneNumber);
+        if (!phone) {
+            return [null, false];
+        }
+        const payload = {
+            name: companyName,
+            city: [...district][0],
+            description: companyDescription,
+            division: [...division][0],
+            map: map,
+            iframe: `https://maps.google.com/maps?q=${location.lat},${location.long}&hl=es;z=132m&output=embed`,
+            phone,
+            fb_page: fbPage,
+            lati: location.lat,
+            longi: location.long,
+            category:
+                categories
+                    .find((e) => e.id == selectedCategory)
+                    ?.id.toString() || "",
+        };
+
+        const beforePayload = {
+            name: useUser?.userCompany?.name,
+            city: useUser?.userCompany?.city,
+            description: useUser?.userCompany?.description,
+            division: useUser?.userCompany?.division,
+            map: useUser?.userCompany?.map,
+            iframe: useUser?.userCompany?.iframe,
+            phone: useUser?.userCompany?.phone,
+            fb_page: useUser?.userCompany?.fb_page,
+            lati: useUser?.userCompany?.lati,
+            longi: useUser?.userCompany?.longi,
+            category: useUser?.userCompany?.category,
+        };
+        console.log(payload, beforePayload, isEqual(payload, beforePayload));
+        return [payload, isEqual(payload, beforePayload)];
+    };
+
     const handleSave = React.useCallback(async () => {
         try {
             setLoading(true);
-            const phone = validatePhoneNumber(phoneNumber);
-            if (!phone) {
-                return toast.error("Phone number is not valid.");
-            }
-            const payload = {
-                name: companyName,
-                city: [...district][0],
-                description: companyDescription,
-                division: [...division][0],
-                map: map,
-                iframe: `https://maps.google.com/maps?q=${location.lat},${location.long}&hl=es;z=132m&output=embed`,
-                phone,
-                fb_page: fbPage,
-                lati: location.lat,
-                longi: location.long,
-                category:
-                    categories
-                        .find((e) => e.id == selectedCategory)
-                        ?.id.toString() || "",
-            };
 
-            const beforePayload = {
-                name: useUser?.userCompany?.name,
-                city: useUser?.userCompany?.city,
-                description: useUser?.userCompany?.description,
-                division: useUser?.userCompany?.division,
-                map: useUser?.userCompany?.map,
-                iframe: useUser?.userCompany?.iframe,
-                phone: useUser?.userCompany?.phone,
-                fb_page: useUser?.userCompany?.fb_page,
-                lati: useUser?.userCompany?.lati,
-                longi: useUser?.userCompany?.longi,
-                category: useUser?.userCompany?.category,
-            };
-            if (isEqual(payload, beforePayload)) {
+            const [payload, isSame] = comparator();
+            if (isSame) {
                 return toast.warning("No changes detected.");
+            }
+            if (!payload) {
+                return toast.error("Phone number is not valid.");
             }
             const x: any = await updateStoreAction({
                 data: payload,
@@ -121,6 +146,7 @@ export default function Page() {
                 toast.error(`Error(${x.status}): ` + x.message);
             }
         } catch (error) {
+            console.log(error);
         } finally {
             setLoading(false);
         }
@@ -138,11 +164,17 @@ export default function Page() {
     ]);
 
     useEffect(() => {
+        // const interval = setInterval(() => {
+        //     const [_, isSame] = comparator();
+        //     console.log(isSame);
+        //     if (!isSame) handleSave();
+        // }, 5000);
         (async () => {
             const response = await fetch(`${API_URL}/categories`);
             const cat = (await response.json()) as Category[];
             setCategories(cat);
         })();
+        // return () => clearInterval(interval);
     }, []);
 
     useEffect(() => {
@@ -155,6 +187,10 @@ export default function Page() {
         setFbPage(useUser.userCompany.fb_page || fbPage);
         setMap(useUser.userCompany.map || map);
         setSelectedCategory(useUser.userCompany.category || selectedCategory);
+        setLocation({
+            lat: useUser.userCompany.lati || location.lat,
+            long: useUser.userCompany.longi || location.long,
+        });
         setDivision(
             new Set<string>([
                 useUser.userCompany.division || ([...division][0] as string),
@@ -212,43 +248,8 @@ export default function Page() {
     }, [hasUnsavedChanges]);
 
     useEffect(() => {
-        const phone = validatePhoneNumber(phoneNumber);
-        if (!phone) {
-            return;
-        }
-        const payload = {
-            name: companyName,
-            city: [...district][0],
-            description: companyDescription,
-            division: [...division][0],
-            map: map,
-            iframe: `https://maps.google.com/maps?q=${location.lat},${location.long}&hl=es;z=132m&output=embed`,
-            phone,
-            fb_page: fbPage,
-            lati: location.lat,
-            longi: location.long,
-            category:
-                categories
-                    .find((e) => e.id == selectedCategory)
-                    ?.id.toString() || "",
-        };
-
-        const beforePayload = {
-            name: useUser?.userCompany?.name,
-            city: useUser?.userCompany?.city,
-            description: useUser?.userCompany?.description,
-            division: useUser?.userCompany?.division,
-            map: useUser?.userCompany?.map,
-            iframe: useUser?.userCompany?.iframe,
-            phone: useUser?.userCompany?.phone,
-            fb_page: useUser?.userCompany?.fb_page,
-            lati: useUser?.userCompany?.lati,
-            longi: useUser?.userCompany?.longi,
-            category: useUser?.userCompany?.category,
-        };
-        if (!isEqual(payload, beforePayload)) {
-            setHasUnsavedChanges(true);
-        }
+        const [_, hasChanged] = comparator();
+        setHasUnsavedChanges(hasChanged);
     }, [
         companyName,
         companyDescription,

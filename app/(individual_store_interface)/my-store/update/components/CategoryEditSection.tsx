@@ -1,6 +1,8 @@
 import {
     Button,
     Card,
+    CardBody,
+    CardFooter,
     Input,
     Modal,
     ModalBody,
@@ -146,7 +148,7 @@ function UpdateCategory({ section }: { section: CompanySection }) {
                         </ModalContent>
                     </Modal>
 
-                    <Button
+                    {/* <Button
                         color="primary"
                         variant="flat"
                         className="font-bold"
@@ -229,7 +231,7 @@ function UpdateCategory({ section }: { section: CompanySection }) {
                                 </>
                             )}
                         </ModalContent>
-                    </Modal>
+                    </Modal> */}
                 </h2>
             </div>
         </div>
@@ -240,10 +242,105 @@ export default function CategoryEditSection({
 }: {
     section: CompanySection;
 }) {
+    const useUser = use(UserContext);
+    const {
+        isOpen: isCreateProductOpen,
+        onOpen: onCreateProductOpen,
+        onOpenChange: onCreateProductOpenChange,
+    } = useDisclosure();
     return (
         <div>
             <UpdateCategory section={section} />
-            <div className="flex flex-wrap justify-start items-center w-full gap-2">
+            <div className="flex flex-wrap justify-start items-center w-full gap-8">
+                <Card
+                    shadow="sm"
+                    isPressable
+                    onPress={() => {
+                        onCreateProductOpen();
+                    }}
+                    className={
+                        "w-52 md:w-72 p-0 h-[28rem] bg-primary/50 max-md:h-96 max-mob:h-[22rem]"
+                    }>
+                    <CardBody
+                        className="overflow-visible relative w-full h-full flex flex-col justify-center items-center text-xl mob:text-2xl font-bold"
+                        // as={Link}
+                    >
+                        Create Product
+                    </CardBody>
+                </Card>
+                <Modal
+                    isOpen={isCreateProductOpen}
+                    onOpenChange={onCreateProductOpenChange}>
+                    <ModalContent>
+                        {(onClose) => (
+                            <>
+                                <ModalHeader className="flex flex-col gap-1">
+                                    Create Product
+                                </ModalHeader>
+                                <ProductForm
+                                    submitText="Create Product"
+                                    onClose={onClose}
+                                    onSubmit={async (payload) => {
+                                        if (!payload.image) {
+                                            throw new Error(
+                                                "Please upload an image."
+                                            );
+                                        }
+                                        if (!payload.name) {
+                                            throw new Error(
+                                                "Please Enter a valid name."
+                                            );
+                                        }
+                                        if (!payload.price) {
+                                            throw new Error(
+                                                "Please Enter a valid price."
+                                            );
+                                        }
+                                        if (
+                                            !useUser ||
+                                            !useUser.user ||
+                                            !useUser.userCompany ||
+                                            !section ||
+                                            !payload ||
+                                            !payload.price ||
+                                            !payload.name ||
+                                            !payload.image
+                                        ) {
+                                            throw new Error(
+                                                "Some Fields are missing.",
+                                                {
+                                                    cause: "This error happened because you missed some REQUIRED fields empty. If this error happens over and over, please logout and login again. Also, make sure that you have created your store.",
+                                                }
+                                            );
+                                        }
+                                        const customPayload = {
+                                            name: payload.name,
+                                            description: payload.description,
+                                            price: parseFloat(payload.price),
+                                            section_id: section.id,
+                                            image1: payload.image,
+                                            user_id: useUser?.user?.id,
+                                            company_id:
+                                                useUser?.userCompany?.id,
+                                        };
+                                        const res = await createProductAction(
+                                            customPayload
+                                        );
+                                        if (res.status === 200) {
+                                            toast.success(res.message);
+                                            useUser?.ticktock();
+                                        } else {
+                                            toast.error(
+                                                `Error(${res.status}): ` +
+                                                    res.message
+                                            );
+                                        }
+                                    }}
+                                />
+                            </>
+                        )}
+                    </ModalContent>
+                </Modal>
                 {section.products.map((product) => (
                     <EditProduct key={product.id} product={product} />
                 ))}

@@ -1,6 +1,5 @@
-import React, { use, useEffect, useMemo, useState } from "react";
+import React, { use, useMemo } from "react";
 import CategoryEditSection from "./CategoryEditSection";
-import { API_URL } from "@/lib/var";
 import { UserContext } from "@/contexts/UserContext";
 
 export interface CompanySection extends Category {

@@ -255,75 +255,90 @@ export default function Page() {
             </p>
             <div className="flex flex-col gap-2">
                 {useUser?.orders?.length
-                    ? useUser.orders.map((order) => (
-                          <Card key={order.id}>
-                              <CardBody>
-                                  <FieldValue
-                                      name={order.name}
-                                      phone={order.phone}
-                                      address={order.address}
-                                      status={order.status}
-                                  />
+                    ? useUser.orders
+                          .sort((a, b) => {
+                              //  sorted by a.updated_at, most recent comes first
+                              if (b.status === "cancelled") {
+                                  return -1;
+                              }
+                              if (a.updated_at > b.updated_at) {
+                                  return -1;
+                              }
+                              if (a.updated_at < b.updated_at) {
+                                  return 1;
+                              }
+                              return 0;
+                          })
+                          .map((order) => (
+                              <Card key={order.id}>
+                                  <CardBody>
+                                      <FieldValue
+                                          name={order.name}
+                                          phone={order.phone}
+                                          address={order.address}
+                                          status={order.status}
+                                      />
 
-                                  <Table
-                                      isHeaderSticky
-                                      aria-label="Example table with custom cells"
-                                      selectionMode="multiple"
-                                      classNames={{
-                                          wrapper: cn("max-h-full"),
-                                      }}
-                                      topContent={
-                                          <TableTopBar
-                                              orderId={order.id}
-                                              userId={useUser.user?.id}
-                                              ticktock={useUser.ticktock}
-                                          />
-                                      }
-                                      topContentPlacement="outside"
-                                      onSelectionChange={(selected) => {
-                                          setSelected(selected);
-                                      }}>
-                                      <TableHeader columns={columns}>
-                                          {(column) => (
-                                              <TableColumn
-                                                  key={column.uid}
-                                                  align={
-                                                      column.uid === "action"
-                                                          ? "end"
-                                                          : column.uid ===
-                                                            "product"
-                                                          ? "start"
-                                                          : "center"
-                                                  }>
-                                                  {column.name}
-                                              </TableColumn>
-                                          )}
-                                      </TableHeader>
-                                      <TableBody
-                                          items={order.order_items}
-                                          emptyContent="No items found in cart">
-                                          {(item) => (
-                                              <TableRow key={item.id}>
-                                                  {(columnId) => (
-                                                      <TableCell>
-                                                          <TableCellCustom
-                                                              columnId={
-                                                                  columnId as string
-                                                              }
-                                                              item={item}
-                                                              // item={item}
-                                                              // setItems={setCart}
-                                                              // columnId={columnId as string}
-                                                          />
-                                                      </TableCell>
-                                                  )}
-                                              </TableRow>
-                                          )}
-                                      </TableBody>
-                                  </Table>
-                              </CardBody>
-                          </Card>
-                      ))
+                                      <Table
+                                          isHeaderSticky
+                                          aria-label="Example table with custom cells"
+                                          selectionMode="multiple"
+                                          classNames={{
+                                              wrapper: cn("max-h-full"),
+                                          }}
+                                          topContent={
+                                              <TableTopBar
+                                                  orderId={order.id}
+                                                  userId={useUser.user?.id}
+                                                  ticktock={useUser.ticktock}
+                                              />
+                                          }
+                                          topContentPlacement="outside"
+                                          onSelectionChange={(selected) => {
+                                              setSelected(selected);
+                                          }}>
+                                          <TableHeader columns={columns}>
+                                              {(column) => (
+                                                  <TableColumn
+                                                      key={column.uid}
+                                                      align={
+                                                          column.uid ===
+                                                          "action"
+                                                              ? "end"
+                                                              : column.uid ===
+                                                                "product"
+                                                              ? "start"
+                                                              : "center"
+                                                      }>
+                                                      {column.name}
+                                                  </TableColumn>
+                                              )}
+                                          </TableHeader>
+                                          <TableBody
+                                              items={order.order_items}
+                                              emptyContent="No items found in cart">
+                                              {(item) => (
+                                                  <TableRow key={item.id}>
+                                                      {(columnId) => (
+                                                          <TableCell>
+                                                              <TableCellCustom
+                                                                  columnId={
+                                                                      columnId as string
+                                                                  }
+                                                                  item={item}
+                                                                  // item={item}
+                                                                  // setItems={setCart}
+                                                                  // columnId={columnId as string}
+                                                              />
+                                                          </TableCell>
+                                                      )}
+                                                  </TableRow>
+                                              )}
+                                          </TableBody>
+                                      </Table>
+                                  </CardBody>
+                              </Card>
+                          ))
                     : "No orders found"}
             </div>
         </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { use, useEffect, useMemo, useState } from "react";
+import React, { use, useCallback, useEffect, useMemo, useState } from "react";
 import CompanyOrderTable from "./CompanyOrderTable";
 import { getOwnerOrdersAction } from "./getOwnerOrdersAction";
 import { UserContext } from "@/contexts/UserContext";
@@ -9,6 +9,10 @@ import { toast } from "sonner";
 export default function Page() {
     const [orders, setOrders] = useState<any[]>([]);
     const useUser = use(UserContext);
+    const [tick, setTick] = useState(false);
+    const ticktock = useCallback(() => {
+        setTick((tick) => !tick);
+    }, []);
     useEffect(() => {
         if (!useUser?.userCompany) {
             toast.error("Company not found");
@@ -67,13 +71,13 @@ export default function Page() {
                 console.log(error);
             }
         })();
-    }, [useUser?.userCompany?.id]);
+    }, [useUser?.userCompany?.id, tick]);
 
     return (
         <div>
             <h1 className="my-3 text-3xl font-bold">My Orders:</h1>
             <div className="mt-8 mx-3">
-                <CompanyOrderTable data={orders} />
+                <CompanyOrderTable data={orders} ticktock={ticktock} />
             </div>
         </div>
     );

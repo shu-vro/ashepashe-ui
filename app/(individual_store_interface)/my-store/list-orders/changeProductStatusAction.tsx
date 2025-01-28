@@ -1,11 +1,13 @@
 "use server";
 
+// https://asepashe.com/api/order-items-status/
+
 import { API_URL } from "@/lib/var";
 import { revalidatePath } from "next/cache";
 
-export async function storeOrderAction(payload: Record<string, any>) {
+export async function changeProductStatusAction(payload: Record<string, any>) {
     revalidatePath("/");
-    if (!payload.user_id) {
+    if (!payload.item_id || !payload.status) {
         return {
             status: 402,
             message: "Payload incomplete",
@@ -15,9 +17,13 @@ export async function storeOrderAction(payload: Record<string, any>) {
         const options = {
             method: "POST",
             headers: { "content-type": "application/json" },
-            body: JSON.stringify(payload),
+            body: JSON.stringify({
+                item_id: payload.item_id,
+                status: payload.status,
+            }),
         };
-        const response = await fetch(`${API_URL}/store-order`, options);
+        console.log(payload);
+        const response = await fetch(`${API_URL}/order-items-status`, options);
 
         const data = await response.json();
         return {

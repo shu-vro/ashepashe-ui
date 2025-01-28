@@ -22,6 +22,7 @@ import {
     SortDescriptor,
 } from "@heroui/react";
 import Image from "next/image";
+import { changeProductStatusAction } from "./changeProductStatusAction";
 
 export type IconSvgProps = SVGProps<SVGSVGElement> & {
     size?: number;
@@ -173,6 +174,7 @@ const statusColorMap: Record<string, ChipProps["color"]> = {
     cancelled: "danger",
     pending: "warning",
     processing: "primary",
+    dropped: "danger",
 };
 
 const INITIAL_VISIBLE_COLUMNS = [
@@ -181,12 +183,18 @@ const INITIAL_VISIBLE_COLUMNS = [
     "status",
     "quantity",
     "totalPrice",
-    "action",
+    "actions",
 ];
 
 // type User = (typeof users)[0];
 
-export default function CompanyOrderTable({ data }: { data: any[] }) {
+export default function CompanyOrderTable({
+    data,
+    ticktock,
+}: {
+    data: any[];
+    ticktock: () => void;
+}) {
     const [filterValue, setFilterValue] = React.useState("");
     const [selectedKeys, setSelectedKeys] = React.useState<Selection>(
         new Set([])
@@ -274,6 +282,15 @@ export default function CompanyOrderTable({ data }: { data: any[] }) {
         });
     }, [sortDescriptor, items]);
 
+    async function changeState(item_id: string, status: string) {
+        const res = await changeProductStatusAction({
+            item_id,
+            status,
+        });
+        ticktock();
+        console.log(res);
+    }
+
     const renderCell = React.useCallback((field: any, columnKey: React.Key) => {
         const cellValue = field[columnKey as string];
 
@@ -327,10 +344,53 @@ export default function CompanyOrderTable({ data }: { data: any[] }) {
                                     <VerticalDotsIcon className="text-default-400" />
                                 </Button>
                             </DropdownTrigger>
-                            <DropdownMenu>
+                            <DropdownMenu
+                                onSelectionChange={(key) =>
+                                    console.log(
+                                        `Item with key ${key} was selected`
+                                    )
+                                }>
                                 <DropdownItem key="view">View</DropdownItem>
-                                <DropdownItem key="edit">Edit</DropdownItem>
-                                <DropdownItem key="delete">Delete</DropdownItem>
+                                <DropdownItem
+                                    key="pending"
+                                    onPress={async () => {
+                                        await changeState(
+                                            field.order_item_id,
+                                            "pending"
+                                        );
+                                    }}>
+                                    Flag Pending
+                                </DropdownItem>
+                                <DropdownItem
+                                    key="processing"
+                                    onPress={async () => {
+                                        await changeState(
+                                            field.order_item_id,
+                                            "processing"
+                                        );
+                                    }}>
+                                    Flag Processing
+                                </DropdownItem>
+                                <DropdownItem
+                                    key="completed"
+                                    onPress={async () => {
+                                        await changeState(
+                                            field.order_item_id,
+                                            "completed"
+                                        );
+                                    }}>
+                                    Flag Completed
+                                </DropdownItem>
+                                <DropdownItem
+                                    key="dropped"
+                                    onPress={async () => {
+                                        await changeState(
+                                            field.order_item_id,
+                                            "dropped"
+                                        );
+                                    }}>
+                                    Flag Dropped
+                                </DropdownItem>
                             </DropdownMenu>
                         </Dropdown>
                     </div>

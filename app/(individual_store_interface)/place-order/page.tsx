@@ -1,6 +1,19 @@
 "use client";
 
-import { Button, Form, Input, Textarea } from "@heroui/react";
+import {
+    Button,
+    Form,
+    Input,
+    Textarea,
+    useDisclosure,
+    Drawer,
+    Modal,
+    ModalContent,
+    ModalHeader,
+    ModalFooter,
+    ModalBody,
+    InputOtp,
+} from "@heroui/react";
 import OrderTable from "./components/OrderTable";
 import { use, useState } from "react";
 import { CartContext } from "@/contexts/CartContext";
@@ -8,19 +21,56 @@ import { storeOrderAction } from "./components/storeOrderAction";
 import { toast } from "sonner";
 import { UserContext } from "@/contexts/UserContext";
 import { validatePhoneNumber } from "@/lib/utils";
+import { signIn } from "next-auth/react";
 
 export default function Page() {
     const useCart = use(CartContext);
     const useUser = use(UserContext);
     const [loading, setLoading] = useState(false);
+    const { isOpen, onOpenChange, onOpen } = useDisclosure();
     return (
-        <div className="flex justify-center items-start flex-row max-md:flex-col m-6 gap-6">
+        <div className="flex justify-center items-start flex-row max-lg:flex-wrap m-6 gap-6">
+            <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+                <ModalContent>
+                    {(onClose) => (
+                        <>
+                            <ModalHeader className="flex flex-col gap-1">
+                                You are not Signed In!
+                            </ModalHeader>
+                            <ModalBody>
+                                <p>
+                                    You need to sign in to place an order. Click
+                                    the button below to sign in.
+                                </p>
+                            </ModalBody>
+                            <ModalFooter>
+                                <Button
+                                    color="danger"
+                                    variant="light"
+                                    onPress={onClose}>
+                                    Close
+                                </Button>
+                                <Button
+                                    color="primary"
+                                    onPress={() => {
+                                        signIn("google", {
+                                            redirectTo: "/place-order",
+                                            redirect: false,
+                                        });
+                                        onClose();
+                                    }}>
+                                    Sign Up
+                                </Button>
+                            </ModalFooter>
+                        </>
+                    )}
+                </ModalContent>
+            </Modal>
             <Form
                 validationBehavior="native"
                 className="w-full gap-4"
                 onSubmit={async (e) => {
                     e.preventDefault();
-                    console.log("Order Placed");
                     setLoading(true);
                     try {
                         const { name, phone, address } = Object.fromEntries(
@@ -44,6 +94,9 @@ export default function Page() {
                             toast.success(res.message);
                             useCart.setCart([]);
                             useUser?.ticktock();
+                        }
+                        if (res.status === 402) {
+                            onOpen();
                         } else {
                             toast.error(res.message);
                         }
@@ -61,7 +114,7 @@ export default function Page() {
                     name="name"
                     isRequired
                 />
-                <Input
+                {/* <Input
                     label="Mobile Number"
                     placeholder="01xxxxxxxxx"
                     labelPlacement="outside"
@@ -75,7 +128,21 @@ export default function Page() {
                         }
                         return true;
                     }}
-                />
+                /> */}
+                <div>
+                    <p>
+                        Phone Number<span className="text-danger">*</span>
+                    </p>
+                    <InputOtp
+                        length={11}
+                        size="sm"
+                        label="Phone Number"
+                        radius="none"
+                        name="phone"
+                        className="mt-0"
+                        isRequired
+                    />
+                </div>
                 <Textarea
                     variant="faded"
                     label="Full Address"

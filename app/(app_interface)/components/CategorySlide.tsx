@@ -27,7 +27,7 @@ export default function CategorySlide({
                     (offer) => new Date(offer.validity).getTime() > Date.now()
                 );
                 return (
-                    <SwiperSlide key={select.id} className="w-fit p-4">
+                    <SwiperSlide key={select.id} className="mini-slide p-4">
                         <ProductCard
                             product={select}
                             disableCompany={disableCompany}

@@ -62,7 +62,7 @@ export default function ResponsiveButtons({}) {
             <NavbarItem>
                 <Badge
                     color="warning"
-                    className="max-mob:hidden"
+                    className="max-md:hidden"
                     size="lg"
                     content={ordersLength}
                     isInvisible={ordersLength === 0}>
@@ -72,7 +72,7 @@ export default function ResponsiveButtons({}) {
                         color="primary"
                         variant="flat"
                         isIconOnly
-                        className="text-xl max-mob:hidden">
+                        className="text-xl max-md:hidden">
                         <CiShoppingCart />
                     </Button>
                 </Badge>

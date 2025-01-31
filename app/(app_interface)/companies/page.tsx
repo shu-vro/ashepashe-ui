@@ -26,7 +26,11 @@ export default async function Restaurant({
 }
 
 async function getAllCompanies() {
-    const response = await fetch(`${API_URL}/companies`);
-    const data: Company[] = await response.json();
-    return data;
+    try {
+        const response = await fetch(`${API_URL}/companies`);
+        const data: Company[] = await response.json();
+        return data;
+    } catch (error) {
+        return [];
+    }
 }

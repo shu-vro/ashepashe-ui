@@ -70,7 +70,11 @@ export async function AppSidebar() {
 }
 
 export async function getSidebarItems() {
-    const response = await fetch(`${API_URL}/categories`);
-    const data = (await response.json()) as Category[];
-    return data;
+    try {
+        const response = await fetch(`${API_URL}/categories`);
+        const data = (await response.json()) as Category[];
+        return data;
+    } catch (error) {
+        return [];
+    }
 }

@@ -63,6 +63,7 @@ export default function Page() {
                     ordererPhone: order.phone,
                     ordererAddress: order.address,
                     product_id: order.products.id,
+                    created_at: Date.parse(order.created_at),
                     // others: order,
                 }));
                 // console.log(importantData, serializedData, res);

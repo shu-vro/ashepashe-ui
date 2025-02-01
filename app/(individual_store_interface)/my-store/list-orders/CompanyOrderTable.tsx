@@ -1,6 +1,6 @@
 "use client";
 
-import React, { SVGProps } from "react";
+import React, { SVGProps, useEffect } from "react";
 import {
     Table,
     TableHeader,
@@ -20,11 +20,21 @@ import {
     Selection,
     ChipProps,
     SortDescriptor,
+    Drawer,
+    DrawerContent,
+    DrawerHeader,
+    DrawerBody,
+    DrawerFooter,
+    Card,
+    CardBody,
+    CardHeader,
+    Image,
 } from "@heroui/react";
-import Image from "next/image";
+import NextImage from "next/image";
 import { changeProductStatusAction } from "./changeProductStatusAction";
 import { IoSearchOutline, IoChevronDownOutline } from "react-icons/io5";
 import { BsThreeDotsVertical } from "react-icons/bs";
+import { dynamicFakeImageGenerator } from "@/lib/utils";
 
 export type IconSvgProps = SVGProps<SVGSVGElement> & {
     size?: number;
@@ -41,6 +51,7 @@ export const columns = [
     { name: "ORDERER PHONE", uid: "ordererPhone" },
     { name: "ORDERER ADDRESS", uid: "ordererAddress" },
     { name: "PRODUCT ID", uid: "product_id", sortable: true },
+    { name: "CREATED_AT", uid: "created_at", sortable: true },
     { name: "ACTIONS", uid: "actions" },
 ];
 
@@ -72,13 +83,32 @@ const INITIAL_VISIBLE_COLUMNS = [
     "actions",
 ];
 
-// type User = (typeof users)[0];
+function formatDate(isoString: string) {
+    const date = new Date(isoString);
+    return date.toLocaleDateString() + " " + date.toLocaleTimeString();
+}
 
 export default function CompanyOrderTable({
     data,
     ticktock,
 }: {
-    data: any[];
+    data: {
+        orderer: {
+            name: string;
+            description: string;
+            avatar: string;
+        };
+        product: Product["product"];
+        status: string;
+        quantity: number;
+        totalPrice: number;
+        order_item_id: string;
+        order_id: number;
+        ordererPhone: string;
+        ordererAddress: string;
+        product_id: string;
+        created_at: string;
+    }[];
     ticktock: () => void;
 }) {
     const [filterValue, setFilterValue] = React.useState("");
@@ -191,7 +221,7 @@ export default function CompanyOrderTable({
                             radius: "full",
                             size: "sm",
                             src: cellValue.avatar,
-                            ImgComponent: Image,
+                            ImgComponent: NextImage,
                             imgProps: {
                                 width: 50,
                                 height: 50,
@@ -217,6 +247,8 @@ export default function CompanyOrderTable({
                         {cellValue}
                     </Chip>
                 );
+            case "created_at":
+                return formatDate(cellValue);
             case "actions":
                 return (
                     <div className="relative flex justify-end items-center gap-2">
@@ -427,43 +459,191 @@ export default function CompanyOrderTable({
         );
     }, [selectedKeys, items.length, page, pages, hasSearchFilter]);
 
+    const [selectedOrder, setSelectedOrder] = React.useState<
+        (typeof data)[0] | null
+    >(null);
+
+    useEffect(() => {
+        if (selectedKeys) {
+            let key = Array.from(selectedKeys)[0];
+            let order = data.find(
+                (val) => val.order_id === parseInt(key as string)
+            );
+            setSelectedOrder(order || null);
+        } else {
+            setSelectedOrder(null);
+        }
+    }, [selectedKeys]);
+
     return (
-        <Table
-            aria-label="Order Table"
-            bottomContent={bottomContent}
-            bottomContentPlacement="outside"
-            checkboxesProps={{
-                classNames: {
-                    wrapper:
-                        "after:bg-foreground after:text-background text-background",
-                },
-            }}
-            selectedKeys={selectedKeys}
-            selectionMode="multiple"
-            sortDescriptor={sortDescriptor}
-            topContent={topContent}
-            topContentPlacement="outside"
-            onSelectionChange={setSelectedKeys}
-            onSortChange={setSortDescriptor}>
-            <TableHeader columns={headerColumns}>
-                {(column) => (
-                    <TableColumn
-                        key={column.uid}
-                        align={column.uid === "actions" ? "center" : "start"}
-                        allowsSorting={column.sortable}>
-                        {column.name}
-                    </TableColumn>
-                )}
-            </TableHeader>
-            <TableBody emptyContent={"No users found"} items={sortedItems}>
-                {(item) => (
-                    <TableRow key={item.order_id}>
-                        {(columnKey) => (
-                            <TableCell>{renderCell(item, columnKey)}</TableCell>
-                        )}
-                    </TableRow>
-                )}
-            </TableBody>
-        </Table>
+        <>
+            <Table
+                aria-label="Order Table"
+                bottomContent={bottomContent}
+                bottomContentPlacement="outside"
+                checkboxesProps={{
+                    classNames: {
+                        wrapper:
+                            "after:bg-foreground after:text-background text-background",
+                    },
+                }}
+                selectedKeys={selectedKeys}
+                selectionMode="single"
+                sortDescriptor={sortDescriptor}
+                topContent={topContent}
+                topContentPlacement="outside"
+                onSelectionChange={setSelectedKeys}
+                onSortChange={setSortDescriptor}>
+                <TableHeader columns={headerColumns}>
+                    {(column) => (
+                        <TableColumn
+                            key={column.uid}
+                            align={
+                                column.uid === "actions" ? "center" : "start"
+                            }
+                            allowsSorting={column.sortable}>
+                            {column.name}
+                        </TableColumn>
+                    )}
+                </TableHeader>
+                <TableBody emptyContent={"No orders found"} items={sortedItems}>
+                    {(item) => (
+                        <TableRow key={item.order_id}>
+                            {(columnKey) => (
+                                <TableCell>
+                                    {renderCell(item, columnKey)}
+                                </TableCell>
+                            )}
+                        </TableRow>
+                    )}
+                </TableBody>
+            </Table>
+            <Drawer
+                isOpen={!!Array.from(selectedKeys).length}
+                onOpenChange={() => {
+                    setSelectedKeys(new Set([]));
+                }}
+                size="2xl">
+                <DrawerContent>
+                    {(onClose) => (
+                        <>
+                            <DrawerHeader className="flex flex-col gap-1">
+                                Order Details
+                            </DrawerHeader>
+                            <DrawerBody>
+                                <div>
+                                    Order Id:{" "}
+                                    <Chip>{selectedOrder?.order_id}</Chip>
+                                </div>
+                                <div>
+                                    Created At:{" "}
+                                    <Chip variant="dot">
+                                        {formatDate(selectedOrder?.created_at!)}
+                                    </Chip>
+                                </div>
+                                <Card>
+                                    <CardHeader>Orderer Details</CardHeader>
+                                    <CardBody className="flex flex-row flex-wrap gap-4">
+                                        <Image
+                                            src={
+                                                selectedOrder?.orderer.avatar ||
+                                                dynamicFakeImageGenerator()
+                                            }
+                                            width={150}
+                                            height={150}
+                                            as={NextImage}
+                                            alt="Orderer Avatar"
+                                            className="w-40 h-40"
+                                        />
+                                        <div className="flex flex-col gap-2">
+                                            <h2 className="text-xl font-bold">
+                                                {selectedOrder?.orderer.name}
+                                            </h2>
+                                            <p className="text-default-400">
+                                                As:{" "}
+                                                {
+                                                    selectedOrder?.orderer
+                                                        .description
+                                                }
+                                            </p>
+                                            <p>
+                                                Phone:{" "}
+                                                <a
+                                                    href={`tel:${selectedOrder?.ordererPhone}`}>
+                                                    {
+                                                        selectedOrder?.ordererPhone
+                                                    }
+                                                </a>
+                                            </p>
+                                            <p>
+                                                Address:{" "}
+                                                {selectedOrder?.ordererAddress}
+                                            </p>
+                                        </div>
+                                    </CardBody>
+                                </Card>
+                                <Card>
+                                    <CardHeader>Product Details</CardHeader>
+                                    <CardBody className="flex flex-row flex-wrap gap-4">
+                                        <Image
+                                            src={
+                                                // @ts-ignore
+                                                selectedOrder?.product.avatar ||
+                                                dynamicFakeImageGenerator()
+                                            }
+                                            width={150}
+                                            height={150}
+                                            as={NextImage}
+                                            alt="Orderer Avatar"
+                                            className="w-40 h-40"
+                                        />
+                                        <div className="flex flex-col gap-3">
+                                            <div>
+                                                Product Name:{" "}
+                                                <Chip>
+                                                    {
+                                                        selectedOrder?.product
+                                                            .name
+                                                    }
+                                                </Chip>
+                                            </div>
+                                            <div>
+                                                Quantity:{" "}
+                                                <Chip>
+                                                    {selectedOrder?.quantity}
+                                                </Chip>
+                                            </div>
+                                            <div>
+                                                Quantity:{" "}
+                                                <Chip>
+                                                    {
+                                                        selectedOrder?.product
+                                                            .description
+                                                    }
+                                                </Chip>
+                                            </div>
+                                            <div>
+                                                Total Price:{" "}
+                                                <Chip>
+                                                    {selectedOrder?.totalPrice}
+                                                </Chip>
+                                            </div>
+                                        </div>
+                                    </CardBody>
+                                </Card>
+                            </DrawerBody>
+                            <DrawerFooter>
+                                <Button
+                                    color="danger"
+                                    variant="light"
+                                    onPress={onClose}>
+                                    Close
+                                </Button>
+                            </DrawerFooter>
+                        </>
+                    )}
+                </DrawerContent>
+            </Drawer>
+        </>
     );
 }

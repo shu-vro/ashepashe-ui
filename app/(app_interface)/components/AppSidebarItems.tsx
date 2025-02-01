@@ -20,7 +20,7 @@ export default function AppSidebarItems({ item }: AppSidebarItemsProps) {
                     color="default"
                     variant="light"
                     as={Link}
-                    onClick={() => {
+                    onPress={() => {
                         sidebar.setOpenMobile(false);
                     }}
                     className="capitalize justify-start rounded-sm text-sidebar-foreground/70 text-medium py-5"

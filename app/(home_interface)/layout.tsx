@@ -13,6 +13,7 @@ import { SessionProvider } from "next-auth/react";
 import UserProvider from "@/contexts/UserContext";
 import Gradient from "../(app_interface)/components/Gradient";
 import Script from "next/script";
+import NotificationComponent from "../components/NotificationComponent";
 
 const font = Montserrat({
     subsets: ["latin"],
@@ -104,6 +105,7 @@ export default function RootLayout({
                                     {children}
                                     <Sonner />
                                 </main>
+                                <NotificationComponent />
                             </UserProvider>
                         </SidebarProvider>
                     </ThemeProvider>

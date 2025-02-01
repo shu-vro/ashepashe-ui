@@ -1,7 +1,6 @@
 import type { NextConfig } from "next";
 
 import withPWAInit from "@ducanh2912/next-pwa";
-import { hostname } from "os";
 
 // /** @type {import('next').NextConfig} */
 const nextConfig: NextConfig = {
@@ -23,8 +22,10 @@ const nextConfig: NextConfig = {
 
 const withPWA = withPWAInit({
     dest: "public",
-    disable: process.env.NODE_ENV === "development",
-    // register: true,
+    disable: false,
+    register: true,
+    // disable: process.env.NODE_ENV === "development",
+    // disable: false,
     // scope: "/app",
     // sw: "service-worker.js",
     //...

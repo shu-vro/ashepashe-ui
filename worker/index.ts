@@ -1,5 +1,7 @@
 "use strict";
 
+/// <reference lib="webworker" />
+
 // @ts-expect-error
 self.__WB_DISABLE_DEV_LOGS = true;
 const PREFIX = "ASEPASHE";
@@ -96,3 +98,11 @@ registerRoute(
         ],
     })
 );
+
+self.addEventListener("push", function (event: any) {
+    const data = event.data.json();
+    // @ts-ignore
+    self.registration.showNotification(data.title, {
+        body: data.message,
+    });
+});

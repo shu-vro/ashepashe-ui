@@ -27,7 +27,7 @@ export default function Page() {
                         <div className="mt-auto flex flex-wrap gap-4">
                             <Button
                                 color="danger"
-                                onClick={() => {
+                                onPress={() => {
                                     signOut({
                                         callbackUrl: "/",
                                         redirect: false,

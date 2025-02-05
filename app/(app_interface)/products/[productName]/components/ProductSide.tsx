@@ -131,7 +131,7 @@ export default function ProductSide({ product, specialized = false }: Prop) {
                                             zoom
                                             modules={[Navigation, Zoom]}
                                             className="mySwiper !mx-0">
-                                            <SwiperSlide>
+                                            <SwiperSlide className="mini-slide">
                                                 <div className="swiper-zoom-container">
                                                     <Image
                                                         src={product.image1!}

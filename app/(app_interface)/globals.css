@@ -114,7 +114,7 @@ body {
     }
 }
 
-.swiper-slide {
+.swiper-slide.mini-slide {
     text-align: center;
     font-size: 18px;
     width: fit-content !important;

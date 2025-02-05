@@ -19,7 +19,6 @@ export default function OrderSidebar() {
     if (!od) {
         return null;
     }
-    console.log(od.isOrderDrawerOpen);
     return (
         <Drawer
             isOpen={od.isOrderDrawerOpen}

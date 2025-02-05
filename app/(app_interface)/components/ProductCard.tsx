@@ -11,7 +11,7 @@ import {
     Image,
     User,
 } from "@heroui/react";
-import React, { use, useMemo } from "react";
+import React, { use, useMemo, useState } from "react";
 import { FaStar } from "react-icons/fa6";
 import "@smastrom/react-rating/style.css";
 import {
@@ -26,6 +26,20 @@ import NextImage from "next/image";
 import { useRouter } from "next/navigation";
 import Ribbon from "./Ribbon";
 import { CartContext } from "@/contexts/CartContext";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation } from "swiper/modules";
+
+import {
+    Drawer,
+    DrawerClose,
+    DrawerContent,
+    DrawerDescription,
+    DrawerFooter,
+    DrawerHeader,
+    DrawerTitle,
+    DrawerTrigger,
+} from "@/components/ui/drawer";
+import { Rating } from "@smastrom/react-rating";
 
 interface ProductCardProps {
     disableCompany?: boolean;
@@ -41,6 +55,7 @@ export function ProductCard({
 }: ProductCardProps & CardProps) {
     const { push } = useRouter();
     const useCart = use(CartContext);
+    const [isOpen, onOpenChange] = useState(false);
     const { discountPercent, discountPrice } = useMemo(() => {
         const offer = product.offers?.find(
             (offer) => new Date(offer.validity).getTime() > Date.now()
@@ -64,126 +79,239 @@ export function ProductCard({
         product.slug
     }`;
     return (
-        <Card
-            shadow="sm"
-            // isPressable
-            {...rest}
-            as={"div"}
-            className={cn(
-                "w-52 md:w-64 p-0 overflow-visible",
-                rest?.className || ""
-            )}>
-            <CardBody
-                className="overflow-visible relative"
-                as={Link}
-                href={link}
-                onClick={(e) => {
-                    e.stopPropagation();
-                    push(link);
-                }}>
-                {discountPercent !== 0 && (
-                    <Ribbon>{discountPercent.toFixed(0)}% off</Ribbon>
-                )}
-                <Image
-                    shadow="none"
-                    radius="lg"
-                    isZoomed
-                    alt={product.name}
-                    className="w-full aspect-[4/3] object-cover !h-auto"
-                    src={toValidUrl(product.image1!)}
-                    isBlurred
-                    width={400}
-                    height={300}
-                    as={NextImage}
-                    fallbackSrc={dynamicFakeImageGenerator()}
-                />
-            </CardBody>
-            <CardFooter className="pt-0 text-start flex-col">
-                <div className="flex flex-col items-start w-full">
-                    <Link
-                        href={link}
-                        onClick={(e) => e.stopPropagation()}
-                        className="capitalize not-italic font-bold text-xl line-clamp-2 h-[4ch]">
-                        {product.name}{" "}
-                        {/* <Chip
-                            color="success"
-                            variant="bordered"
-                            className={cn(
-                                "rounded-[6px] md:hidden",
-                                discountPercent === "100" ? "!hidden" : "flex"
-                            )}>
-                            {discountPercent}%
-                        </Chip> */}
-                    </Link>
-                    <Link
-                        href={link}
-                        className="text-neutral-500 text-sm line-clamp-2 h-[4ch]">
-                        {product.description && removeTags(product.description)}
-                    </Link>
-                </div>
-                <CustomDivider />
-                <div className="flex flex-wrap justify-between items-center w-full">
-                    <div>
-                        {discountPercent !== 0 && (
-                            <del className="text-default-500 text-sm">
-                                {product.price}৳
-                            </del>
-                        )}{" "}
-                        <span className="text-xl font-bold">
-                            {discountPrice + "৳"}
-                        </span>
+        <>
+            <Card
+                shadow="sm"
+                // isPressable
+                {...rest}
+                as={"div"}
+                className={cn(
+                    "w-52 md:w-64 p-0 overflow-visible cursor-pointer",
+                    rest?.className || ""
+                )}>
+                <CardBody
+                    className="overflow-visible relative"
+                    onClick={() => {
+                        onOpenChange(true);
+                    }}
+                    // as={Link}
+                    // href={"#"}
+                    // onClick={(e) => {
+                    //     e.stopPropagation();
+                    //     push(link);
+                    // }}
+                >
+                    {discountPercent !== 0 && (
+                        <Ribbon>{discountPercent.toFixed(0)}% off</Ribbon>
+                    )}
+                    <Image
+                        shadow="none"
+                        radius="lg"
+                        isZoomed
+                        alt={product.name}
+                        className="w-full aspect-[4/3] object-cover !h-auto"
+                        src={toValidUrl(product.image1!)}
+                        isBlurred
+                        width={400}
+                        height={300}
+                        as={NextImage}
+                        fallbackSrc={dynamicFakeImageGenerator()}
+                    />
+                </CardBody>
+                <CardFooter className="pt-0 text-start flex-col">
+                    <div className="flex flex-col items-start w-full">
+                        <p className="capitalize not-italic font-bold text-xl line-clamp-2 h-[4ch]">
+                            {product.name}{" "}
+                        </p>
+                        <p className="text-neutral-500 text-sm line-clamp-2 h-[4ch]">
+                            {product.description &&
+                                removeTags(product.description)}
+                        </p>
                     </div>
-                    {/* <Rating style={{ maxWidth: 100 }} readOnly value={rating} /> */}
-                </div>
-                <CustomDivider />
-                <div className="flex flex-row justify-between items-center md:gap-1 w-full">
-                    <Chip
-                        startContent={<FaStar />}
-                        size="sm"
-                        variant="bordered"
-                        radius="sm"
-                        color="warning">
-                        {(rating || 0)?.toFixed(1)}
-                    </Chip>
-                    {/* <Button isIconOnly variant="light" className="text-xl">
-                        <CiBookmark />
-                    </Button> */}
-                    <Button
-                        isIconOnly
-                        variant="light"
-                        className="text-xl"
-                        onPress={() => {
-                            useCart!.addToCart(product, 1);
-                        }}>
-                        <CiShoppingCart />
-                    </Button>
-                </div>
-                <div className="w-full">
-                    {!disableCompany && (
+                    <CustomDivider />
+                    <div className="flex flex-row justify-between items-center md:gap-1 w-full">
+                        <div className="flex flex-row items-center gap-1">
+                            <div>
+                                {discountPercent !== 0 && (
+                                    <del className="text-default-500 text-sm">
+                                        {product.price}৳
+                                    </del>
+                                )}{" "}
+                                <span className="text-2xl font-bold">
+                                    {discountPrice + "৳"}
+                                </span>
+                            </div>
+                            <Button
+                                isIconOnly
+                                variant="light"
+                                color="success"
+                                className="text-xl"
+                                onPress={() => {
+                                    useCart!.addToCart(product, 1);
+                                }}>
+                                <CiShoppingCart />
+                            </Button>
+                        </div>
+                        <Chip
+                            startContent={<FaStar />}
+                            size="sm"
+                            variant="bordered"
+                            radius="sm"
+                            color="warning">
+                            {(rating || 0)?.toFixed(1)}
+                        </Chip>
+                    </div>
+                    <div className="w-full">
+                        {!disableCompany && (
+                            <>
+                                <CustomDivider />
+                                <User
+                                    name={product.company.name}
+                                    avatarProps={{
+                                        className: "w-8 h-8 grow",
+                                        src: product.company.image,
+                                        ImgComponent: Image,
+                                        imgProps: {
+                                            width: 32,
+                                            height: 32,
+                                        },
+                                    }}
+                                    className="grow-0"
+                                    as={Link}
+                                    href={`${
+                                        specialized ? "/a" : "/companies"
+                                    }/${product.company.slug}`}
+                                />
+                            </>
+                        )}
+                    </div>
+                </CardFooter>
+            </Card>
+            {/* <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="2xl">
+                <ModalContent>
+                    {(onClose) => (
                         <>
+                            <ModalHeader className="flex flex-col gap-1">
+                                Modal Title
+                            </ModalHeader>
+                            <ModalBody>
+                                <p>
+                                    Lorem ipsum dolor sit amet, consectetur
+                                    adipiscing elit. Nullam pulvinar risus non
+                                    risus hendrerit venenatis. Pellentesque sit
+                                    amet hendrerit risus, sed porttitor quam.
+                                </p>
+                                <p>
+                                    Lorem ipsum dolor sit amet, consectetur
+                                    adipiscing elit. Nullam pulvinar risus non
+                                    risus hendrerit venenatis. Pellentesque sit
+                                    amet hendrerit risus, sed porttitor quam.
+                                </p>
+                                <p>
+                                    Magna exercitation reprehenderit magna aute
+                                    tempor cupidatat consequat elit dolor
+                                    adipisicing. Mollit dolor eiusmod sunt ex
+                                    incididunt cillum quis. Velit duis sit
+                                    officia eiusmod Lorem aliqua enim laboris do
+                                    dolor eiusmod. Et mollit incididunt nisi
+                                    consectetur esse laborum eiusmod pariatur
+                                    proident Lorem eiusmod et. Culpa deserunt
+                                    nostrud ad veniam.
+                                </p>
+                            </ModalBody>
+                            <ModalFooter>
+                                <Button
+                                    color="danger"
+                                    variant="light"
+                                    onPress={onClose}>
+                                    Close
+                                </Button>
+                                <Button color="primary" onPress={onClose}>
+                                    Action
+                                </Button>
+                            </ModalFooter>
+                        </>
+                    )}
+                </ModalContent>
+            </Modal> */}
+            <Drawer open={isOpen} onOpenChange={onOpenChange}>
+                <DrawerContent>
+                    <div className="mx-auto w-full max-w-3xl">
+                        <DrawerHeader>
+                            <DrawerTitle>Product Details</DrawerTitle>
+                            <DrawerDescription className="sr-only">
+                                Product Description
+                            </DrawerDescription>
+                        </DrawerHeader>
+                        <div className="p-4 pb-0 overflow-y-auto max-h-[50vh]">
+                            <Swiper navigation={true} modules={[Navigation]}>
+                                <SwiperSlide>
+                                    <div className="w-full">1</div>
+                                </SwiperSlide>
+                                <SwiperSlide>
+                                    <div className="w-full">1</div>
+                                </SwiperSlide>
+                            </Swiper>
+                            <h1 className="text-3xl">{product.name}</h1>
+                            <p className="text-muted-foreground/80">
+                                {product.description &&
+                                    removeTags(product.description)}
+                            </p>
+                            <CustomDivider />
+                            <div className="flex flex-row justify-between items-center">
+                                <Rating
+                                    value={rating || 0}
+                                    readOnly
+                                    className="max-w-36"
+                                />
+                                <div>
+                                    Rated by {product.rating?.length} users
+                                </div>
+                            </div>
                             <CustomDivider />
                             <User
                                 name={product.company.name}
                                 avatarProps={{
-                                    className: "w-8 h-8 grow",
+                                    className: "w-16 h-16",
                                     src: product.company.image,
                                     ImgComponent: Image,
                                     imgProps: {
-                                        width: 32,
-                                        height: 32,
+                                        width: 64,
+                                        height: 64,
                                     },
+                                    radius: "sm",
                                 }}
-                                className="grow-0"
                                 as={Link}
                                 href={`${specialized ? "/a" : "/companies"}/${
                                     product.company.slug
                                 }`}
+                                description={product.company.description}
+                                classNames={{
+                                    name: "text-xl",
+                                    description: "text-muted-foreground",
+                                }}
                             />
-                        </>
-                    )}
-                </div>
-            </CardFooter>
-        </Card>
+                            <CustomDivider />
+                            <Button
+                                color="primary"
+                                className="font-bold"
+                                fullWidth
+                                as={Link}
+                                href={link}>
+                                View Details
+                            </Button>
+                        </div>
+                        <DrawerFooter>
+                            <div className="flex flex-row gap-2">
+                                <DrawerClose asChild>
+                                    <Button>Close</Button>
+                                </DrawerClose>
+                            </div>
+                        </DrawerFooter>
+                    </div>
+                </DrawerContent>
+            </Drawer>
+        </>
     );
 }
 

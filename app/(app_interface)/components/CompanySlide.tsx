@@ -10,7 +10,7 @@ export default function CompanySlide({ companies }: { companies: Company[] }) {
     return (
         <SwiperWrapper>
             {companies.map((company) => (
-                <SwiperSlide key={company.id} className="w-fit p-4">
+                <SwiperSlide key={company.id} className="p-4 mini-slide">
                     <CompanyTile
                         name={company.name}
                         description={company.description}

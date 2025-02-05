@@ -38,7 +38,7 @@ export default function Page() {
     const [companyName, setCompanyName] = useState("Company Name");
     const [phoneNumber, setPhoneNumber] = useState("00000000000");
     const [fbPage, setFbPage] = useState("Fb Page Link");
-    const [map, setMap] = useState("Some Address");
+    const [map, setMap] = useState("");
     const [companyDescription, setCompanyDescription] = useState("");
     const [loading, setLoading] = useState(false);
     const [hasUnsavedChanges, setHasUnsavedChanges] = useState(true);
@@ -91,6 +91,9 @@ export default function Page() {
         },
         boolean
     ] => {
+        if (!useUser?.userCompany) {
+            return [null, true];
+        }
         const phone = validatePhoneNumber(phoneNumber);
         if (!phone) {
             return [null, false];
@@ -114,7 +117,7 @@ export default function Page() {
             city: useUser?.userCompany?.city,
             description: useUser?.userCompany?.description || "",
             division: useUser?.userCompany?.division,
-            map: useUser?.userCompany?.map,
+            map: useUser?.userCompany?.map || "",
             iframe: useUser?.userCompany?.iframe,
             phone: useUser?.userCompany?.phone,
             fb_page: useUser?.userCompany?.fb_page,
@@ -510,11 +513,6 @@ export default function Page() {
                                             lat: success.coords.latitude,
                                             long: success.coords.longitude,
                                         });
-                                        // const request = await fetch(
-                                        //     `https://api.mapbox.com/geocoding/v5/mapbox.places/${success.coords.longitude},${success.coords.latitude}.json?access_token=${process.env.NEXT_PUBLIC_MAPBOX_API_TOKEN}`
-                                        // );
-                                        // const data = await request.json();
-                                        // console.log(data);
                                         onOpen();
                                     },
                                     (error) => {

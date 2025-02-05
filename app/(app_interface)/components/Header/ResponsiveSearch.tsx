@@ -8,6 +8,7 @@ import {
     Divider,
     useDisclosure,
     Badge,
+    DividerProps,
 } from "@heroui/react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
@@ -19,6 +20,7 @@ import { UserContext } from "@/contexts/UserContext";
 import { useSession } from "next-auth/react";
 import { OrderDrawerContext } from "@/contexts/OrderDrawerContext";
 import { CartContext } from "@/contexts/CartContext";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export default function ResponsiveButtons({}) {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -27,6 +29,7 @@ export default function ResponsiveButtons({}) {
     const { status } = useSession();
     const useOrderDrawer = use(OrderDrawerContext);
     const useCart = use(CartContext);
+    const mobile_450 = useIsMobile(450);
 
     const ordersLength = useMemo(() => {
         return useUser?.orders.reduce((prev, curr) => {
@@ -58,11 +61,10 @@ export default function ResponsiveButtons({}) {
                     </Button>
                 </Badge>
             </NavbarItem>
-            <CustomDivider />
-            <NavbarItem>
+            <CustomDivider className="max-mob:hidden" />
+            <NavbarItem className="max-mob:hidden">
                 <Badge
                     color="warning"
-                    className="max-mob:hidden"
                     size="lg"
                     content={ordersLength}
                     isInvisible={ordersLength === 0}>
@@ -72,12 +74,12 @@ export default function ResponsiveButtons({}) {
                         color="primary"
                         variant="flat"
                         isIconOnly
-                        className="text-xl max-mob:hidden">
+                        className="text-xl">
                         <CiShoppingCart />
                     </Button>
                 </Badge>
             </NavbarItem>
-            <CustomDivider />
+            <CustomDivider className="max-mob:hidden" />
             <NavbarItem>
                 <ThemeButton />
             </NavbarItem>
@@ -87,6 +89,7 @@ export default function ResponsiveButtons({}) {
                     <Button
                         color="primary"
                         variant="flat"
+                        size={mobile_450 ? "sm" : "md"}
                         onPress={() => {
                             if (!useUser?.userCompany) {
                                 onOpen();
@@ -108,7 +111,7 @@ export default function ResponsiveButtons({}) {
     );
 }
 
-export function CustomDivider({ ...props }) {
+export function CustomDivider({ ...props }: DividerProps) {
     return (
         <Divider
             orientation="vertical"

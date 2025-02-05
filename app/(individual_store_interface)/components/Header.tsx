@@ -33,7 +33,7 @@ export default function Header() {
                 </NavbarItem>
             </NavbarContent> */}
 
-            <NavbarContent justify="end">
+            <NavbarContent justify="end" className="max-mob:gap-2">
                 <ResponsiveButtons />
             </NavbarContent>
         </Navbar>

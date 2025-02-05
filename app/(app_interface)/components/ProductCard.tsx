@@ -187,53 +187,6 @@ export function ProductCard({
                     </div>
                 </CardFooter>
             </Card>
-            {/* <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="2xl">
-                <ModalContent>
-                    {(onClose) => (
-                        <>
-                            <ModalHeader className="flex flex-col gap-1">
-                                Modal Title
-                            </ModalHeader>
-                            <ModalBody>
-                                <p>
-                                    Lorem ipsum dolor sit amet, consectetur
-                                    adipiscing elit. Nullam pulvinar risus non
-                                    risus hendrerit venenatis. Pellentesque sit
-                                    amet hendrerit risus, sed porttitor quam.
-                                </p>
-                                <p>
-                                    Lorem ipsum dolor sit amet, consectetur
-                                    adipiscing elit. Nullam pulvinar risus non
-                                    risus hendrerit venenatis. Pellentesque sit
-                                    amet hendrerit risus, sed porttitor quam.
-                                </p>
-                                <p>
-                                    Magna exercitation reprehenderit magna aute
-                                    tempor cupidatat consequat elit dolor
-                                    adipisicing. Mollit dolor eiusmod sunt ex
-                                    incididunt cillum quis. Velit duis sit
-                                    officia eiusmod Lorem aliqua enim laboris do
-                                    dolor eiusmod. Et mollit incididunt nisi
-                                    consectetur esse laborum eiusmod pariatur
-                                    proident Lorem eiusmod et. Culpa deserunt
-                                    nostrud ad veniam.
-                                </p>
-                            </ModalBody>
-                            <ModalFooter>
-                                <Button
-                                    color="danger"
-                                    variant="light"
-                                    onPress={onClose}>
-                                    Close
-                                </Button>
-                                <Button color="primary" onPress={onClose}>
-                                    Action
-                                </Button>
-                            </ModalFooter>
-                        </>
-                    )}
-                </ModalContent>
-            </Modal> */}
             <Drawer open={isOpen} onOpenChange={onOpenChange}>
                 <DrawerContent>
                     <div className="mx-auto w-full max-w-3xl">
@@ -244,13 +197,24 @@ export function ProductCard({
                             </DrawerDescription>
                         </DrawerHeader>
                         <div className="p-4 pb-0 overflow-y-auto max-h-[50vh]">
-                            <Swiper navigation={true} modules={[Navigation]}>
-                                <SwiperSlide>
-                                    <div className="w-full">1</div>
-                                </SwiperSlide>
-                                <SwiperSlide>
-                                    <div className="w-full">1</div>
-                                </SwiperSlide>
+                            <Swiper
+                                navigation={true}
+                                modules={[Navigation]}
+                                freeMode
+                                centeredSlides>
+                                {Array(3)
+                                    .fill(1)
+                                    .map((_, i) => (
+                                        <SwiperSlide key={i}>
+                                            <Image
+                                                className="w-[600px] max-w-full"
+                                                src={
+                                                    product.image1 || undefined
+                                                }
+                                                alt={product.name}
+                                            />
+                                        </SwiperSlide>
+                                    ))}
                             </Swiper>
                             <h1 className="text-3xl">{product.name}</h1>
                             <p className="text-muted-foreground/80">

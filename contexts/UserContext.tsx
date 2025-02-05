@@ -47,44 +47,44 @@ export default function UserProvider({
             setCompanySections([]);
             return;
         }
-        // (async () => {
-        //     try {
-        //         console.log(`${API_URL}/user/${data.user?.email}`);
-        //         const res = await fetch(`${API_URL}/user/${data.user?.email}`);
-        //         const x = await res.json();
-        //         const userData = x.user as User;
-        //         console.log("userData", userData);
-        //         if (!userData && x.status !== "success") {
-        //             return;
-        //         }
-        //         const orderRes = await fetch(
-        //             `${API_URL}/user-order/${userData.id}`
-        //         );
-        //         const order = (await orderRes.json()).data;
-        //         setOrders(order);
-        //         const companyData = userData.company?.[0] as Company;
-        //         if (!companyData) {
-        //             setUser(userData);
-        //             setUserCompany(null);
-        //             setCompanySections([]);
-        //             return;
-        //         }
-        //         const response = await fetch(
-        //             `${API_URL}/company/${companyData.slug}`
-        //         );
-        //         const company: Company = await response.json();
-        //         setUserCompany(company);
-        //         setUser(userData);
-        //         if (!company) return;
-        //         const res2 = await fetch(
-        //             `${API_URL}/company-sections/${company.id}`
-        //         );
-        //         const sd = await res2.json();
-        //         setCompanySections(sd.sections);
-        //     } catch (error) {
-        //         toast.error("Error fetching user data");
-        //     }
-        // })();
+        (async () => {
+            try {
+                console.log(`${API_URL}/user/${data.user?.email}`);
+                const res = await fetch(`${API_URL}/user/${data.user?.email}`);
+                const x = await res.json();
+                const userData = x.user as User;
+                console.log("userData", userData);
+                if (!userData && x.status !== "success") {
+                    return;
+                }
+                const orderRes = await fetch(
+                    `${API_URL}/user-order/${userData.id}`
+                );
+                const order = (await orderRes.json()).data;
+                setOrders(order);
+                const companyData = userData.company?.[0] as Company;
+                if (!companyData) {
+                    setUser(userData);
+                    setUserCompany(null);
+                    setCompanySections([]);
+                    return;
+                }
+                const response = await fetch(
+                    `${API_URL}/company/${companyData.slug}`
+                );
+                const company: Company = await response.json();
+                setUserCompany(company);
+                setUser(userData);
+                if (!company) return;
+                const res2 = await fetch(
+                    `${API_URL}/company-sections/${company.id}`
+                );
+                const sd = await res2.json();
+                setCompanySections(sd.sections);
+            } catch (error) {
+                toast.error("Error fetching user data");
+            }
+        })();
 
         return () => {};
     }, [data, tick]);

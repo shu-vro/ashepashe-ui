@@ -4,9 +4,14 @@
 
 import { API_URL } from "@/lib/var";
 import { revalidatePath } from "next/cache";
+// import { getServerSession } from "next-auth/react";
 
 export async function changeProductStatusAction(payload: Record<string, any>) {
     revalidatePath("/");
+
+    // const session = await getServerSession();
+    // const { data: session } = useSession();
+    // console.log(session);
     if (!payload.item_id || !payload.status) {
         return {
             status: 402,

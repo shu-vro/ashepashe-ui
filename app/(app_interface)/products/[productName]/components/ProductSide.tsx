@@ -33,16 +33,14 @@ export default function ProductSide({ product, specialized = false }: Prop) {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const useCart = use(CartContext);
 
-    const handleCartClick = (
-        e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-    ) => {
+    const handleCartClick = (e: any) => {
         var count = 200;
         var defaults = {
             origin: { y: 0.7, x: 0.9 },
         };
 
         // get position of e.target in viewport and set origin to defaults
-        var rect = e.currentTarget.getBoundingClientRect();
+        var rect = e.target.getBoundingClientRect();
         defaults.origin.x = (rect.left + rect.width / 2) / window.innerWidth;
         defaults.origin.y = (rect.top + rect.height / 2) / window.innerHeight;
 
@@ -208,7 +206,7 @@ export default function ProductSide({ product, specialized = false }: Prop) {
                         </Button>
                         <Button
                             color="success"
-                            onClick={handleCartClick}
+                            onPress={handleCartClick}
                             className="w-full">
                             Add to Cart
                         </Button>

@@ -7,6 +7,7 @@ import {
     Card,
     CardBody,
     Input,
+    InputOtp,
     Selection,
     Textarea,
     useDisclosure,
@@ -29,7 +30,7 @@ import CreateSection from "./components/CreateSection";
 import AllCategories from "./components/AllCategories";
 import { uploadImageAction } from "./components/uploadImageAction";
 import IndividualLink from "./components/IndividualLink";
-import { functions, isEqual } from "lodash";
+import { isEqual } from "lodash";
 
 export default function Page() {
     const useUser = use(UserContext);
@@ -70,6 +71,10 @@ export default function Page() {
 
     const [categories, setCategories] = useState<Category[]>([]);
 
+    /**
+     *
+     * @returns [payload, isSame]
+     */
     const comparator = (): [
         null | {
             name: string;
@@ -248,9 +253,28 @@ export default function Page() {
         };
     }, [hasUnsavedChanges]);
 
+    const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
     useEffect(() => {
-        const [_, hasChanged] = comparator();
-        setHasUnsavedChanges(hasChanged);
+        const [_, isSame] = comparator();
+        setHasUnsavedChanges(!isSame);
+
+        if (timeoutRef.current) {
+            clearTimeout(timeoutRef.current);
+        }
+
+        timeoutRef.current = setTimeout(() => {
+            const [_, isSame] = comparator();
+            if (!isSame) {
+                handleSave();
+            }
+        }, 3000);
+
+        return () => {
+            if (timeoutRef.current) {
+                clearTimeout(timeoutRef.current);
+            }
+        };
     }, [
         companyName,
         companyDescription,
@@ -431,18 +455,32 @@ export default function Page() {
                     <FieldWithIcon
                         Icon={MdOutlineCall}
                         value={
-                            <WritableField
-                                component={Input}
-                                props={{
-                                    inputProps: {
-                                        // placeholder: "Phone Number",
-                                        label: "Phone Number",
-                                        value: phoneNumber,
-                                        onValueChange: setPhoneNumber,
-                                    },
-                                }}>
-                                {phoneNumber}
-                            </WritableField>
+                            // <WritableField
+                            //     component={Input}
+                            //     props={{
+                            //         inputProps: {
+                            //             // placeholder: "Phone Number",
+                            //             label: "Phone Number",
+                            //             value: phoneNumber,
+                            //             onValueChange: setPhoneNumber,
+                            //         },
+                            //     }}>
+                            //     {phoneNumber}
+                            // </WritableField>
+                            <InputOtp
+                                length={11}
+                                // size="sm"
+                                label="Phone Number"
+                                radius="none"
+                                name="phone"
+                                className="mt-0"
+                                isRequired
+                                value={phoneNumber}
+                                onValueChange={setPhoneNumber}
+                                classNames={{
+                                    segment: "min-w-5 w-5",
+                                }}
+                            />
                         }
                     />
                     <FieldWithIcon

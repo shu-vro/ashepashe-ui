@@ -36,7 +36,7 @@ export default function Page() {
     const useUser = use(UserContext);
     const imageRef = useRef<HTMLLabelElement>(null);
     const [companyName, setCompanyName] = useState("Company Name");
-    const [phoneNumber, setPhoneNumber] = useState("01xxxxxxxxx");
+    const [phoneNumber, setPhoneNumber] = useState("00000000000");
     const [fbPage, setFbPage] = useState("Fb Page Link");
     const [map, setMap] = useState("Some Address");
     const [companyDescription, setCompanyDescription] = useState("");
@@ -112,7 +112,7 @@ export default function Page() {
         const beforePayload = {
             name: useUser?.userCompany?.name,
             city: useUser?.userCompany?.city,
-            description: useUser?.userCompany?.description,
+            description: useUser?.userCompany?.description || "",
             division: useUser?.userCompany?.division,
             map: useUser?.userCompany?.map,
             iframe: useUser?.userCompany?.iframe,
@@ -120,7 +120,7 @@ export default function Page() {
             fb_page: useUser?.userCompany?.fb_page,
             lati: useUser?.userCompany?.lati,
             longi: useUser?.userCompany?.longi,
-            category: useUser?.userCompany?.category,
+            category: useUser?.userCompany?.category || "",
         };
         console.log(payload, beforePayload, isEqual(payload, beforePayload));
         return [payload, isEqual(payload, beforePayload)];
@@ -167,17 +167,11 @@ export default function Page() {
     ]);
 
     useEffect(() => {
-        // const interval = setInterval(() => {
-        //     const [_, isSame] = comparator();
-        //     console.log(isSame);
-        //     if (!isSame) handleSave();
-        // }, 5000);
         (async () => {
             const response = await fetch(`${API_URL}/categories`);
             const cat = (await response.json()) as Category[];
             setCategories(cat);
         })();
-        // return () => clearInterval(interval);
     }, []);
 
     useEffect(() => {

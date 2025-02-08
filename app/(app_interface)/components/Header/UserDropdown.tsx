@@ -23,6 +23,8 @@ import { UserContext } from "@/contexts/UserContext";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { CartContext } from "@/contexts/CartContext";
+import ThemeButton from "../ThemeButton";
+import ThemeSwitch from "../ThemeButton";
 type Props = {};
 
 /**
@@ -150,7 +152,7 @@ export function CreateStoreModal({
     );
 }
 
-export default function UserDropdown({}: Props) {
+export default function UserDropdown({ }: Props) {
     const [deferredPrompt, setDeferredPrompt] =
         useState<BeforeInstallPromptEvent>();
     const [isInstallable, setIsInstallable] = useState(true);
@@ -203,6 +205,11 @@ export default function UserDropdown({}: Props) {
                     <DropdownItem key="profile" className="h-14 gap-2">
                         <p className="font-semibold">Signed in as</p>
                         <p className="font-semibold">{session.user?.name}</p>
+                    </DropdownItem>
+                    <DropdownItem key="theme" className="h-14 gap-2">
+
+                        <ThemeSwitch />
+
                     </DropdownItem>
                     <DropdownItem
                         key="my_store"

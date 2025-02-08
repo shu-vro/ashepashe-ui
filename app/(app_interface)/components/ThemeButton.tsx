@@ -1,57 +1,40 @@
 "use client";
 
-import React from "react";
-import {
-    Dropdown,
-    DropdownTrigger,
-    DropdownMenu,
-    DropdownItem,
-    Button,
-    ButtonProps,
-} from "@heroui/react";
+import React, { useState, useEffect } from "react";
+import { Switch } from "@heroui/react";
 import { useTheme } from "next-themes";
 import { PiMoonThin } from "react-icons/pi";
 import { RxSun } from "react-icons/rx";
 import { PiDeviceMobileCamera } from "react-icons/pi";
 
-export default function ThemeButton({ ...props }: ButtonProps) {
+export default function ThemeSwitch() {
     const { theme, setTheme } = useTheme();
-    const [selectedKeys, setSelectedKeys] = React.useState(
-        new Set([
-            typeof window !== "undefined"
-                ? localStorage?.theme
-                : theme || "system",
-        ])
-    );
+    const [currentTheme, setCurrentTheme] = useState("system");
+
+    useEffect(() => {
+        setCurrentTheme(theme || "system");
+    }, [theme]);
+
+    const cycleTheme = (e) => {
+        e.stopPropagation(); // ✅ Prevents dropdown from closing
+
+        const themes = ["light", "dark"];
+        const nextTheme = themes[(themes.indexOf(currentTheme) + 1) % themes.length];
+        setCurrentTheme(nextTheme);
+        setTheme(nextTheme);
+    };
 
     return (
-        <Dropdown>
-            <DropdownTrigger>
-                <Button
-                    color="primary"
-                    isIconOnly
-                    variant="flat"
-                    className="text-2xl"
-                    {...props}>
-                    {theme === "light" && <RxSun />}
-                    {theme === "dark" && <PiMoonThin />}
-                    {theme === "system" && <PiDeviceMobileCamera />}
-                </Button>
-            </DropdownTrigger>
-            <DropdownMenu
-                aria-label="Single selection example"
-                variant="flat"
-                disallowEmptySelection
-                selectionMode="single"
-                selectedKeys={selectedKeys}
-                onSelectionChange={(e) => {
-                    setSelectedKeys(new Set(e));
-                    setTheme(e.currentKey as string);
-                }}>
-                <DropdownItem key="light">Light</DropdownItem>
-                <DropdownItem key="dark">Dark</DropdownItem>
-                <DropdownItem key="system">System Default</DropdownItem>
-            </DropdownMenu>
-        </Dropdown>
+        <div onClick={(e) => e.stopPropagation()}> {/* ✅ Prevent dropdown closure */}
+            <Switch
+                checked={currentTheme !== "light"}
+                onChange={cycleTheme}
+                className="flex items-center gap-2 cursor-pointer"
+            >
+                {currentTheme === "light" && <RxSun className="text-xl" />}
+                {currentTheme === "dark" && <PiMoonThin className="text-xl" />}
+                {/* {currentTheme === "system" && <PiDeviceMobileCamera className="text-xl" />} */}
+            </Switch>
+        </div>
     );
 }

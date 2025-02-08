@@ -11,7 +11,7 @@ const font = Montserrat({
 const APP_NAME = "AAmarStore";
 const APP_DEFAULT_TITLE = "AAmarStore";
 const APP_TITLE_TEMPLATE = "%s • AAmarStore";
-const APP_DESCRIPTION = "Best app in the world!";
+const APP_DESCRIPTION = "Create Your Store within 30 seconds!";
 
 export const metadata: Metadata = {
     applicationName: APP_NAME,

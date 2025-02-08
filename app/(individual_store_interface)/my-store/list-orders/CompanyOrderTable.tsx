@@ -76,11 +76,14 @@ const statusColorMap: Record<string, ChipProps["color"]> = {
 
 const INITIAL_VISIBLE_COLUMNS = [
     "orderer",
+    "ordererPhone",
+    "ordererAddress",
     "product",
     "status",
     "quantity",
     "totalPrice",
     "actions",
+
 ];
 
 function formatDate(isoString: string) {

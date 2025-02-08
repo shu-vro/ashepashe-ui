@@ -152,7 +152,7 @@ export function CreateStoreModal({
     );
 }
 
-export default function UserDropdown({ }: Props) {
+export default function UserDropdown({}: Props) {
     const [deferredPrompt, setDeferredPrompt] =
         useState<BeforeInstallPromptEvent>();
     const [isInstallable, setIsInstallable] = useState(true);
@@ -206,10 +206,15 @@ export default function UserDropdown({ }: Props) {
                         <p className="font-semibold">Signed in as</p>
                         <p className="font-semibold">{session.user?.name}</p>
                     </DropdownItem>
-                    <DropdownItem key="theme" className="h-14 gap-2">
-
+                    <DropdownItem
+                        key="theme"
+                        className="h-14 gap-2"
+                        classNames={{
+                            base: "flex items-center justify-center",
+                            title: "text-center",
+                        }}
+                        closeOnSelect={false}>
                         <ThemeSwitch />
-
                     </DropdownItem>
                     <DropdownItem
                         key="my_store"

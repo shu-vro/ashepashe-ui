@@ -11,9 +11,10 @@ import NextImage from "next/image";
 import DeleteProductBtn from "./DeleteProductBtn";
 import EditProductBtn from "./EditProductBtn";
 import OfferProductBtn from "./OfferProductBtn";
-import { useMemo } from "react";
+import { use, useMemo } from "react";
 import Link from "next/link";
 import Ribbon from "@/app/(app_interface)/components/Ribbon";
+import { UserContext } from "@/contexts/UserContext";
 
 export default function EditProduct({
     product,
@@ -28,6 +29,10 @@ export default function EditProduct({
         [product.offers]
     );
     const discountPercent = (offer?.offer_percent || 0).toFixed();
+    const useUser = use(UserContext);
+
+    if (!product) return null;
+    if (!useUser?.userCompany) return null;
 
     return (
         <Card
@@ -38,7 +43,7 @@ export default function EditProduct({
             <CardBody
                 className="overflow-visible relative"
                 as={Link}
-                href={`/p/${product.slug}`}>
+                href={`/${useUser?.userCompany?.slug || "p"}/${product.slug}`}>
                 {discountPercent !== "0" && (
                     <Ribbon>{discountPercent}% off</Ribbon>
                 )}
@@ -59,7 +64,11 @@ export default function EditProduct({
                 />
             </CardBody>
             <CardFooter className="pt-0 text-start flex-col">
-                <Link className="w-full" href={`/p/${product.slug}`}>
+                <Link
+                    className="w-full"
+                    href={`/${useUser?.userCompany?.slug || "p"}/${
+                        product.slug
+                    }`}>
                     <div className="capitalize not-italic font-bold text-xl line-clamp-2 h-[4ch]">
                         {product.name}{" "}
                         <Chip

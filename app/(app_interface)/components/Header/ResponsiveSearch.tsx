@@ -1,6 +1,5 @@
 "use client";
 
-import ThemeButton from "../ThemeButton";
 import { CiBookmark, CiShoppingCart } from "react-icons/ci";
 import {
     NavbarItem,
@@ -22,7 +21,7 @@ import { OrderDrawerContext } from "@/contexts/OrderDrawerContext";
 import { CartContext } from "@/contexts/CartContext";
 import { useIsMobile } from "@/hooks/use-mobile";
 
-export default function ResponsiveButtons({ }) {
+export default function ResponsiveButtons({}) {
     const [orderCount, setOrdersCount] = useState(0);
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const { push } = useRouter();
@@ -44,7 +43,9 @@ export default function ResponsiveButtons({ }) {
     const storeId = useUser?.userCompany?.id;
     const fetchOrders = async () => {
         try {
-            const response = await fetch(`https://asepashe.com/api/owner-order/${storeId}`);
+            const response = await fetch(
+                `https://asepashe.com/api/owner-order/${storeId}`
+            );
             if (!response.ok) throw new Error("Failed to fetch orders");
 
             const data = await response.json();
@@ -54,98 +55,94 @@ export default function ResponsiveButtons({ }) {
         }
     };
 
-    fetchOrders();
-
+    useEffect(() => {
+        if (useUser?.userCompany) fetchOrders();
+    }, [useUser?.userCompany]);
 
     return (
         <>
             {useUser?.userCompany ? (
+                <Badge
+                    color="warning"
+                    size="lg"
+                    content={orderCount}
+                    isInvisible={orderCount === 0}>
+                    <Button
+                        as={Link}
+                        href="/my-store/list-orders"
+                        color="primary"
+                        variant="flat"
+                        isIconOnly
+                        className="text-xl">
+                        <CiShoppingCart />
+                    </Button>
+                </Badge>
+            ) : (
                 <>
-                    <Badge
-                        color="warning"
-                        size="lg"
-                        content={orderCount}
-                        isInvisible={orderCount === 0}>
-                        <Button
-                            as={Link}
-                            href="/my-store/list-orders"
-                            color="primary"
-                            variant="flat"
-                            isIconOnly
-                            className="text-xl">
-                            <CiShoppingCart />
-                        </Button>
-                    </Badge>
+                    <NavbarItem>
+                        <Badge
+                            color="warning"
+                            size="lg"
+                            content={useCart?.cart?.length}
+                            isInvisible={useCart?.cart?.length === 0}>
+                            <Button
+                                color="primary"
+                                variant="flat"
+                                isIconOnly
+                                className="text-xl mob:text-2xl"
+                                onPress={() => {
+                                    if (!useOrderDrawer) return;
+                                    useOrderDrawer.onOrderDrawerOpenChange(
+                                        true
+                                    );
+                                }}>
+                                <CiBookmark />
+                            </Button>
+                        </Badge>
+                    </NavbarItem>
+                    <CustomDivider className="max-mob:hidden" />
+                    <NavbarItem className="max-mob:hidden">
+                        <Badge
+                            color="warning"
+                            size="lg"
+                            content={ordersLength}
+                            isInvisible={ordersLength === 0}>
+                            <Button
+                                as={Link}
+                                href="/my-orders"
+                                color="primary"
+                                variant="flat"
+                                isIconOnly
+                                className="text-xl">
+                                <CiShoppingCart />
+                            </Button>
+                        </Badge>
+                    </NavbarItem>
                 </>
-            ) :
-                (
-                    <>
-                        <NavbarItem>
-                            <Badge
-                                color="warning"
-                                size="lg"
-                                content={useCart?.cart?.length}
-                                isInvisible={useCart?.cart?.length === 0}>
-                                <Button
-                                    color="primary"
-                                    variant="flat"
-                                    isIconOnly
-                                    className="text-xl mob:text-2xl"
-                                    onPress={() => {
-                                        console.log("hi");
-                                        if (!useOrderDrawer) return;
-                                        useOrderDrawer.onOrderDrawerOpenChange(true);
-                                    }}>
-                                    <CiBookmark />
-                                </Button>
-                            </Badge >
-                        </NavbarItem >
-                        <CustomDivider className="max-mob:hidden" />
-                        <NavbarItem className="max-mob:hidden">
-                            <Badge
-                                color="warning"
-                                size="lg"
-                                content={ordersLength}
-                                isInvisible={ordersLength === 0}>
-                                <Button
-                                    as={Link}
-                                    href="/my-orders"
-                                    color="primary"
-                                    variant="flat"
-                                    isIconOnly
-                                    className="text-xl">
-                                    <CiShoppingCart />
-                                </Button>
-                            </Badge>
-                        </NavbarItem>
-                    </>
-                )
-            }
+            )}
 
             {/* <CustomDivider className="max-mob:hidden" /> */}
             {/* <NavbarItem>
                 <ThemeButton />
             </NavbarItem> */}
-            {
-                status === "authenticated" && (
-                    <>
-                        <CustomDivider />
-                        <Button
-                            color="primary"
-                            variant="flat"
-                            size={mobile_450 ? "sm" : "md"}
-                            onPress={() => {
-                                if (!useUser?.userCompany) {
-                                    onOpen();
-                                } else {
-                                    push("/my-store/update");
-                                }
-                            }}>
-                            {!useUser?.userCompany ? "Create Store" : "My Store"}
-                        </Button>
-                    </>
-                )
-            }
+            {status === "authenticated" && (
+                <>
+                    <CustomDivider />
+                    <Button
+                        color="primary"
+                        variant="flat"
+                        size={mobile_450 ? "sm" : "md"}
+                        onPress={() => {
+                            if (!useUser?.userCompany) {
+                                onOpen();
+                            } else {
+                                push("/my-store/update");
+                            }
+                        }}>
+                        {!useUser?.userCompany ? "Create Store" : "My Store"}
+                    </Button>
+                </>
+            )}
             <CustomDivider />
             <NavbarItem>
                 <LoginButton />

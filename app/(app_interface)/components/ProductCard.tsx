@@ -78,6 +78,7 @@ export function ProductCard({
     const link = `${specialized ? `/${product.company.slug}` : "/products"}/${
         product.slug
     }`;
+    console.log(link);
     return (
         <>
             <Card
@@ -91,16 +92,15 @@ export function ProductCard({
                 )}>
                 <CardBody
                     className="overflow-visible relative"
-                    onClick={() => {
-                        onOpenChange(true);
-                    }}
-                    // as={Link}
-                    // href={"#"}
-                    // onClick={(e) => {
-                    //     e.stopPropagation();
-                    //     push(link);
+                    // onClick={() => {
+                    //     onOpenChange(true);
                     // }}
-                >
+                    as={Link}
+                    href={link}
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        // push(link);
+                    }}>
                     {discountPercent !== 0 && (
                         <Ribbon>{discountPercent.toFixed(0)}% off</Ribbon>
                     )}
@@ -119,7 +119,9 @@ export function ProductCard({
                     />
                 </CardBody>
                 <CardFooter className="pt-0 text-start flex-col">
-                    <div className="flex flex-col items-start w-full">
+                    <Link
+                        className="flex flex-col items-start w-full"
+                        href={link}>
                         <p className="capitalize not-italic font-bold text-xl line-clamp-2 h-[4ch]">
                             {product.name}{" "}
                         </p>
@@ -127,7 +129,7 @@ export function ProductCard({
                             {product.description &&
                                 removeTags(product.description)}
                         </p>
-                    </div>
+                    </Link>
                     <CustomDivider />
                     <div className="flex flex-row justify-between items-center md:gap-1 w-full">
                         <div className="flex flex-row items-center gap-1">

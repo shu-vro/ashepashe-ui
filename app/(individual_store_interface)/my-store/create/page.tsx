@@ -21,7 +21,7 @@ export default function page() {
             isDismissable={false}
             isKeyboardDismissDisabled={false}
             onOpenChange={() => {
-                router.back();
+                router.push("/my-store/update");
             }}
         />
     ) : (

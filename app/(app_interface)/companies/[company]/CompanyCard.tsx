@@ -11,7 +11,6 @@ import { extractIframeUrl, removeTags } from "@/lib/utils";
 
 export default function CompanyCard({ company }: { company: Company }) {
     const iframe = extractIframeUrl(company.iframe);
-    console.log(company);
     return (
         <Card
             className="static lap:sticky top-24 grid-in-company h-min mt-6 ml-6 max-lap:mr-6 p-4 mb-10"

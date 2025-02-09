@@ -28,7 +28,10 @@ export async function createStoreAction(
             status: response.status,
             message: data?.message || Object.values(data.errors).join("\n"),
         };
-    } catch (error) {
-        return error;
+    } catch (error: any) {
+        return {
+            status: 500,
+            message: error.message,
+        };
     }
 }

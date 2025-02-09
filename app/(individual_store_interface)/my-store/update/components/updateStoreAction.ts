@@ -33,7 +33,11 @@ export async function updateStoreAction(payload: {
                 Object.values(data.errors).join(", ") ||
                 response.statusText,
         };
-    } catch (error) {
-        return error;
+    } catch (error: any) {
+        console.log(error);
+        return {
+            status: 500,
+            message: error.message,
+        };
     }
 }

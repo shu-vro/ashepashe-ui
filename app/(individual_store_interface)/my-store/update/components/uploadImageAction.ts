@@ -11,7 +11,9 @@ export async function uploadImageAction(payload: {
     if (!payload.data || !payload.slug) {
         return {
             status: 402,
-            message: "Payload incomplete " + JSON.stringify(payload),
+            message:
+                "Payload incomplete " +
+                `data: ${!!payload?.data} slug: ${!!payload?.slug}`,
         };
     }
 

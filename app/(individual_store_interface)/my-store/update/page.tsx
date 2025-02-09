@@ -296,7 +296,7 @@ export default function Page() {
                     })`,
                 }}
                 htmlFor="file_input">
-                <div className="text-[max(5vw,10vh)] text-white/35 text-center w-full">
+                <div className="text-[max(5vw,10vh)] text-white/35 text-center w-full bg-cover">
                     16 X 7
                 </div>
                 <input

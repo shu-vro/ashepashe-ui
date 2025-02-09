@@ -66,9 +66,9 @@ export default function ResponsiveButtons({}) {
         }
     };
 
-    // useEffect(() => {
-    //     if (useUser?.userCompany) fetchOrders();
-    // }, [useUser?.userCompany]);
+    useEffect(() => {
+        if (useUser?.userCompany) fetchOrders();
+    }, [useUser?.userCompany]);
 
     return (
         <>

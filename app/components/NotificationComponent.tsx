@@ -25,16 +25,16 @@ export default function NotificationComponent() {
     const [isOpen, setIsOpen] = useState(false);
     const useUser = use(UserContext);
 
-    useEffect(() => {
-        (async () => {
-            if (useUser?.userCompany) {
-                const reg = await navigator.serviceWorker.ready;
-                const existingSubscription =
-                    await reg.pushManager.getSubscription();
-                setIsOpen(!existingSubscription);
-            }
-        })();
-    }, [useUser?.userCompany]);
+    // useEffect(() => {
+    //     (async () => {
+    //         if (useUser?.userCompany) {
+    //             const reg = await navigator.serviceWorker.ready;
+    //             const existingSubscription =
+    //                 await reg.pushManager.getSubscription();
+    //             setIsOpen(!existingSubscription);
+    //         }
+    //     })();
+    // }, [useUser?.userCompany]);
 
     const handleClose = () => {
         setIsOpen(false);

@@ -16,7 +16,7 @@ export default function CompanyBanner({ src, alt }: Prop) {
             <Image
                 src={toValidUrl(src)}
                 // src={dummyImage}
-                className={cn("aspect-[16/7] object-contain w-full !h-auto")}
+                className={cn("aspect-[16/7] object-cover w-full !h-auto")}
                 isBlurred
                 classNames={{
                     wrapper: "m-6 w-full w-[calc(100vw-4rem)]",

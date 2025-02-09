@@ -84,7 +84,6 @@ export default function ProductSide({ product, specialized = false }: Prop) {
             ),
         [product.offers]
     );
-    console.log(offer);
     return (
         <div className="product grid-in-product">
             <Card

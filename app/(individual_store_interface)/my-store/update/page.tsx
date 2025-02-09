@@ -379,7 +379,7 @@ export default function Page() {
                         </div>
                     </div>
                     <IndividualLink slug={useUser?.userCompany?.slug || ""} />
-                    <Autocomplete
+                    {/* <Autocomplete
                         allowsCustomValue
                         label="Select Category"
                         className="max-w-xs"
@@ -397,7 +397,22 @@ export default function Page() {
                                 {item.name}
                             </AutocompleteItem>
                         )}
-                    </Autocomplete>
+                    </Autocomplete> */}
+                    <div className="flex flex-row gap-1">
+                        <span>Category:</span>{" "}
+                        <WritableField
+                            component={Input}
+                            props={{
+                                inputProps: {
+                                    // placeholder: "Facebook Page",
+                                    label: "Category",
+                                    value: selectedCategoryText,
+                                    onValueChange: setSelectedCategoryText,
+                                },
+                            }}>
+                            {selectedCategoryText}
+                        </WritableField>
+                    </div>
                     <FieldWithIcon
                         Icon={IoLocationOutline}
                         value={

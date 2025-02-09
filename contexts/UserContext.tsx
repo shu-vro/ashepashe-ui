@@ -53,7 +53,6 @@ export default function UserProvider({
                 const res = await fetch(`${API_URL}/user/${data.user?.email}`);
                 const x = await res.json();
                 const userData = x.user as User;
-                console.log("userData", userData);
                 if (!userData && x.status !== "success") {
                     return;
                 }

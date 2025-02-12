@@ -57,6 +57,7 @@ export default function ResponsiveButtons({}) {
                         (orderInner) =>
                             orderInner.products.company_id ===
                             useUser?.userCompany?.id
+                            && orderInner.status === "pending"
                     );
                 })
                 .flat();

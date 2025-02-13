@@ -262,7 +262,7 @@ export default function CategoryEditSection({
                         "w-52 md:w-72 p-0 h-[28rem] bg-primary/50 max-md:h-96 max-mob:h-[22rem]"
                     }>
                     <CardBody
-                        className="overflow-visible relative w-full h-full flex flex-col justify-center items-center text-xl mob:text-2xl font-bold"
+                        className="overflow-visible relative w-full h-full flex flex-col justify-center items-center text-xl mob:text-2xl font-bold text-center"
                         // as={Link}
                     >
                         Create Product

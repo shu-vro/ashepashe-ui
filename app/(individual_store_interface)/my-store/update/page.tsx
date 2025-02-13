@@ -566,8 +566,9 @@ export default function Page() {
 
             <Button
                 color="success"
-                className="sticky bottom-4 left-full m-auto font-bold"
+                className="sticky bottom-4 left-full m-auto font-bold max-mob:w-full"
                 size="lg"
+                radius="sm"
                 isLoading={loading}
                 onPress={handleSave}
                 startContent={<GrSave />}>

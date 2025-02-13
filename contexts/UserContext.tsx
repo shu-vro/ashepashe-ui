@@ -35,6 +35,7 @@ export default function UserProvider({
     >([]);
     const [orders, setOrders] = useState<UserContextType["orders"]>([]);
     const [tick, setTick] = useState(false);
+    const [companyOrders, setCompanyOrders] = useState<Order[]>([]);
     const ticktock = () => {
         setTick((p) => !p);
     };
@@ -67,13 +68,63 @@ export default function UserProvider({
                     setCompanySections([]);
                     return;
                 }
-                const response = await fetch(
+                const companyRes = await fetch(
                     `${API_URL}/company/${companyData.slug}`
                 );
-                const company: Company = await response.json();
+                const company: Company = await companyRes.json();
                 setUserCompany(company);
                 setUser(userData);
                 if (!company) return;
+                const companyOrdersRes = await fetch(
+                    `https://asepashe.com/api/owner-order/${company.id}`
+                );
+                const companyOrders: Order[] = (await companyOrdersRes.json())
+                    .data;
+
+                const importantData = companyOrders
+                    .map((order) => {
+                        return order.order_items
+                            .filter(
+                                (orderInner) =>
+                                    orderInner.products.company_id ===
+                                    company?.id
+                            )
+                            .map((o) => ({
+                                ...o,
+                                address: order.address,
+                                phone: order.phone,
+                                name: order.name,
+                                orderer: order.user,
+                            }));
+                    })
+                    .flat();
+
+                const serializedData = importantData.map((order) => ({
+                    orderer: {
+                        name: order.orderer.name,
+                        description: order.name,
+                        avatar: order.orderer.image,
+                    },
+                    product: {
+                        name: order.products.name,
+                        description: order.products.price,
+                        avatar: order.products.image1,
+                    },
+                    status: order.status,
+                    quantity: order.quantity,
+                    totalPrice: order.quantity * order.products.price,
+
+                    order_item_id: order.id,
+                    order_id: order.order_id,
+                    ordererPhone: order.phone,
+                    ordererAddress: order.address,
+                    product_id: order.products.id,
+                    created_at: Date.parse(order.created_at),
+                    // others: order,
+                }));
+
+                setCompanyOrders(serializedData as unknown as Order[]);
+
                 const res2 = await fetch(
                     `${API_URL}/company-sections/${company.id}`
                 );
@@ -81,6 +132,7 @@ export default function UserProvider({
                 setCompanySections(sd.sections);
             } catch (error) {
                 toast.error("Error fetching user data");
+                console.log(error);
             }
         })();
 

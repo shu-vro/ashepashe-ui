@@ -28,7 +28,7 @@ export async function getOwnerOrdersAction(payload: {
             `${API_URL}/owner-order/${payload.company_id}`,
             options
         );
-        console.log(`${API_URL}/get-order/${payload.company_id}`);
+        console.log(`${API_URL}/owner-order/${payload.company_id}`);
         const data = await response.json();
         return data;
     } catch (error) {

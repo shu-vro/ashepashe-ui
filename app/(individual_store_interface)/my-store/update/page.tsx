@@ -288,7 +288,7 @@ export default function Page() {
     return (
         <div className="grid grid-areas-companyLayoutNoLap grid-cols-productLayoutNoLap lap:grid-cols-productLayoutLap lap:grid-areas-companyLayoutLap gap-4 p-4">
             <label
-                className="grid-in-image bg-content3 rounded-3xl h-96 relative grid place-content-center mx-auto w-full overflow-hidden bg-center bg-no-repeat bg-contain"
+                className="grid-in-image bg-content3 rounded-3xl h-96 relative grid place-content-center mx-auto w-full overflow-hidden bg-center bg-no-repeat bg-cover"
                 ref={imageRef}
                 style={{
                     backgroundImage: `url(${
@@ -296,7 +296,7 @@ export default function Page() {
                     })`,
                 }}
                 htmlFor="file_input">
-                <div className="text-[max(5vw,10vh)] text-white/35 text-center w-full bg-cover">
+                <div className="text-[max(5vw,10vh)] text-white/35 text-center w-full">
                     16 X 7
                 </div>
                 <input
@@ -560,7 +560,7 @@ export default function Page() {
             </div>
             <Button
                 color="success"
-                className="fixed bottom-4 right-4 font-bold"
+                className="sticky bottom-4 right-4 font-bold"
                 size="lg"
                 isLoading={loading}
                 onPress={handleSave}

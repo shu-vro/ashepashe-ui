@@ -286,100 +286,104 @@ export default function Page() {
     ]);
 
     return (
-        <div className="grid grid-areas-companyLayoutNoLap grid-cols-productLayoutNoLap lap:grid-cols-productLayoutLap lap:grid-areas-companyLayoutLap gap-4 p-4">
-            <label
-                className="grid-in-image bg-content3 rounded-3xl h-96 relative grid place-content-center mx-auto w-full overflow-hidden bg-center bg-no-repeat bg-cover"
-                ref={imageRef}
-                style={{
-                    backgroundImage: `url(${
-                        useUser?.userCompany?.image || imageFile
-                    })`,
-                }}
-                htmlFor="file_input">
-                <div className="text-[max(5vw,10vh)] text-white/35 text-center w-full">
-                    16 X 7
-                </div>
-                <input
-                    type="file"
-                    id="file_input"
-                    accept="image/*"
-                    className="sr-only"
-                    onChange={handleImageUpload}
-                />
-            </label>{" "}
-            <div className="grid-in-name">
-                <h1 className="text-5xl font-bold my-3 mx-auto w-fit">
-                    <WritableField
-                        component={Input}
-                        props={{
-                            inputProps: {
-                                // placeholder: "Company Name",
-                                label: "Company Name",
-                                value: companyName,
-                                onValueChange: setCompanyName,
-                            },
-                        }}>
-                        {companyName}
-                    </WritableField>
-                </h1>
-                <div className="italic text-neutral-500 w-7/12 text-center mx-auto">
-                    <WritableField
-                        component={Textarea}
-                        props={{
-                            inputProps: {
-                                // placeholder: "Facebook Page",
-                                label: "Description",
-                                placeholder:
-                                    "Write your company description here",
-                                value: companyDescription,
-                                onValueChange: setCompanyDescription,
-                            },
-                            textProps: {
-                                style: {
-                                    whiteSpace: "pre-wrap",
-                                },
-                            },
-                        }}>
-                        {companyDescription}
-                    </WritableField>
-                </div>
-            </div>
-            <Card
-                className="static lap:sticky top-24 grid-in-company h-min mt-6 ml-6 max-lap:mr-6 p-4 mb-10"
-                shadow="sm">
-                <CardBody className="overflow-visible gap-4">
-                    <div className="max-lap:hidden">
-                        <h3 className="text-2xl font-bold">
-                            <WritableField
-                                component={Input}
-                                props={{
-                                    inputProps: {
-                                        // placeholder: "Company Name",
-                                        label: "Company Name",
-                                        value: companyName,
-                                        onValueChange: setCompanyName,
-                                    },
-                                }}>
-                                {companyName}
-                            </WritableField>
-                        </h3>
-                        <div className="text-neutral-500 italic">
-                            <WritableField
-                                component={Textarea}
-                                props={{
-                                    inputProps: {
-                                        // placeholder: "Facebook Page",
-                                        label: "Description",
-                                        value: companyDescription,
-                                        onValueChange: setCompanyDescription,
-                                    },
-                                }}>
-                                {companyDescription}
-                            </WritableField>
-                        </div>
+        <>
+            <div className="grid grid-areas-companyLayoutNoLap grid-cols-productLayoutNoLap lap:grid-cols-productLayoutLap lap:grid-areas-companyLayoutLap gap-4 p-4">
+                <label
+                    className="grid-in-image bg-content3 rounded-3xl h-96 relative grid place-content-center mx-auto w-full overflow-hidden bg-center bg-no-repeat bg-cover"
+                    ref={imageRef}
+                    style={{
+                        backgroundImage: `url(${
+                            useUser?.userCompany?.image || imageFile
+                        })`,
+                    }}
+                    htmlFor="file_input">
+                    <div className="text-[max(5vw,10vh)] text-white/35 text-center w-full">
+                        16 X 7
                     </div>
-                    <IndividualLink slug={useUser?.userCompany?.slug || ""} />
-                    {/* <Autocomplete
+                    <input
+                        type="file"
+                        id="file_input"
+                        accept="image/*"
+                        className="sr-only"
+                        onChange={handleImageUpload}
+                    />
+                </label>{" "}
+                <div className="grid-in-name">
+                    <h1 className="text-5xl font-bold my-3 mx-auto w-fit">
+                        <WritableField
+                            component={Input}
+                            props={{
+                                inputProps: {
+                                    // placeholder: "Company Name",
+                                    label: "Company Name",
+                                    value: companyName,
+                                    onValueChange: setCompanyName,
+                                },
+                            }}>
+                            {companyName}
+                        </WritableField>
+                    </h1>
+                    <div className="italic text-neutral-500 w-7/12 text-center mx-auto">
+                        <WritableField
+                            component={Textarea}
+                            props={{
+                                inputProps: {
+                                    // placeholder: "Facebook Page",
+                                    label: "Description",
+                                    placeholder:
+                                        "Write your company description here",
+                                    value: companyDescription,
+                                    onValueChange: setCompanyDescription,
+                                },
+                                textProps: {
+                                    style: {
+                                        whiteSpace: "pre-wrap",
+                                    },
+                                },
+                            }}>
+                            {companyDescription}
+                        </WritableField>
+                    </div>
+                </div>
+                <Card
+                    className="static lap:sticky top-24 grid-in-company h-min mt-6 ml-6 max-lap:mr-6 p-4 mb-10"
+                    shadow="sm">
+                    <CardBody className="overflow-visible gap-4">
+                        <div className="max-lap:hidden">
+                            <h3 className="text-2xl font-bold">
+                                <WritableField
+                                    component={Input}
+                                    props={{
+                                        inputProps: {
+                                            // placeholder: "Company Name",
+                                            label: "Company Name",
+                                            value: companyName,
+                                            onValueChange: setCompanyName,
+                                        },
+                                    }}>
+                                    {companyName}
+                                </WritableField>
+                            </h3>
+                            <div className="text-neutral-500 italic">
+                                <WritableField
+                                    component={Textarea}
+                                    props={{
+                                        inputProps: {
+                                            // placeholder: "Facebook Page",
+                                            label: "Description",
+                                            value: companyDescription,
+                                            onValueChange:
+                                                setCompanyDescription,
+                                        },
+                                    }}>
+                                    {companyDescription}
+                                </WritableField>
+                            </div>
+                        </div>
+                        <IndividualLink
+                            slug={useUser?.userCompany?.slug || ""}
+                        />
+                        {/* <Autocomplete
                         allowsCustomValue
                         label="Select Category"
                         className="max-w-xs"
@@ -398,175 +402,177 @@ export default function Page() {
                             </AutocompleteItem>
                         )}
                     </Autocomplete> */}
-                    <div className="flex flex-row gap-1">
-                        <span>Category:</span>{" "}
-                        <WritableField
-                            component={Input}
-                            props={{
-                                inputProps: {
-                                    // placeholder: "Facebook Page",
-                                    label: "Category",
-                                    value: selectedCategoryText,
-                                    onValueChange: setSelectedCategoryText,
-                                },
-                            }}>
-                            {selectedCategoryText}
-                        </WritableField>
-                    </div>
-                    <FieldWithIcon
-                        Icon={IoLocationOutline}
-                        value={
+                        <div className="flex flex-row gap-1">
+                            <span>Category:</span>{" "}
                             <WritableField
                                 component={Input}
                                 props={{
                                     inputProps: {
                                         // placeholder: "Facebook Page",
-                                        label: "Exact Location",
-                                        value: map,
-                                        onValueChange: setMap,
+                                        label: "Category",
+                                        value: selectedCategoryText,
+                                        onValueChange: setSelectedCategoryText,
                                     },
                                 }}>
-                                {map}
+                                {selectedCategoryText}
                             </WritableField>
-                        }
-                    />
-                    <div className="flex flex-row items-center gap-1">
-                        <IoLocationOutline className="text-2xl flex-shrink-0" />
-                        <div>
-                            <WritableSelect
-                                key="division"
-                                options={districts}
-                                props={{
-                                    inputProps: {
-                                        // placeholder: "Division",
-                                        label: "Select District",
-                                        selectedKeys: district,
-                                        onSelectionChange: setDistrict,
-                                    },
-                                }}>
-                                {district}
-                            </WritableSelect>
-                            ,{" "}
-                            <WritableSelect
-                                key="district"
-                                options={Object.keys(
-                                    allLocationOptions.bangladesh
-                                )}
-                                props={{
-                                    inputProps: {
-                                        // placeholder: "Division",
-                                        label: "Select Division",
-                                        selectedKeys: division,
-                                        onSelectionChange: setDivision,
-                                    },
-                                }}>
-                                {division}
-                            </WritableSelect>
+                        </div>
+                        <FieldWithIcon
+                            Icon={IoLocationOutline}
+                            value={
+                                <WritableField
+                                    component={Input}
+                                    props={{
+                                        inputProps: {
+                                            // placeholder: "Facebook Page",
+                                            label: "Exact Location",
+                                            value: map,
+                                            onValueChange: setMap,
+                                        },
+                                    }}>
+                                    {map}
+                                </WritableField>
+                            }
+                        />
+                        <div className="flex flex-row items-center gap-1">
+                            <IoLocationOutline className="text-2xl flex-shrink-0" />
+                            <div>
+                                <WritableSelect
+                                    key="division"
+                                    options={districts}
+                                    props={{
+                                        inputProps: {
+                                            // placeholder: "Division",
+                                            label: "Select District",
+                                            selectedKeys: district,
+                                            onSelectionChange: setDistrict,
+                                        },
+                                    }}>
+                                    {district}
+                                </WritableSelect>
+                                ,{" "}
+                                <WritableSelect
+                                    key="district"
+                                    options={Object.keys(
+                                        allLocationOptions.bangladesh
+                                    )}
+                                    props={{
+                                        inputProps: {
+                                            // placeholder: "Division",
+                                            label: "Select Division",
+                                            selectedKeys: division,
+                                            onSelectionChange: setDivision,
+                                        },
+                                    }}>
+                                    {division}
+                                </WritableSelect>
+                            </div>
+                        </div>
+                        <FieldWithIcon
+                            Icon={MdOutlineCall}
+                            value={
+                                // <WritableField
+                                //     component={Input}
+                                //     props={{
+                                //         inputProps: {
+                                //             // placeholder: "Phone Number",
+                                //             label: "Phone Number",
+                                //             value: phoneNumber,
+                                //             onValueChange: setPhoneNumber,
+                                //         },
+                                //     }}>
+                                //     {phoneNumber}
+                                // </WritableField>
+                                <InputOtp
+                                    length={11}
+                                    // size="sm"
+                                    label="Phone Number"
+                                    radius="none"
+                                    name="phone"
+                                    className="mt-0"
+                                    isRequired
+                                    value={phoneNumber}
+                                    onValueChange={setPhoneNumber}
+                                    classNames={{
+                                        segment: "min-w-5 w-5",
+                                    }}
+                                />
+                            }
+                        />
+                        <FieldWithIcon
+                            Icon={PiFacebookLogoBold}
+                            value={
+                                <WritableField
+                                    component={Input}
+                                    props={{
+                                        inputProps: {
+                                            // placeholder: "Facebook Page",
+                                            label: "Facebook Page",
+                                            value: fbPage,
+                                            onValueChange: setFbPage,
+                                        },
+                                    }}>
+                                    {fbPage}
+                                </WritableField>
+                            }
+                        />
+                        <div className="flex justify-center items-center flex-col pt-2 gap-8">
+                            {location.lat !== 0 && location.long !== 0 && (
+                                <iframe
+                                    src={`https://maps.google.com/maps?q=${location.lat},${location.long}&hl=es;z=132m&output=embed`}
+                                    title="google iframe embed"
+                                    className="w-full"
+                                    height={400}></iframe>
+                            )}
+                            <Button
+                                onPress={async () => {
+                                    navigator.geolocation.getCurrentPosition(
+                                        async (success) => {
+                                            setLocation({
+                                                lat: success.coords.latitude,
+                                                long: success.coords.longitude,
+                                            });
+                                            onOpen();
+                                        },
+                                        (error) => {
+                                            toast.error(error.message);
+                                        }
+                                    );
+                                }}
+                                className="w-full">
+                                Select Location
+                            </Button>
+                            <SelectLocation
+                                isOpen={isOpen}
+                                onOpenChange={onOpenChange}
+                                setLocation={setLocation}
+                                location={location}
+                            />
+                        </div>
+                    </CardBody>
+                </Card>
+                <div className="grid-in-product mb-20">
+                    <div className="flex flex-wrap justify-between items-center">
+                        <div className="text-3xl font-bold text-default-600 ml-4">
+                            Categories
                         </div>
                     </div>
-                    <FieldWithIcon
-                        Icon={MdOutlineCall}
-                        value={
-                            // <WritableField
-                            //     component={Input}
-                            //     props={{
-                            //         inputProps: {
-                            //             // placeholder: "Phone Number",
-                            //             label: "Phone Number",
-                            //             value: phoneNumber,
-                            //             onValueChange: setPhoneNumber,
-                            //         },
-                            //     }}>
-                            //     {phoneNumber}
-                            // </WritableField>
-                            <InputOtp
-                                length={11}
-                                // size="sm"
-                                label="Phone Number"
-                                radius="none"
-                                name="phone"
-                                className="mt-0"
-                                isRequired
-                                value={phoneNumber}
-                                onValueChange={setPhoneNumber}
-                                classNames={{
-                                    segment: "min-w-5 w-5",
-                                }}
-                            />
-                        }
+                    <CreateSection />
+                    <AllCategories
+                        products={useUser?.userCompany?.products || []}
                     />
-                    <FieldWithIcon
-                        Icon={PiFacebookLogoBold}
-                        value={
-                            <WritableField
-                                component={Input}
-                                props={{
-                                    inputProps: {
-                                        // placeholder: "Facebook Page",
-                                        label: "Facebook Page",
-                                        value: fbPage,
-                                        onValueChange: setFbPage,
-                                    },
-                                }}>
-                                {fbPage}
-                            </WritableField>
-                        }
-                    />
-                    <div className="flex justify-center items-center flex-col pt-2 gap-8">
-                        {location.lat !== 0 && location.long !== 0 && (
-                            <iframe
-                                src={`https://maps.google.com/maps?q=${location.lat},${location.long}&hl=es;z=132m&output=embed`}
-                                title="google iframe embed"
-                                className="w-full"
-                                height={400}></iframe>
-                        )}
-                        <Button
-                            onPress={async () => {
-                                navigator.geolocation.getCurrentPosition(
-                                    async (success) => {
-                                        setLocation({
-                                            lat: success.coords.latitude,
-                                            long: success.coords.longitude,
-                                        });
-                                        onOpen();
-                                    },
-                                    (error) => {
-                                        toast.error(error.message);
-                                    }
-                                );
-                            }}
-                            className="w-full">
-                            Select Location
-                        </Button>
-                        <SelectLocation
-                            isOpen={isOpen}
-                            onOpenChange={onOpenChange}
-                            setLocation={setLocation}
-                            location={location}
-                        />
-                    </div>
-                </CardBody>
-            </Card>
-            <div className="grid-in-product mb-20">
-                <div className="flex flex-wrap justify-between items-center">
-                    <div className="text-3xl font-bold text-default-600 ml-4">
-                        Categories
-                    </div>
                 </div>
-                <CreateSection />
-                <AllCategories
-                    products={useUser?.userCompany?.products || []}
-                />
             </div>
+
             <Button
                 color="success"
-                className="sticky bottom-4 right-4 font-bold"
+                className="sticky bottom-4 left-full m-auto font-bold"
                 size="lg"
                 isLoading={loading}
                 onPress={handleSave}
                 startContent={<GrSave />}>
                 Save
             </Button>
-        </div>
+        </>
     );
 }

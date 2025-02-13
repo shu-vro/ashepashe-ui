@@ -94,8 +94,7 @@ export default function Page() {
                             toast.success(res.message);
                             useCart.setCart([]);
                             useUser?.ticktock();
-                        }
-                        if (res.status === 402) {
+                        } else if (res.status === 402) {
                             onOpen();
                         } else {
                             toast.error(res.message);
@@ -114,21 +113,6 @@ export default function Page() {
                     name="name"
                     isRequired
                 />
-                {/* <Input
-                    label="Mobile Number"
-                    placeholder="01xxxxxxxxx"
-                    labelPlacement="outside"
-                    variant="faded"
-                    radius="sm"
-                    name="phone"
-                    isRequired
-                    validate={(val) => {
-                        if (!validatePhoneNumber(val) || val.length < 11) {
-                            return "Invalid phone number";
-                        }
-                        return true;
-                    }}
-                /> */}
                 <div>
                     <p>
                         Phone Number<span className="text-danger">*</span>

@@ -35,6 +35,7 @@ import { changeProductStatusAction } from "./changeProductStatusAction";
 import { IoSearchOutline, IoChevronDownOutline } from "react-icons/io5";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { dynamicFakeImageGenerator } from "@/lib/utils";
+import { UserContextType } from "@/contexts/UserContext";
 
 export type IconSvgProps = SVGProps<SVGSVGElement> & {
     size?: number;
@@ -44,7 +45,6 @@ export const columns = [
     { name: "ORDER ITEM ID", uid: "order_item_id", sortable: true },
     { name: "PRODUCT", uid: "product", sortable: true },
     { name: "ORDERER", uid: "orderer", sortable: true },
-    { name: "STATUS", uid: "status", sortable: true },
     { name: "QUANTITY", uid: "quantity", sortable: true },
     { name: "TOTAL PRICE", uid: "totalPrice", sortable: true },
     { name: "ORDER ID", uid: "order_id", sortable: true },
@@ -52,6 +52,7 @@ export const columns = [
     { name: "ORDERER ADDRESS", uid: "ordererAddress" },
     { name: "PRODUCT ID", uid: "product_id", sortable: true },
     { name: "CREATED_AT", uid: "created_at", sortable: true },
+    { name: "STATUS", uid: "status", sortable: true },
     { name: "ACTIONS", uid: "actions" },
 ];
 
@@ -83,35 +84,19 @@ const INITIAL_VISIBLE_COLUMNS = [
     "quantity",
     "totalPrice",
     "actions",
-
 ];
 
-function formatDate(isoString: string) {
+function formatDate(isoString: number) {
     const date = new Date(isoString);
-    return date.toLocaleDateString() + " " + date.toLocaleTimeString();
+    console.log(isoString);
+    return date.toLocaleTimeString() + ", " + date.toLocaleDateString();
 }
 
 export default function CompanyOrderTable({
     data,
     ticktock,
 }: {
-    data: {
-        orderer: {
-            name: string;
-            description: string;
-            avatar: string;
-        };
-        product: Product["product"];
-        status: string;
-        quantity: number;
-        totalPrice: number;
-        order_item_id: string;
-        order_id: number;
-        ordererPhone: string;
-        ordererAddress: string;
-        product_id: string;
-        created_at: string;
-    }[];
+    data: UserContextType["companyOrders"];
     ticktock: () => void;
 }) {
     const [filterValue, setFilterValue] = React.useState("");

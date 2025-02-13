@@ -41,35 +41,35 @@ export default function ResponsiveButtons({}) {
         }, 0);
     }, [useUser?.orders]);
 
-    const fetchOrders = async () => {
-        if (!useUser?.userCompany) return;
-        try {
-            const response = await fetch(
-                `https://asepashe.com/api/owner-order/${useUser?.userCompany?.id}`
-            );
-            if (!response.ok) throw new Error("Failed to fetch orders");
+    // const fetchOrders = async () => {
+    //     if (!useUser?.userCompany) return;
+    //     try {
+    //         const response = await fetch(
+    //             `https://asepashe.com/api/owner-order/${useUser?.userCompany?.id}`
+    //         );
+    //         if (!response.ok) throw new Error("Failed to fetch orders");
 
-            const data = (await response.json()).data;
+    //         const data = (await response.json()).data;
 
-            const importantData = data
-                .map((order) => {
-                    return order.order_items.filter(
-                        (orderInner) =>
-                            orderInner.products.company_id ===
-                            useUser?.userCompany?.id
-                            && orderInner.status === "pending"
-                    );
-                })
-                .flat();
-            setOrdersCount(importantData.length); // Assuming data is an array of orders
-        } catch (error) {
-            console.error("Error fetching orders:", error);
-        }
-    };
+    //         const importantData = data
+    //             .map((order) => {
+    //                 return order.order_items.filter(
+    //                     (orderInner) =>
+    //                         orderInner.products.company_id ===
+    //                         useUser?.userCompany?.id
+    //                         && orderInner.status === "pending"
+    //                 );
+    //             })
+    //             .flat();
+    //         setOrdersCount(importantData.length); // Assuming data is an array of orders
+    //     } catch (error) {
+    //         console.error("Error fetching orders:", error);
+    //     }
+    // };
 
-    useEffect(() => {
-        if (useUser?.userCompany) fetchOrders();
-    }, [useUser?.userCompany]);
+    // useEffect(() => {
+    //     if (useUser?.userCompany) fetchOrders();
+    // }, [useUser?.userCompany]);
 
     return (
         <>
@@ -99,8 +99,8 @@ export default function ResponsiveButtons({}) {
                         <Badge
                             color="warning"
                             size="lg"
-                            content={orderCount}
-                            isInvisible={orderCount === 0}>
+                            content={useUser.companyOrders.length}
+                            isInvisible={useUser.companyOrders.length === 0}>
                             <Button
                                 as={Link}
                                 href="/my-store/list-orders"

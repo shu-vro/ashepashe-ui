@@ -17,6 +17,26 @@ export type UserContextType = {
     >;
     orders: Order[];
     setOrders: React.Dispatch<React.SetStateAction<UserContextType["orders"]>>;
+    companyOrders: {
+        orderer: {
+            name: string;
+            description: string;
+            avatar: string;
+        };
+        product: Partial<Product["product"]>;
+        status: string;
+        quantity: number;
+        totalPrice: number;
+        order_item_id: number;
+        order_id: number;
+        ordererPhone: string;
+        ordererAddress: string;
+        product_id: number;
+        created_at: number;
+    }[];
+    setCompanyOrders: React.Dispatch<
+        React.SetStateAction<UserContextType["companyOrders"]>
+    >;
     ticktock: () => void;
 };
 
@@ -35,7 +55,9 @@ export default function UserProvider({
     >([]);
     const [orders, setOrders] = useState<UserContextType["orders"]>([]);
     const [tick, setTick] = useState(false);
-    const [companyOrders, setCompanyOrders] = useState<Order[]>([]);
+    const [companyOrders, setCompanyOrders] = useState<
+        UserContextType["companyOrders"]
+    >([]);
     const ticktock = () => {
         setTick((p) => !p);
     };
@@ -76,7 +98,7 @@ export default function UserProvider({
                 setUser(userData);
                 if (!company) return;
                 const companyOrdersRes = await fetch(
-                    `https://asepashe.com/api/owner-order/${company.id}`
+                    `${API_URL}/owner-order/${company.id}`
                 );
                 const companyOrders: Order[] = (await companyOrdersRes.json())
                     .data;
@@ -107,7 +129,7 @@ export default function UserProvider({
                     },
                     product: {
                         name: order.products.name,
-                        description: order.products.price,
+                        description: order.products.price.toString(),
                         avatar: order.products.image1,
                     },
                     status: order.status,
@@ -122,8 +144,7 @@ export default function UserProvider({
                     created_at: Date.parse(order.created_at),
                     // others: order,
                 }));
-
-                setCompanyOrders(serializedData as unknown as Order[]);
+                setCompanyOrders(serializedData);
 
                 const res2 = await fetch(
                     `${API_URL}/company-sections/${company.id}`
@@ -150,6 +171,8 @@ export default function UserProvider({
                 setCompanySections,
                 orders,
                 setOrders,
+                companyOrders,
+                setCompanyOrders,
                 ticktock,
             }}>
             {children}

@@ -1,8 +1,6 @@
 "use client";
 
 import {
-    Autocomplete,
-    AutocompleteItem,
     Button,
     Card,
     CardBody,
@@ -13,7 +11,6 @@ import {
     useDisclosure,
 } from "@heroui/react";
 import React, { useEffect, useMemo, useState, Key, useRef, use } from "react";
-import { IoLocationOutline } from "react-icons/io5";
 import { MdOutlineCall } from "react-icons/md";
 import { PiFacebookLogoBold } from "react-icons/pi";
 import { FieldWithIcon } from "@/app/(app_interface)/companies/[company]/CompanyCard";
@@ -31,6 +28,8 @@ import AllCategories from "./components/AllCategories";
 import { uploadImageAction } from "./components/uploadImageAction";
 import IndividualLink from "./components/IndividualLink";
 import { isEqual } from "lodash";
+import { IoMapOutline, IoLocationOutline } from "react-icons/io5";
+import { TbCategory } from "react-icons/tb";
 
 export default function Page() {
     const useUser = use(UserContext);
@@ -113,16 +112,16 @@ export default function Page() {
         };
 
         const beforePayload = {
-            name: useUser?.userCompany?.name,
-            city: useUser?.userCompany?.city,
+            name: useUser?.userCompany?.name || "",
+            city: useUser?.userCompany?.city || "",
             description: useUser?.userCompany?.description || "",
             division: useUser?.userCompany?.division,
             map: useUser?.userCompany?.map || "",
-            iframe: useUser?.userCompany?.iframe,
-            phone: useUser?.userCompany?.phone,
-            fb_page: useUser?.userCompany?.fb_page,
-            lati: useUser?.userCompany?.lati,
-            longi: useUser?.userCompany?.longi,
+            iframe: useUser?.userCompany?.iframe || "",
+            phone: useUser?.userCompany?.phone || "",
+            fb_page: useUser?.userCompany?.fb_page || "",
+            lati: useUser?.userCompany?.lati || 0,
+            longi: useUser?.userCompany?.longi || 0,
             category: useUser?.userCompany?.category || "",
         };
         console.log(payload, beforePayload, isEqual(payload, beforePayload));
@@ -418,6 +417,23 @@ export default function Page() {
                             </WritableField>
                         </div>
                         <FieldWithIcon
+                            Icon={TbCategory}
+                            value={
+                                <WritableField
+                                    component={Input}
+                                    props={{
+                                        inputProps: {
+                                            label: "Category",
+                                            value: selectedCategoryText,
+                                            onValueChange:
+                                                setSelectedCategoryText,
+                                        },
+                                    }}>
+                                    {selectedCategoryText}
+                                </WritableField>
+                            }
+                        />
+                        <FieldWithIcon
                             Icon={IoLocationOutline}
                             value={
                                 <WritableField
@@ -435,22 +451,8 @@ export default function Page() {
                             }
                         />
                         <div className="flex flex-row items-center gap-1">
-                            <IoLocationOutline className="text-2xl flex-shrink-0" />
+                            <IoMapOutline className="text-2xl flex-shrink-0" />
                             <div>
-                                <WritableSelect
-                                    key="division"
-                                    options={districts}
-                                    props={{
-                                        inputProps: {
-                                            // placeholder: "Division",
-                                            label: "Select District",
-                                            selectedKeys: district,
-                                            onSelectionChange: setDistrict,
-                                        },
-                                    }}>
-                                    {district}
-                                </WritableSelect>
-                                ,{" "}
                                 <WritableSelect
                                     key="district"
                                     options={Object.keys(
@@ -458,7 +460,7 @@ export default function Page() {
                                     )}
                                     props={{
                                         inputProps: {
-                                            // placeholder: "Division",
+                                            disallowEmptySelection: true,
                                             label: "Select Division",
                                             selectedKeys: division,
                                             onSelectionChange: setDivision,
@@ -466,23 +468,25 @@ export default function Page() {
                                     }}>
                                     {division}
                                 </WritableSelect>
+                                {", "}
+                                <WritableSelect
+                                    key="division"
+                                    options={districts}
+                                    props={{
+                                        inputProps: {
+                                            disallowEmptySelection: true,
+                                            label: "Select District",
+                                            selectedKeys: district,
+                                            onSelectionChange: setDistrict,
+                                        },
+                                    }}>
+                                    {district}
+                                </WritableSelect>
                             </div>
                         </div>
                         <FieldWithIcon
                             Icon={MdOutlineCall}
                             value={
-                                // <WritableField
-                                //     component={Input}
-                                //     props={{
-                                //         inputProps: {
-                                //             // placeholder: "Phone Number",
-                                //             label: "Phone Number",
-                                //             value: phoneNumber,
-                                //             onValueChange: setPhoneNumber,
-                                //         },
-                                //     }}>
-                                //     {phoneNumber}
-                                // </WritableField>
                                 <InputOtp
                                     length={11}
                                     // size="sm"
@@ -506,7 +510,14 @@ export default function Page() {
                                     component={Input}
                                     props={{
                                         inputProps: {
-                                            // placeholder: "Facebook Page",
+                                            labelPlacement: "outside",
+                                            startContent: (
+                                                <>
+                                                    <span className="text-foreground-500">
+                                                        fb.com/
+                                                    </span>
+                                                </>
+                                            ),
                                             label: "Facebook Page",
                                             value: fbPage,
                                             onValueChange: setFbPage,

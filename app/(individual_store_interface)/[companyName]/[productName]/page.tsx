@@ -14,10 +14,12 @@ type Props = {
 export default async function ProductPage({ params }: Props) {
     const { productName } = await params;
     const productDetails = await getProduct(productName);
+    if (!productDetails) return "Not found";
     const product = productDetails.product;
     const company = product.company;
 
     const company_full = await getCompanyProducts(company.slug);
+    if (!company_full) return "Not found";
     const companyProducts =
         company_full.products as unknown as Product["product"][];
     const reviews = product?.rating;
@@ -44,19 +46,27 @@ export default async function ProductPage({ params }: Props) {
 }
 
 async function getCompanyProducts(name: string) {
-    const response = await fetch(`${API_URL}/company/${name}`);
-    const company: Company = await response.json();
-    company.products = company.products.map((product) => ({
-        ...product,
-        company,
-    }));
-    return company;
+    try {
+        const response = await fetch(`${API_URL}/company/${name}`);
+        const company: Company = await response.json();
+        company.products = company.products.map((product) => ({
+            ...product,
+            company,
+        }));
+        return company;
+    } catch (error) {
+        return null;
+    }
 }
 
 async function getProduct(name: string) {
-    const response = await fetch(`${API_URL}/product/${name}`);
-    const data = (await response.json()) as Product;
-    return data;
+    try {
+        const response = await fetch(`${API_URL}/product/${name}`);
+        const product: Product = await response.json();
+        return product;
+    } catch (error) {
+        return null;
+    }
 }
 
 export async function generateMetadata(

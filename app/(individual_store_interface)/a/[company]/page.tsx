@@ -14,6 +14,7 @@ export default async function Page(props: Props) {
 
     const { company, sections } = await getCompany(company_id);
     if (!company) return <div>Company not found</div>;
+
     let companyProducts = company.products as unknown as Product["product"][];
     companyProducts = companyProducts.map((product) => ({
         ...product,
@@ -71,6 +72,7 @@ async function getCompany(name: string) {
     try {
         const response = await fetch(`${API_URL}/company/${name}`);
         const company: Company = await response.json();
+        if (!Object.keys(company).length) throw new Error("Company not found");
         const response2 = await fetch(
             `${API_URL}/company-sections/${company.id}`
         );

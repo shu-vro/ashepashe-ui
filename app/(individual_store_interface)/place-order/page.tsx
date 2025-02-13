@@ -83,7 +83,7 @@ export default function Page() {
                             name,
                             phone,
                             address,
-                            user_id: useUser?.user?.id || null,
+                            user_id: useUser?.user?.id,
                             products: useCart.cart.map((item) => ({
                                 product_id: item.item.id,
                                 quantity: item.count,

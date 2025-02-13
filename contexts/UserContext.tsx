@@ -142,7 +142,6 @@ export default function UserProvider({
                     ordererAddress: order.address,
                     product_id: order.products.id,
                     created_at: Date.parse(order.created_at),
-                    // others: order,
                 }));
                 setCompanyOrders(serializedData);
 

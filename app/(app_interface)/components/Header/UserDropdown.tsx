@@ -268,11 +268,12 @@ export default function UserDropdown({}: Props) {
                         My Orders
                     </DropdownItem>
                     <DropdownItem key="install" onPress={handleInstall}>
+                        App:{" "}
                         {deferredPrompt
                             ? isInstallable
-                                ? "Install App"
+                                ? "Install"
                                 : "Installed"
-                            : "App Not Ready"}
+                            : "Not Ready"}
                     </DropdownItem>
                     <DropdownItem
                         key="report"

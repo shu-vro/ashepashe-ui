@@ -23,10 +23,10 @@ export default function CompanyCard({ company }: { company: Company }) {
                     </p>
                 </div>
                 <FieldWithIcon Icon={IoLocationOutline} value={company.map} />
-                <FieldWithIcon
+                {/* <FieldWithIcon
                     Icon={IoLocationOutline}
                     value={`${company.city}, ${company.division}`}
-                />
+                /> */}
                 <FieldWithIcon
                     Icon={MdOutlineCall}
                     value={

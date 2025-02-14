@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
     Modal,
     ModalContent,
@@ -28,6 +28,10 @@ export default function SelectLocation({
     setLocation,
 }: SelectLocationProp) {
     const [innerLocation, setInnerLocation] = useState(location);
+    useEffect(() => {
+        setInnerLocation(location);
+    }, [location]);
+
     return (
         <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="5xl">
             <ModalContent>

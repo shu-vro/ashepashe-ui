@@ -540,26 +540,7 @@ export default function Page() {
                                     height={400}></iframe>
                             )}
                             <Button
-                                onPress={async () => {
-                                    // if (
-                                    //     location.lat === 0 &&
-                                    //     location.long === 0
-                                    // ) {
-                                    //     navigator.geolocation.getCurrentPosition(
-                                    //         async (success) => {
-                                    //             setLocation({
-                                    //                 lat: success.coords
-                                    //                     .latitude,
-                                    //                 long: success.coords
-                                    //                     .longitude,
-                                    //             });
-
-                                    //         },
-                                    //         (error) => {
-                                    //             toast.error(error.message);
-                                    //         }
-                                    //     );
-                                    // }
+                                onPress={() => {
                                     onOpen();
                                 }}
                                 className="w-full">

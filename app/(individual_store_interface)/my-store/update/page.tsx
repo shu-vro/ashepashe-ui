@@ -124,7 +124,7 @@ export default function Page() {
             longi: useUser?.userCompany?.longi || 0,
             category: useUser?.userCompany?.category || "",
         };
-        console.log(payload, beforePayload, isEqual(payload, beforePayload));
+        // console.log(payload, beforePayload, isEqual(payload, beforePayload));
         return [payload, isEqual(payload, beforePayload)];
     };
 
@@ -133,6 +133,7 @@ export default function Page() {
             setLoading(true);
 
             const [payload, isSame] = comparator();
+            console.log(payload);
             if (isSame) {
                 return toast.warning("No changes detected.");
             }
@@ -262,6 +263,9 @@ export default function Page() {
         timeoutRef.current = setTimeout(() => {
             const [_, isSame] = comparator();
             if (!isSame) {
+                if (loading) {
+                    return;
+                }
                 handleSave();
             }
         }, 3000);
@@ -537,18 +541,26 @@ export default function Page() {
                             )}
                             <Button
                                 onPress={async () => {
-                                    navigator.geolocation.getCurrentPosition(
-                                        async (success) => {
-                                            setLocation({
-                                                lat: success.coords.latitude,
-                                                long: success.coords.longitude,
-                                            });
-                                            onOpen();
-                                        },
-                                        (error) => {
-                                            toast.error(error.message);
-                                        }
-                                    );
+                                    // if (
+                                    //     location.lat === 0 &&
+                                    //     location.long === 0
+                                    // ) {
+                                    //     navigator.geolocation.getCurrentPosition(
+                                    //         async (success) => {
+                                    //             setLocation({
+                                    //                 lat: success.coords
+                                    //                     .latitude,
+                                    //                 long: success.coords
+                                    //                     .longitude,
+                                    //             });
+
+                                    //         },
+                                    //         (error) => {
+                                    //             toast.error(error.message);
+                                    //         }
+                                    //     );
+                                    // }
+                                    onOpen();
                                 }}
                                 className="w-full">
                                 Select Location

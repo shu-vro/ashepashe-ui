@@ -5,7 +5,7 @@ import Script from "next/script";
 import ReactPixel from "react-facebook-pixel";
 import dynamic from "next/dynamic";
 
-// const PixelTracker = dynamic(() => import("./components/PixelTracker"), { ssr: false });
+const PixelTracker = dynamic(() => import("./components/PixelTracker"), { ssr: false });
 
 const font = Montserrat({
     subsets: ["latin"],

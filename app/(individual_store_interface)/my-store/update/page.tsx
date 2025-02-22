@@ -125,7 +125,7 @@ export default function Page() {
             longi: useUser?.userCompany?.longi || 0,
             category: useUser?.userCompany?.category || "",
         };
-        console.log(payload, beforePayload, isEqual(payload, beforePayload));
+        // console.log(payload, beforePayload, isEqual(payload, beforePayload));
         return [payload, isEqual(payload, beforePayload)];
     };
 
@@ -134,6 +134,7 @@ export default function Page() {
             setLoading(true);
 
             const [payload, isSame] = comparator();
+            console.log(payload);
             if (isSame) {
                 return toast.warning("No changes detected.");
             }
@@ -263,6 +264,9 @@ export default function Page() {
         timeoutRef.current = setTimeout(() => {
             const [_, isSame] = comparator();
             if (!isSame) {
+                if (loading) {
+                    return;
+                }
                 handleSave();
             }
         }, 3000);
@@ -490,6 +494,7 @@ export default function Page() {
                                     {district}
                                 </WritableSelect>
                             </div>
+<<<<<<< HEAD
                         </div> */}
                                     <FieldWithIcon
                                         Icon={MdOutlineCall}
@@ -580,6 +585,73 @@ export default function Page() {
                                     products={useUser?.userCompany?.products || []}
                                 />
                             </div>
+=======
+                        </div>
+                        <FieldWithIcon
+                            Icon={MdOutlineCall}
+                            value={
+                                <InputOtp
+                                    length={11}
+                                    // size="sm"
+                                    label="Phone Number"
+                                    radius="none"
+                                    name="phone"
+                                    className="mt-0"
+                                    isRequired
+                                    value={phoneNumber}
+                                    onValueChange={setPhoneNumber}
+                                    classNames={{
+                                        segment: "min-w-5 w-5",
+                                    }}
+                                />
+                            }
+                        />
+                        <FieldWithIcon
+                            Icon={PiFacebookLogoBold}
+                            value={
+                                <WritableField
+                                    component={Input}
+                                    props={{
+                                        inputProps: {
+                                            labelPlacement: "outside",
+                                            startContent: (
+                                                <>
+                                                    <span className="text-foreground-500">
+                                                        fb.com/
+                                                    </span>
+                                                </>
+                                            ),
+                                            label: "Facebook Page",
+                                            value: fbPage,
+                                            onValueChange: setFbPage,
+                                        },
+                                    }}>
+                                    {fbPage}
+                                </WritableField>
+                            }
+                        />
+                        <div className="flex justify-center items-center flex-col pt-2 gap-8">
+                            {location.lat !== 0 && location.long !== 0 && (
+                                <iframe
+                                    src={`https://maps.google.com/maps?q=${location.lat},${location.long}&hl=es;z=132m&output=embed`}
+                                    title="google iframe embed"
+                                    className="w-full"
+                                    height={400}></iframe>
+                            )}
+                            <Button
+                                onPress={() => {
+                                    onOpen();
+                                }}
+                                className="w-full">
+                                Select Location
+                            </Button>
+                            <SelectLocation
+                                isOpen={isOpen}
+                                onOpenChange={onOpenChange}
+                                setLocation={setLocation}
+                                location={location}
+                            />
+>>>>>>> 15cfb7447ace7530801572ece58634456597b10b
                         </div>
 
                         <Button

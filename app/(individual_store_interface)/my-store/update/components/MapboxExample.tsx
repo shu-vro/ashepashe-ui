@@ -1,30 +1,31 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import mapboxgl, { Map } from "mapbox-gl";
 // import Map from "react-map-gl";
 
 import "mapbox-gl/dist/mapbox-gl.css";
 import { SelectLocationProp } from "./SelectLocation";
+import MapSearchBox from "./MapSearchBox";
 
 export default function MapboxExample({
-    setLocation,
+    setInnerLocation,
     location,
+    innerLocation,
 }: {
-    setLocation: SelectLocationProp["setLocation"];
+    setInnerLocation: SelectLocationProp["setLocation"];
     location: SelectLocationProp["location"];
+    innerLocation: SelectLocationProp["location"];
 }) {
     const mapContainerRef = useRef(null);
     const mapRef = useRef<Map>(null);
-
-    console.log(location);
 
     useEffect(() => {
         mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_API_TOKEN!;
 
         mapRef.current = new mapboxgl.Map({
             style: "mapbox://styles/mapbox/light-v11",
-            center: [location.long, location.lat],
+            center: [innerLocation.long, innerLocation.lat],
             zoom: 18,
             pitch: 45,
             bearing: -17.6,
@@ -116,18 +117,27 @@ export default function MapboxExample({
             const lng = e.lngLat.lng;
             const lat = e.lngLat.lat;
             marker.setLngLat([lng, lat]);
-            setLocation({ lat, long: lng });
+            setInnerLocation({ lat, long: lng });
         };
 
-        map.on("dblclick", selLoc);
-
-        map.on("", selLoc);
+        map.on("click", selLoc);
 
         return () => mapRef.current?.remove();
     }, []);
 
+    useEffect(() => {
+        mapRef.current!.flyTo({
+            center: [innerLocation.long, innerLocation.lat],
+            zoom: 18,
+            speed: 0.8,
+            curve: 1,
+        });
+        // mapRef.current?.setCenter([location.long, location.lat]);
+    }, [innerLocation]);
+
     return (
         <>
+            <MapSearchBox mapRef={mapRef} location={innerLocation} />
             <div
                 id="map"
                 className="w-full h-[500px] md:h-[600px] lg:h-[700px]"

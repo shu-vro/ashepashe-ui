@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import {
     Modal,
     ModalContent,
@@ -9,7 +9,6 @@ import {
     ModalFooter,
     Button,
 } from "@heroui/react";
-import mapboxgl, { Map } from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import MapboxExample from "./MapboxExample";
 
@@ -28,6 +27,11 @@ export default function SelectLocation({
     location,
     setLocation,
 }: SelectLocationProp) {
+    const [innerLocation, setInnerLocation] = useState(location);
+    useEffect(() => {
+        setInnerLocation(location);
+    }, [location]);
+
     return (
         <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="5xl">
             <ModalContent>
@@ -35,14 +39,15 @@ export default function SelectLocation({
                     <>
                         <ModalHeader className="flex flex-col gap-1">
                             Select Location
-                            <p className="text-neutral-400 text-sm">
-                                Double Tap on any location to select it.
+                            <p className="text-neutral-400 text-sm capitalize">
+                                make sure to Tap on any location to select it.
                             </p>
                         </ModalHeader>
                         <ModalBody>
                             <MapboxExample
-                                setLocation={setLocation}
                                 location={location}
+                                innerLocation={innerLocation}
+                                setInnerLocation={setInnerLocation}
                             />
                         </ModalBody>
                         <ModalFooter>
@@ -52,7 +57,12 @@ export default function SelectLocation({
                                 onPress={onClose}>
                                 Close
                             </Button>
-                            <Button color="primary" onPress={onClose}>
+                            <Button
+                                color="primary"
+                                onPress={() => {
+                                    setLocation({ ...innerLocation });
+                                    onClose();
+                                }}>
                                 Select
                             </Button>
                         </ModalFooter>

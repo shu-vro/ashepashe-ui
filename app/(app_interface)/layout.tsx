@@ -18,6 +18,8 @@ import OrderDrawerProvider from "@/contexts/OrderDrawerContext";
 import CartProvider, { CartContext } from "@/contexts/CartContext";
 import Gradient from "./components/Gradient";
 import Script from "next/script";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const font = Montserrat({
     subsets: ["latin"],
@@ -148,6 +150,8 @@ export default function RootLayout({
                             </UserProvider>
                         </SidebarProvider>
                     </ThemeProvider>
+                    <Analytics />
+                    <SpeedInsights />
                 </body>
             </html>
         </SessionProvider>

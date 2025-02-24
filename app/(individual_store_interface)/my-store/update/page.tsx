@@ -30,6 +30,7 @@ import IndividualLink from "./components/IndividualLink";
 import { isEqual } from "lodash";
 import { IoMapOutline, IoLocationOutline } from "react-icons/io5";
 import { TbCategory } from "react-icons/tb";
+import Loader from "@/app/(app_interface)/components/Loader";
 
 export default function Page() {
     const useUser = use(UserContext);
@@ -288,7 +289,11 @@ export default function Page() {
         categories,
     ]);
 
-    return (
+    return !useUser?.userCompany ? (
+        <div className="grid place-items-center h-[80vh]">
+            <Loader />
+        </div>
+    ) : (
         <>
             <div className="grid grid-areas-companyLayoutNoLap grid-cols-productLayoutNoLap lap:grid-cols-productLayoutLap lap:grid-areas-companyLayoutLap gap-4 p-4">
                 <label

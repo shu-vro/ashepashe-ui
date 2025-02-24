@@ -14,6 +14,8 @@ import UserProvider from "@/contexts/UserContext";
 import Gradient from "../(app_interface)/components/Gradient";
 import Script from "next/script";
 import NotificationComponent from "../components/NotificationComponent";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const font = Montserrat({
     subsets: ["latin"],
@@ -138,6 +140,8 @@ export default function RootLayout({
                             </UserProvider>
                         </SidebarProvider>
                     </ThemeProvider>
+                    <Analytics />
+                    <SpeedInsights />
                 </body>
             </html>
         </SessionProvider>

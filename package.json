@@ -20,6 +20,8 @@
         "@radix-ui/react-tooltip": "^1.1.4",
         "@savvywombat/tailwindcss-grid-areas": "^4.0.0",
         "@smastrom/react-rating": "^1.5.0",
+        "@vercel/analytics": "^1.5.0",
+        "@vercel/speed-insights": "^1.2.0",
         "canvas-confetti": "^1.9.3",
         "class-variance-authority": "^0.7.0",
         "clsx": "^2.1.1",

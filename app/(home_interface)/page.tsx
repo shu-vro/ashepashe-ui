@@ -5,10 +5,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { UserContext } from "@/contexts/UserContext";
 import { signIn } from "next-auth/react";
-import {
-    ArrowRight,
-    Play
-} from "lucide-react";
+import { ArrowRight, Play } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface CTAProps {
     title: string;
@@ -17,16 +15,16 @@ interface CTAProps {
         text: string;
         href: string;
         onClick?: () => void;
-        variant?: 'primary' | 'secondary';
+        variant?: "primary" | "secondary";
     }[];
-    theme?: 'blue' | 'emerald' | 'orange';
+    theme?: "blue" | "emerald" | "orange";
 }
-
 
 const steps = [
     {
         title: "জিমেইল দিয়ে সাইন ইন করুন",
-        description: "আপনার জিমেইল একাউন্ট দিয়ে সাইন ইন করুন এবং আপনার অনলাইন স্টোর তৈরি করুন।",
+        description:
+            "আপনার জিমেইল একাউন্ট দিয়ে সাইন ইন করুন এবং আপনার অনলাইন স্টোর তৈরি করুন।",
         icon: "/steps/1.png",
     },
     {
@@ -36,17 +34,20 @@ const steps = [
     },
     {
         title: "আপনার স্টোরের ব্যানার ছবি আপলোড করুন",
-        description: "আপনার স্টোরের ব্যানার ছবি আপলোড করুন এবং আপনার স্টোর এর লুক দেখান।",
+        description:
+            "আপনার স্টোরের ব্যানার ছবি আপলোড করুন এবং আপনার স্টোর এর লুক দেখান।",
         icon: "/steps/3.png",
     },
     {
         title: "আপনার স্টোরের তথ্য দিন",
-        description: "আপনার স্টোরের ঠিকানা, মোবাইল নাম্বার এবং অন্যান্য তথ্য দিন।",
+        description:
+            "আপনার স্টোরের ঠিকানা, মোবাইল নাম্বার এবং অন্যান্য তথ্য দিন।",
         icon: "/steps/4.png",
     },
     {
         title: "আপনার স্টোরের লিঙ্ক শেয়ার করুন",
-        description: "অভিনন্দন আপনার স্টোর তৈরি হয়েছে, এখন আপনি আপনার স্টোর লিঙ্ক শেয়ার করতে পারেন।",
+        description:
+            "অভিনন্দন আপনার স্টোর তৈরি হয়েছে, এখন আপনি আপনার স্টোর লিঙ্ক শেয়ার করতে পারেন।",
         icon: "/steps/5.png",
     },
 ];
@@ -54,10 +55,8 @@ const steps = [
 export default function Home() {
     const useUser = use(UserContext);
     const [showVideo, setShowVideo] = useState(false);
-    const [isVisible, setIsVisible] = useState(false);
-    const [activeStep, setActiveStep] = useState<number | null>(null);
-
-
+    // const [isVisible, setIsVisible] = useState(false);
+    // const [activeStep, setActiveStep] = useState<number | null>(null);
 
     // const { products, companies } = await getAllProducts();
     return (
@@ -69,8 +68,9 @@ export default function Home() {
                         <span className="text-blue-400"> ৩০ সেকেন্ডে</span>
                     </h2>
                     <p className="">
-                        অনলাইন স্টোর বা রেডিমেড ওয়েবসাইট বানান ৩০ সেকেন্ডে
-                        কোন ধরনের টেক স্কিল ছাড়াই একটি অনলাইন স্টোর ম্যানেজ করুন ,নিজের স্টোর লিংক আপনার প্রোফাইল বা পেজে শেয়ার করুন
+                        অনলাইন স্টোর বা রেডিমেড ওয়েবসাইট বানান ৩০ সেকেন্ডে কোন
+                        ধরনের টেক স্কিল ছাড়াই একটি অনলাইন স্টোর ম্যানেজ করুন
+                        ,নিজের স্টোর লিংক আপনার প্রোফাইল বা পেজে শেয়ার করুন
                     </p>
                     <div className="my-5 flex items-center space-x-2">
                         <Button
@@ -86,11 +86,14 @@ export default function Home() {
                             }}
                             href={
                                 useUser?.user
-                                    ? `/my-store/${useUser?.userCompany ? "update" : "create"
-                                    }`
+                                    ? `/my-store/${
+                                          useUser?.userCompany
+                                              ? "update"
+                                              : "create"
+                                      }`
                                     : "/"
                             }
-                        // size="large"
+                            // size="large"
                         >
                             {useUser?.user
                                 ? useUser.userCompany
@@ -100,8 +103,7 @@ export default function Home() {
                         </Button>
                         <Button
                             className="ml-4 border border-gray-500 hover:border-gray-400"
-                            onPress={() => setShowVideo(true)}
-                        >
+                            onPress={() => setShowVideo(true)}>
                             <Play className="mr-2 h-5 w-5" />
                             Watch Demo
                         </Button>
@@ -127,15 +129,13 @@ export default function Home() {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
-                        onClick={() => setShowVideo(false)}
-                    >
+                        onClick={() => setShowVideo(false)}>
                         <motion.div
                             initial={{ scale: 0.9 }}
                             animate={{ scale: 1 }}
                             exit={{ scale: 0.9 }}
                             className="aspect-video w-full max-w-4xl bg-card rounded-lg overflow-hidden shadow-2xl"
-                            onClick={e => e.stopPropagation()}
-                        >
+                            onClick={(e) => e.stopPropagation()}>
                             <iframe
                                 width="100%"
                                 height="100%"
@@ -143,8 +143,7 @@ export default function Home() {
                                 title="Website Builder Tutorial"
                                 frameBorder="0"
                                 allow="accelerometer; autoplay=true; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                allowFullScreen
-                            ></iframe>
+                                allowFullScreen></iframe>
                         </motion.div>
                     </motion.div>
                 )}
@@ -171,30 +170,28 @@ export default function Home() {
                             else {
                                 window.location.href = "/my-store/create";
                             }
-                        }
+                        },
                     },
                     {
                         text: "Watch Demo",
                         href: "/demo",
                         variant: "secondary",
-                        onClick: () => setShowVideo(true)
-                    }
+                        onClick: () => setShowVideo(true),
+                    },
                 ]}
             />
 
-            <div>
-
-            </div>
-
+            <div></div>
         </div>
     );
 }
 
-
 export function StepsComponent() {
     return (
         <div className="max-w-5xl my-2 mx-auto px-4 py-12">
-            <h2 className="text-4xl font-bold text-center mb-16">মাত্র ৫ টি ধাপে স্টোর ক্রিয়েট করুন! 😀</h2>
+            <h2 className="text-5xl font-bold text-center mb-16">
+                মাত্র ৫ টি ধাপে স্টোর ক্রিয়েট করুন! 😀
+            </h2>
             <div className="space-y-24">
                 {steps.map((step, index) => {
                     const isEven = index % 2 === 0;
@@ -206,13 +203,18 @@ export function StepsComponent() {
                             whileInView={{ opacity: 1, x: 0 }}
                             viewport={{ once: true, margin: "-100px" }}
                             transition={{ duration: 0.6, delay: index * 0.2 }}
-                            className={`flex flex-col md:flex-row items-center gap-4 ${isEven ? 'md:flex-row' : 'md:flex-row-reverse'
-                                }`}
-                        >
+                            className={cn(
+                                `flex flex-col md:flex-row items-center gap-4`,
+                                isEven ? "md:flex-row" : "md:flex-row-reverse"
+                            )}>
                             {/* Icon/Image Container */}
                             <div className="flex-1 flex justify-center">
                                 <div className="">
-                                    <img src={step.icon} alt={step.title} className="w-full" />
+                                    <img
+                                        src={step.icon}
+                                        alt={step.title}
+                                        className="w-full"
+                                    />
                                 </div>
                             </div>
 
@@ -222,8 +224,10 @@ export function StepsComponent() {
                                     <span className="inline-block text-sm font-semibold text-blue-600 dark:text-blue-300">
                                         Step {index + 1}
                                     </span>
-                                    <h3 className="text-2xl font-bold">{step.title}</h3>
-                                    <p className="text-gray-600 dark:text-gray-300">
+                                    <h3 className="text-4xl font-bold">
+                                        {step.title}
+                                    </h3>
+                                    <p className="text-gray-600 dark:text-gray-300 text-lg">
                                         {step.description}
                                     </p>
                                 </div>
@@ -240,24 +244,27 @@ export function CTAComponent({
     title,
     subtitle,
     buttons = [],
-    theme = 'blue'
+    theme = "blue",
 }: CTAProps) {
     const themeColors = {
         blue: {
-            bg: 'from-gray-700 to-blue-900',
-            primary: 'bg-white text-blue-600 hover:bg-blue-50',
-            secondary: 'bg-transparent border-white text-white hover:bg-white/10'
+            bg: "from-gray-700 to-blue-900",
+            primary: "bg-white text-blue-600 hover:bg-blue-50",
+            secondary:
+                "bg-transparent border-white text-white hover:bg-white/10",
         },
         emerald: {
-            bg: 'from-emerald-600 to-emerald-400',
-            primary: 'bg-white text-emerald-600 hover:bg-emerald-50',
-            secondary: 'bg-transparent border-white text-white hover:bg-white/10'
+            bg: "from-emerald-600 to-emerald-400",
+            primary: "bg-white text-emerald-600 hover:bg-emerald-50",
+            secondary:
+                "bg-transparent border-white text-white hover:bg-white/10",
         },
         orange: {
-            bg: 'from-orange-600 to-orange-400',
-            primary: 'bg-white text-orange-600 hover:bg-orange-50',
-            secondary: 'bg-transparent border-white text-white hover:bg-white/10'
-        }
+            bg: "from-orange-600 to-orange-400",
+            primary: "bg-white text-orange-600 hover:bg-orange-50",
+            secondary:
+                "bg-transparent border-white text-white hover:bg-white/10",
+        },
     };
 
     return (
@@ -266,16 +273,17 @@ export function CTAComponent({
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.6 }}
-            className={`relative bg-gradient-to-r ${themeColors[theme].bg} rounded-2xl shadow-xl overflow-hidden`}
-        >
+            className={cn(
+                `relative bg-gradient-to-r rounded-2xl shadow-xl overflow-hidden`,
+                themeColors[theme].bg
+            )}>
             <div className="max-w-7xl mx-auto px-4 py-16 sm:px-6 lg:px-8">
                 <div className="text-center">
                     <motion.h2
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.2 }}
-                        className="text-4xl font-bold text-white mb-6"
-                    >
+                        className="text-4xl font-bold text-white mb-6">
                         {title}
                     </motion.h2>
 
@@ -284,8 +292,7 @@ export function CTAComponent({
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.4 }}
-                            className="text-xl text-white/90 mb-8 max-w-2xl mx-auto"
-                        >
+                            className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
                             {subtitle}
                         </motion.p>
                     )}
@@ -294,20 +301,19 @@ export function CTAComponent({
                         className="flex flex-col sm:flex-row gap-4 justify-center"
                         initial={{ opacity: 0 }}
                         whileInView={{ opacity: 1 }}
-                        transition={{ delay: 0.6 }}
-                    >
+                        transition={{ delay: 0.6 }}>
                         {buttons.map((button, index) => (
-
                             <motion.button
                                 key={index}
                                 onClick={button.onClick}
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
-                                className={`${button.variant === 'secondary'
-                                    ? themeColors[theme].secondary
-                                    : themeColors[theme].primary
-                                    } px-8 py-3 rounded-lg font-semibold transition-colors duration-200 flex items-center gap-2 justify-center border-2`}
-                            >
+                                className={cn(
+                                    `px-8 py-3 rounded-lg font-semibold transition-colors duration-200 flex items-center gap-2 justify-center border-2`,
+                                    button.variant === "secondary"
+                                        ? themeColors[theme].secondary
+                                        : themeColors[theme].primary
+                                )}>
                                 {button.text}
                                 <ArrowRight className="w-4 h-4" />
                             </motion.button>

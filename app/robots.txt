@@ -1,4 +1,4 @@
-User-agent: ia_archiver
+User-agent: *
 
 # Block access to specific routes
 Disallow: /my-store/create

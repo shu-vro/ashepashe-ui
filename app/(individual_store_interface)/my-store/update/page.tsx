@@ -410,36 +410,24 @@ export default function Page() {
                             </AutocompleteItem>
                         )}
                     </Autocomplete> */}
-                        <div className="flex flex-row gap-1">
-                            <span>Category:</span>{" "}
-                            <WritableField
-                                component={Input}
-                                props={{
-                                    inputProps: {
-                                        // placeholder: "Facebook Page",
-                                        label: "Category",
-                                        value: selectedCategoryText,
-                                        onValueChange: setSelectedCategoryText,
-                                    },
-                                }}>
-                                {selectedCategoryText}
-                            </WritableField>
-                        </div>
                         <FieldWithIcon
                             Icon={TbCategory}
                             value={
-                                <WritableField
-                                    component={Input}
-                                    props={{
-                                        inputProps: {
-                                            label: "Category",
-                                            value: selectedCategoryText,
-                                            onValueChange:
-                                                setSelectedCategoryText,
-                                        },
-                                    }}>
-                                    {selectedCategoryText}
-                                </WritableField>
+                                <>
+                                    <span>Category: </span>
+                                    <WritableField
+                                        component={Input}
+                                        props={{
+                                            inputProps: {
+                                                label: "Category",
+                                                value: selectedCategoryText,
+                                                onValueChange:
+                                                    setSelectedCategoryText,
+                                            },
+                                        }}>
+                                        {selectedCategoryText}
+                                    </WritableField>
+                                </>
                             }
                         />
                         <FieldWithIcon

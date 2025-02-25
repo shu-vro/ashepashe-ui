@@ -43,6 +43,7 @@ export default async function sitemap({
                 url: `${FRONTEND_URL}/`,
                 lastModified: new Date().toISOString(),
                 priority: 1,
+                changeFrequency: "daily",
             },
             {
                 url: `${FRONTEND_URL}/my-store/create`,

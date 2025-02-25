@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Montserrat } from "next/font/google";
+import { Montserrat, Baloo_Da_2} from "next/font/google";
 import ThemeProvider from "@/contexts/theme-provider";
 import Header from "./components/Header";
 import { SidebarProvider } from "@/components/ui/sidebar";
@@ -19,9 +19,13 @@ import CartProvider, { CartContext } from "@/contexts/CartContext";
 import Gradient from "./components/Gradient";
 import Script from "next/script";
 
-const font = Montserrat({
+// const font = Montserrat({
+//     subsets: ["latin"],
+//     weight: ["100", "300", "400", "500", "700", "900"],
+// });
+const font = Baloo_Da_2({
     subsets: ["latin"],
-    weight: ["100", "300", "400", "500", "700", "900"],
+    weight: ["400", "500", "700"],
 });
 
 const APP_NAME = "AAmarStore";

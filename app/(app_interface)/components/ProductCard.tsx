@@ -78,7 +78,6 @@ export function ProductCard({
     const link = `${specialized ? `/${product.company.slug}` : "/products"}/${
         product.slug
     }`;
-    console.log(link);
     return (
         <>
             <Card

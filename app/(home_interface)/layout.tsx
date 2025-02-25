@@ -14,6 +14,8 @@ import UserProvider from "@/contexts/UserContext";
 import Gradient from "../(app_interface)/components/Gradient";
 import Script from "next/script";
 import NotificationComponent from "../components/NotificationComponent";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const font = Montserrat({
     subsets: ["latin"],
@@ -80,14 +82,14 @@ export default function RootLayout({
                 <head>
                     <Script
                         async
-                        src="https://www.googletagmanager.com/gtag/js?id=G-JB1GVQCD1G"></Script>
+                        src="https://www.googletagmanager.com/gtag/js?id=G-XS4GVCRWPB"></Script>
                     <Script id="gtag" strategy="lazyOnload">
                         {`
                         window.dataLayer = window.dataLayer || [];
                         function gtag(){dataLayer.push(arguments);}
                         gtag('js', new Date());
 
-                        gtag('config', 'G-JB1GVQCD1G');
+                        gtag('config', 'G-XS4GVCRWPB');
                     `}
                     </Script>
                     <Script id="facebook-pixel" strategy="lazyOnload">
@@ -138,6 +140,8 @@ export default function RootLayout({
                             </UserProvider>
                         </SidebarProvider>
                     </ThemeProvider>
+                    <Analytics />
+                    <SpeedInsights />
                 </body>
             </html>
         </SessionProvider>

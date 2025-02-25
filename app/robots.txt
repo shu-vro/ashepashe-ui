@@ -1,0 +1,9 @@
+User-agent: ia_archiver
+
+# Block access to specific routes
+Disallow: /my-store/create
+Disallow: /my-store/update
+
+Sitemap: https://aamarstore.com/sitemap/static.xml
+Sitemap: https://aamarstore.com/sitemap/companies.xml
+Sitemap: https://aamarstore.com/sitemap/products.xml

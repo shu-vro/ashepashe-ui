@@ -31,6 +31,7 @@ import IndividualLink from "./components/IndividualLink";
 import { isEqual } from "lodash";
 import { IoMapOutline, IoLocationOutline } from "react-icons/io5";
 import { TbCategory } from "react-icons/tb";
+import Loader from "@/app/(app_interface)/components/Loader";
 
 export default function Page() {
     const useUser = use(UserContext);
@@ -289,7 +290,11 @@ export default function Page() {
         categories,
     ]);
 
-    return (
+    return !useUser?.userCompany ? (
+        <div className="grid place-items-center h-[80vh]">
+            <Loader />
+        </div>
+    ) : (
         <>
             {!useUser?.userCompany ?
                 (
@@ -412,6 +417,7 @@ export default function Page() {
                             </AutocompleteItem>
                         )}
                     </Autocomplete> */}
+<<<<<<< HEAD
                                     <div className="flex flex-row gap-1">
                                         <span>Category:</span>{" "}
                                         <WritableField
@@ -462,6 +468,46 @@ export default function Page() {
                                         }
                                     />
                                     {/* <div className="flex flex-row items-center gap-1">
+=======
+                        <FieldWithIcon
+                            Icon={TbCategory}
+                            value={
+                                <>
+                                    <span>Category: </span>
+                                    <WritableField
+                                        component={Input}
+                                        props={{
+                                            inputProps: {
+                                                label: "Category",
+                                                value: selectedCategoryText,
+                                                onValueChange:
+                                                    setSelectedCategoryText,
+                                            },
+                                        }}>
+                                        {selectedCategoryText}
+                                    </WritableField>
+                                </>
+                            }
+                        />
+                        <FieldWithIcon
+                            Icon={IoLocationOutline}
+                            value={
+                                <WritableField
+                                    component={Input}
+                                    props={{
+                                        inputProps: {
+                                            // placeholder: "Facebook Page",
+                                            label: "Exact Location",
+                                            value: map,
+                                            onValueChange: setMap,
+                                        },
+                                    }}>
+                                    {map}
+                                </WritableField>
+                            }
+                        />
+                        <div className="flex flex-row items-center gap-1">
+>>>>>>> 74d41cd6eb8636abc5b5151d740b5dbed92cbd75
                             <IoMapOutline className="text-2xl flex-shrink-0" />
                             <div>
                                 <WritableSelect

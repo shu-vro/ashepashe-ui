@@ -57,6 +57,14 @@ export const metadata: Metadata = {
         },
         description: APP_DESCRIPTION,
     },
+    keywords: [
+        "AAmarStore",
+        "Store",
+        "Ecommerce",
+        "Online Store",
+        "Free",
+        "Easy",
+    ],
 };
 
 export const viewport: Viewport = {

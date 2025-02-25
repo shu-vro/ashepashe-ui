@@ -1,5 +1,5 @@
 "use client";
-import React, { use, useState, useEffect } from "react";
+import React, { use, useState } from "react";
 import { Button, Image } from "@heroui/react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";

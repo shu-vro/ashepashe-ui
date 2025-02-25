@@ -186,7 +186,7 @@ export default function Home() {
     );
 }
 
-export function StepsComponent() {
+function StepsComponent() {
     return (
         <div className="max-w-5xl my-2 mx-auto px-4 py-12">
             <h2 className="text-5xl font-bold text-center mb-16">
@@ -240,7 +240,7 @@ export function StepsComponent() {
     );
 }
 
-export function CTAComponent({
+function CTAComponent({
     title,
     subtitle,
     buttons = [],

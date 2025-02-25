@@ -4,7 +4,7 @@ import ThemeProvider from "@/contexts/theme-provider";
 import Header from "./components/Header";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import "@smastrom/react-rating/style.css";
-import "../(app_interface)/globals.css";
+import "@/app/globals.css";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/zoom";

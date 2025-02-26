@@ -1,7 +1,7 @@
 "use client";
-import React, { use, useState } from "react";
+import React, { useState, useEffect, useRef, use } from "react";
 import { Button, Image } from "@heroui/react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useInView } from "framer-motion";
 import Link from "next/link";
 import { UserContext } from "@/contexts/UserContext";
 import { signIn } from "next-auth/react";
@@ -55,10 +55,7 @@ const steps = [
 export default function Home() {
     const useUser = use(UserContext);
     const [showVideo, setShowVideo] = useState(false);
-    // const [isVisible, setIsVisible] = useState(false);
-    // const [activeStep, setActiveStep] = useState<number | null>(null);
 
-    // const { products, companies } = await getAllProducts();
     return (
         <div className="my-4">
             <div className="flex justify-space-between items-center max-md:flex-wrap max-md:mx-10">
@@ -92,9 +89,7 @@ export default function Home() {
                                               : "create"
                                       }`
                                     : "/"
-                            }
-                            // size="large"
-                        >
+                            }>
                             {useUser?.user
                                 ? useUser.userCompany
                                     ? "Update Your Store"
@@ -110,7 +105,6 @@ export default function Home() {
                     </div>
                 </div>
                 <div>
-                    {/* <img src="/final.png"  alt="hero" /> */}
                     <Image
                         isBlurred
                         alt="NextUI Album Cover"
@@ -121,7 +115,6 @@ export default function Home() {
                 </div>
             </div>
 
-            {/* Video Modal */}
             <AnimatePresence>
                 {showVideo && (
                     <motion.div
@@ -180,61 +173,216 @@ export default function Home() {
                     },
                 ]}
             />
-
-            <div></div>
         </div>
     );
 }
 
-function StepsComponent() {
+// function StepsComponent() {
+//     const [activeStep, setActiveStep] = useState(0);
+//     const stepRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+//     useEffect(() => {
+//         const observer = new IntersectionObserver(
+//             (entries) => {
+//                 entries.forEach((entry) => {
+//                     if (entry.isIntersecting) {
+//                         const index = stepRefs.current.indexOf(entry.target);
+//                         if (index !== -1) {
+//                             setActiveStep(index);
+//                         }
+//                     }
+//                 });
+//             },
+//             { threshold: 0.5 }
+//         );
+
+//         stepRefs.current.forEach((ref) => {
+//             if (ref) {
+//                 observer.observe(ref);
+//             }
+//         });
+
+//         return () => {
+//             stepRefs.current.forEach((ref) => {
+//                 if (ref) {
+//                     observer.unobserve(ref);
+//                 }
+//             });
+//         };
+//     }, []);
+
+//     return (
+//         <div className="max-w-5xl my-2 mx-auto px-4 py-12">
+//             <h2 className="text-5xl font-bold text-center mb-16">
+//                 মাত্র ৫ টি ধাপে স্টোর ক্রিয়েট করুন! 😀
+//             </h2>
+//             <div className="relative flex">
+//                 <div className="flex-1 space-y-24">
+//                     {steps.map((step, index) => (
+//                         <motion.div
+//                             key={index}
+//                             initial={{ opacity: 0, x: -100 }}
+//                             whileInView={{ opacity: 1, x: 0 }}
+//                             viewport={{ once: true, margin: "-100px" }}
+//                             transition={{ duration: 0.6, delay: index * 0.2 }}
+//                             className="flex flex-col items-start gap-4 h-screen"
+//                             ref={(el) => (stepRefs.current[index] = el)}>
+//                             <div className="space-y-4">
+//                                 <span className="inline-block text-sm font-semibold text-blue-600 dark:text-blue-300">
+//                                     Step {index + 1}
+//                                 </span>
+//                                 <h3 className="text-4xl font-bold">
+//                                     {step.title}
+//                                 </h3>
+//                                 <p className="text-gray-600 dark:text-gray-300 text-lg">
+//                                     {step.description}
+//                                 </p>
+//                             </div>
+//                         </motion.div>
+//                     ))}
+//                 </div>
+//                 <div className="sticky top-20 flex-1 flex justify-center">
+//                     <div className="w-full">
+//                         <img
+//                             src={steps[activeStep].icon}
+//                             alt={steps[activeStep].title}
+//                             className="w-full"
+//                         />
+//                     </div>
+//                 </div>
+//             </div>
+//         </div>
+//     );
+// }
+const Highlight = ({
+    children,
+    className,
+}: {
+    children: React.ReactNode;
+    className?: string;
+}) => {
+    const ref = useRef(null);
+    const isInView = useInView(ref, { once: true });
+
     return (
-        <div className="max-w-5xl my-2 mx-auto px-4 py-12">
+        <motion.span
+            ref={ref}
+            initial={{
+                backgroundSize: "0% 100%",
+            }}
+            animate={{
+                backgroundSize: isInView ? "100% 100%" : "0% 100%",
+            }}
+            transition={{
+                duration: 1,
+                ease: "linear",
+                delay: 0.5,
+            }}
+            style={{
+                backgroundRepeat: "no-repeat",
+                backgroundPosition: "left center",
+                display: "inline",
+            }}
+            className={cn(
+                `relative inline-block pb-1 px-1 rounded-lg bg-gradient-to-r from-indigo-300 to-purple-300 dark:from-indigo-500 dark:to-purple-500`,
+                className
+            )}>
+            {children}
+        </motion.span>
+    );
+};
+function StepsComponent() {
+    const [activeStep, setActiveStep] = useState(0);
+    const stepRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        const index = stepRefs.current.indexOf(
+                            entry.target as HTMLDivElement
+                        );
+                        if (index !== -1) {
+                            setActiveStep(index);
+                        }
+                    }
+                });
+            },
+            { threshold: 0.5 }
+        );
+
+        stepRefs.current.forEach((ref) => {
+            if (ref) {
+                observer.observe(ref);
+            }
+        });
+
+        return () => {
+            stepRefs.current.forEach((ref) => {
+                if (ref) {
+                    observer.unobserve(ref);
+                }
+            });
+        };
+    }, []);
+    return (
+        <div className="max-w-6xl my-10 mx-auto px-6 py-12">
             <h2 className="text-5xl font-bold text-center mb-16">
                 মাত্র ৫ টি ধাপে স্টোর ক্রিয়েট করুন! 😀
             </h2>
-            <div className="space-y-24">
-                {steps.map((step, index) => {
-                    const isEven = index % 2 === 0;
-
-                    return (
-                        <motion.div
-                            key={index}
-                            initial={{ opacity: 0, x: isEven ? -100 : 100 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            viewport={{ once: true, margin: "-100px" }}
-                            transition={{ duration: 0.6, delay: index * 0.2 }}
-                            className={cn(
-                                `flex flex-col md:flex-row items-center gap-4`,
-                                isEven ? "md:flex-row" : "md:flex-row-reverse"
-                            )}>
-                            {/* Icon/Image Container */}
-                            <div className="flex-1 flex justify-center">
-                                <div className="">
+            <div className="relative flex flex-col md:flex-row">
+                {/* Sliding Text Content */}
+                <div className="w-full md:w-1/2 space-y-24">
+                    {steps.map((step, index) => (
+                        <div key={index}>
+                            <div className="flex-1 flex justify-center md:hidden">
+                                <div>
                                     <img
-                                        src={step.icon}
-                                        alt={step.title}
+                                        src={steps[activeStep].icon}
+                                        alt={steps[activeStep].title}
                                         className="w-full"
                                     />
                                 </div>
                             </div>
-
-                            {/* Text Content */}
-                            <div className="flex-1 md:text-left">
-                                <div className="space-y-4">
-                                    <span className="inline-block text-sm font-semibold text-blue-600 dark:text-blue-300">
-                                        Step {index + 1}
-                                    </span>
-                                    <h3 className="text-4xl font-bold">
-                                        {step.title}
-                                    </h3>
-                                    <p className="text-gray-600 dark:text-gray-300 text-lg">
-                                        {step.description}
-                                    </p>
-                                </div>
-                            </div>
-                        </motion.div>
-                    );
-                })}
+                            <motion.div
+                                key={index}
+                                initial={{ opacity: 0, x: 100 }}
+                                whileInView={{ opacity: 1, x: 0 }}
+                                viewport={{ once: true, amount: 0.4 }}
+                                transition={{
+                                    duration: 0.6,
+                                    delay: index * 0.2,
+                                }}
+                                className="space-y-4 md:h-screen flex justify-center items-start max-md:items-center max-md:text-center flex-col"
+                                ref={(el) => {
+                                    stepRefs.current[index] = el;
+                                }}>
+                                <Highlight className="text-2xl font-semibold px-3 py-2">
+                                    Step {index + 1}
+                                </Highlight>
+                                <h3 className="text-4xl md:text-8xl font-bold">
+                                    {step.title}
+                                </h3>
+                                <p className="text-neutral-400 text-2xl">
+                                    {step.description}
+                                </p>
+                            </motion.div>
+                        </div>
+                    ))}
+                </div>
+                {/* Sticky Image Container */}
+                <div className="hidden md:block w-1/2 sticky top-[20%] h-screen">
+                    <motion.img
+                        key={steps[activeStep].title}
+                        src={steps[activeStep].icon}
+                        alt={steps[activeStep].title}
+                        className="absolute left-0 right-0 mx-auto w-96 transition-opacity duration-700"
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        viewport={{ once: true, amount: 0.5 }}
+                    />
+                </div>
             </div>
         </div>
     );

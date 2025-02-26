@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Montserrat } from "next/font/google";
-import "./(app_interface)/globals.css";
+import "@/app/globals.css";
 import Script from "next/script";
 // import ReactPixel from "react-facebook-pixel";
 // import dynamic from "next/dynamic";

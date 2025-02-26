@@ -361,7 +361,7 @@ function StepsComponent() {
                                 <Highlight className="text-2xl font-semibold px-3 py-2">
                                     Step {index + 1}
                                 </Highlight>
-                                <h3 className="text-4xl md:text-8xl font-bold">
+                                <h3 className="text-4xl md:text-6xl font-bold">
                                     {step.title}
                                 </h3>
                                 <p className="text-neutral-400 text-2xl">
@@ -372,12 +372,12 @@ function StepsComponent() {
                     ))}
                 </div>
                 {/* Sticky Image Container */}
-                <div className="hidden md:block w-1/2 sticky top-[20%] h-screen">
+                <div className="hidden md:block w-1/2 sticky top-[15%] h-screen">
                     <motion.img
                         key={steps[activeStep].title}
                         src={steps[activeStep].icon}
                         alt={steps[activeStep].title}
-                        className="absolute left-0 right-0 mx-auto w-96 transition-opacity duration-700"
+                        className="absolute left-0 right-0 mx-auto w-72 transition-opacity duration-700"
                         initial={{ opacity: 0, scale: 0.9 }}
                         whileInView={{ opacity: 1, scale: 1 }}
                         viewport={{ once: true, amount: 0.5 }}

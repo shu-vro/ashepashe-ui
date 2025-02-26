@@ -415,8 +415,7 @@ export default function Page() {
                             </AutocompleteItem>
                         )}
                     </Autocomplete> */}
-                                {/*
-                                LEGACY CODE
+
                                 <FieldWithIcon
                                     Icon={TbCategory}
                                     value={
@@ -453,8 +452,8 @@ export default function Page() {
                                             {map}
                                         </WritableField>
                                     }
-                                /> */}
-                                <div className="flex flex-row items-center gap-1">
+                                />
+                                {/* <div className="flex flex-row items-center gap-1">
                                     <IoMapOutline className="text-2xl flex-shrink-0" />
                                     <div>
                                         <WritableSelect
@@ -491,7 +490,7 @@ export default function Page() {
                                             {district}
                                         </WritableSelect>
                                     </div>
-                                </div>
+                                </div> */}
                                 <FieldWithIcon
                                     Icon={MdOutlineCall}
                                     value={
@@ -546,20 +545,7 @@ export default function Page() {
                                         )}
                                     <Button
                                         onPress={async () => {
-                                            navigator.geolocation.getCurrentPosition(
-                                                async (success) => {
-                                                    setLocation({
-                                                        lat: success.coords
-                                                            .latitude,
-                                                        long: success.coords
-                                                            .longitude,
-                                                    });
-                                                    onOpen();
-                                                },
-                                                (error) => {
-                                                    toast.error(error.message);
-                                                }
-                                            );
+                                            onOpen();
                                         }}
                                         className="w-full">
                                         Select Location

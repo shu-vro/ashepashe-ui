@@ -339,8 +339,8 @@ function StepsComponent() {
                             <div className="flex-1 flex justify-center md:hidden">
                                 <div>
                                     <img
-                                        src={steps[activeStep].icon}
-                                        alt={steps[activeStep].title}
+                                        src={steps[index].icon}
+                                        alt={steps[index].title}
                                         className="w-full"
                                     />
                                 </div>

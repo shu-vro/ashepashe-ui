@@ -7,6 +7,14 @@ import { UserContext } from "@/contexts/UserContext";
 import { signIn } from "next-auth/react";
 import { ArrowRight, Play } from "lucide-react";
 import { cn } from "@/lib/utils";
+import hero_img from "@/assets/rmvbg.png";
+import step1 from "@/assets/steps/1.png";
+import step2 from "@/assets/steps/2.png";
+import step3 from "@/assets/steps/3.png";
+import step4 from "@/assets/steps/4.png";
+import step5 from "@/assets/steps/5.png";
+import NextImage from "next/image";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface CTAProps {
     title: string;
@@ -25,40 +33,41 @@ const steps = [
         title: "জিমেইল দিয়ে সাইন ইন করুন",
         description:
             "আপনার জিমেইল একাউন্ট দিয়ে সাইন ইন করুন এবং আপনার অনলাইন স্টোর তৈরি করুন।",
-        icon: "/steps/1.png",
+        icon: step1,
     },
     {
         title: "আপনার স্টোর নাম দিন",
         description: "Create Store এ ক্লিক করুন এবং আপনার স্টোর নাম দিন।",
-        icon: "/steps/2.png",
+        icon: step2,
     },
     {
         title: "আপনার স্টোরের ব্যানার ছবি আপলোড করুন",
         description:
             "আপনার স্টোরের ব্যানার ছবি আপলোড করুন এবং আপনার স্টোর এর লুক দেখান।",
-        icon: "/steps/3.png",
+        icon: step3,
     },
     {
         title: "আপনার স্টোরের তথ্য দিন",
         description:
             "আপনার স্টোরের ঠিকানা, মোবাইল নাম্বার এবং অন্যান্য তথ্য দিন।",
-        icon: "/steps/4.png",
+        icon: step4,
     },
     {
         title: "আপনার স্টোরের লিঙ্ক শেয়ার করুন",
         description:
             "অভিনন্দন আপনার স্টোর তৈরি হয়েছে, এখন আপনি আপনার স্টোর লিঙ্ক শেয়ার করতে পারেন।",
-        icon: "/steps/5.png",
+        icon: step5,
     },
 ];
 
 export default function Home() {
     const useUser = use(UserContext);
     const [showVideo, setShowVideo] = useState(false);
+    const isMobile_500 = useIsMobile(500);
 
     return (
         <div className="my-4">
-            <div className="flex justify-space-between items-center max-md:flex-wrap max-md:mx-10">
+            <div className="flex justify-space-between items-center max-md:flex-wrap max-md:mx-10 max-md:justify-center">
                 <div className="items-center">
                     <h2 className="text-5xl font-bold my-3 leading-tight">
                         অনলাইন স্টোর বা রেডিমেড ওয়েবসাইট বানান
@@ -104,13 +113,18 @@ export default function Home() {
                         </Button>
                     </div>
                 </div>
-                <div>
+                <div className="shrink-0">
                     <Image
-                        isBlurred
-                        alt="NextUI Album Cover"
-                        className="m-5"
-                        src="/rmvbg.png"
-                        width={1000}
+                        src={hero_img.src}
+                        className={cn("object-cover w-full !h-auto")}
+                        isBlurred={!isMobile_500}
+                        classNames={{
+                            wrapper: "m-6 w-full w-[calc(100vw-4rem)]",
+                        }}
+                        as={NextImage}
+                        alt={"Hero image"}
+                        width={500}
+                        height={500}
                     />
                 </div>
             </div>
@@ -338,7 +352,9 @@ function StepsComponent() {
                         <div key={index}>
                             <div className="flex-1 flex justify-center md:hidden">
                                 <div>
-                                    <img
+                                    <NextImage
+                                        width={375}
+                                        height={666}
                                         src={steps[index].icon}
                                         alt={steps[index].title}
                                         className="w-full"
@@ -373,15 +389,20 @@ function StepsComponent() {
                 </div>
                 {/* Sticky Image Container */}
                 <div className="hidden md:block w-1/2 sticky top-[15%] h-screen">
-                    <motion.img
+                    <motion.div
                         key={steps[activeStep].title}
-                        src={steps[activeStep].icon}
-                        alt={steps[activeStep].title}
-                        className="absolute left-0 right-0 mx-auto w-72 transition-opacity duration-700"
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        whileInView={{ opacity: 1, scale: 1 }}
-                        viewport={{ once: true, amount: 0.5 }}
-                    />
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.7 }}
+                        className="absolute left-0 right-0 mx-auto w-72 xl:w-96">
+                        <NextImage
+                            src={steps[activeStep].icon}
+                            alt={steps[activeStep].title}
+                            width={375}
+                            height={666}
+                            className="w-full"
+                        />
+                    </motion.div>
                 </div>
             </div>
         </div>
@@ -422,7 +443,7 @@ function CTAComponent({
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.6 }}
             className={cn(
-                `relative bg-gradient-to-r rounded-2xl shadow-xl overflow-hidden`,
+                `relative bg-gradient-to-r rounded-2xl shadow-xl overflow-hidden mx-4`,
                 themeColors[theme].bg
             )}>
             <div className="max-w-7xl mx-auto px-4 py-16 sm:px-6 lg:px-8">

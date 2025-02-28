@@ -21,6 +21,7 @@ import { PiFacebookLogoBold } from "react-icons/pi";
 import Link from "next/link";
 import { Rating } from "@smastrom/react-rating";
 import NextImage from "next/image";
+import FLAGS from "@/lib/feature_flag";
 
 type Prop = {
     company: Company;
@@ -83,17 +84,18 @@ export default function CompanySide({ company, specialized = false }: Prop) {
                         <span>(0)</span>
                     </div>
                     <div className="flex justify-around items-stretch flex-col pt-2 gap-8">
-                        {company.lati || company.longi ? (
-                            <iframe
-                                src={`${iframe}`}
-                                className="w-full"
-                                height="400"
-                                allowFullScreen
-                                loading="lazy"
-                                referrerPolicy="no-referrer-when-downgrade"></iframe>
-                        ) : (
-                            "No map available."
-                        )}
+                        {FLAGS.KEEP_IFRAME_MAP &&
+                            (company.lati || company.longi ? (
+                                <iframe
+                                    src={`${iframe}`}
+                                    className="w-full"
+                                    height="400"
+                                    allowFullScreen
+                                    loading="lazy"
+                                    referrerPolicy="no-referrer-when-downgrade"></iframe>
+                            ) : (
+                                "No map available."
+                            ))}
                         <Button
                             as={Link}
                             href={`${specialized ? "/a" : "/companies"}/${

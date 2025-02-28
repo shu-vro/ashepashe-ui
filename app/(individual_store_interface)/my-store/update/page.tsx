@@ -32,6 +32,7 @@ import { isEqual } from "lodash";
 import { IoMapOutline, IoLocationOutline } from "react-icons/io5";
 import { TbCategory } from "react-icons/tb";
 import Loader from "@/app/(app_interface)/components/Loader";
+import FLAGS from "@/lib/feature_flag";
 
 export default function Page() {
     const useUser = use(UserContext);
@@ -453,44 +454,46 @@ export default function Page() {
                                         </WritableField>
                                     }
                                 />
-                                {/* <div className="flex flex-row items-center gap-1">
-                                    <IoMapOutline className="text-2xl flex-shrink-0" />
-                                    <div>
-                                        <WritableSelect
-                                            key="district"
-                                            options={Object.keys(
-                                                allLocationOptions.bangladesh
-                                            )}
-                                            props={{
-                                                inputProps: {
-                                                    disallowEmptySelection:
-                                                        true,
-                                                    label: "Select Division",
-                                                    selectedKeys: division,
-                                                    onSelectionChange:
-                                                        setDivision,
-                                                },
-                                            }}>
-                                            {division}
-                                        </WritableSelect>
-                                        {", "}
-                                        <WritableSelect
-                                            key="division"
-                                            options={districts}
-                                            props={{
-                                                inputProps: {
-                                                    disallowEmptySelection:
-                                                        true,
-                                                    label: "Select District",
-                                                    selectedKeys: district,
-                                                    onSelectionChange:
-                                                        setDistrict,
-                                                },
-                                            }}>
-                                            {district}
-                                        </WritableSelect>
+                                {FLAGS.KEEP_DISTRICT_DIVISION_LOCATION && (
+                                    <div className="flex flex-row items-center gap-1">
+                                        <IoMapOutline className="text-2xl flex-shrink-0" />
+                                        <div>
+                                            <WritableSelect
+                                                key="district"
+                                                options={Object.keys(
+                                                    allLocationOptions.bangladesh
+                                                )}
+                                                props={{
+                                                    inputProps: {
+                                                        disallowEmptySelection:
+                                                            true,
+                                                        label: "Select Division",
+                                                        selectedKeys: division,
+                                                        onSelectionChange:
+                                                            setDivision,
+                                                    },
+                                                }}>
+                                                {division}
+                                            </WritableSelect>
+                                            {", "}
+                                            <WritableSelect
+                                                key="division"
+                                                options={districts}
+                                                props={{
+                                                    inputProps: {
+                                                        disallowEmptySelection:
+                                                            true,
+                                                        label: "Select District",
+                                                        selectedKeys: district,
+                                                        onSelectionChange:
+                                                            setDistrict,
+                                                    },
+                                                }}>
+                                                {district}
+                                            </WritableSelect>
+                                        </div>
                                     </div>
-                                </div> */}
+                                )}
                                 <FieldWithIcon
                                     Icon={MdOutlineCall}
                                     value={
@@ -534,29 +537,31 @@ export default function Page() {
                                         </WritableField>
                                     }
                                 />
-                                <div className="flex justify-center items-center flex-col pt-2 gap-8">
-                                    {location.lat !== 0 &&
-                                        location.long !== 0 && (
-                                            <iframe
-                                                src={`https://maps.google.com/maps?q=${location.lat},${location.long}&hl=es;z=132m&output=embed`}
-                                                title="google iframe embed"
-                                                className="w-full"
-                                                height={400}></iframe>
-                                        )}
-                                    <Button
-                                        onPress={async () => {
-                                            onOpen();
-                                        }}
-                                        className="w-full">
-                                        Select Location
-                                    </Button>
-                                    <SelectLocation
-                                        isOpen={isOpen}
-                                        onOpenChange={onOpenChange}
-                                        setLocation={setLocation}
-                                        location={location}
-                                    />
-                                </div>
+                                {FLAGS.KEEP_IFRAME_MAP && (
+                                    <div className="flex justify-center items-center flex-col pt-2 gap-8">
+                                        {location.lat !== 0 &&
+                                            location.long !== 0 && (
+                                                <iframe
+                                                    src={`https://maps.google.com/maps?q=${location.lat},${location.long}&hl=es;z=132m&output=embed`}
+                                                    title="google iframe embed"
+                                                    className="w-full"
+                                                    height={400}></iframe>
+                                            )}
+                                        <Button
+                                            onPress={async () => {
+                                                onOpen();
+                                            }}
+                                            className="w-full">
+                                            Select Location
+                                        </Button>
+                                        <SelectLocation
+                                            isOpen={isOpen}
+                                            onOpenChange={onOpenChange}
+                                            setLocation={setLocation}
+                                            location={location}
+                                        />
+                                    </div>
+                                )}
                             </CardBody>
                         </Card>
                         <div className="grid-in-product mb-20">

@@ -15,6 +15,10 @@ import step4 from "@/assets/steps/4.png";
 import step5 from "@/assets/steps/5.png";
 import NextImage from "next/image";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { FaWhatsapp } from "react-icons/fa6";
+import { RiMessengerLine } from "react-icons/ri";
+import { FaPhoneAlt } from "react-icons/fa";
+import { SiGmail } from "react-icons/si";
 
 interface CTAProps {
     title: string;
@@ -191,83 +195,6 @@ export default function Home() {
     );
 }
 
-// function StepsComponent() {
-//     const [activeStep, setActiveStep] = useState(0);
-//     const stepRefs = useRef<(HTMLDivElement | null)[]>([]);
-
-//     useEffect(() => {
-//         const observer = new IntersectionObserver(
-//             (entries) => {
-//                 entries.forEach((entry) => {
-//                     if (entry.isIntersecting) {
-//                         const index = stepRefs.current.indexOf(entry.target);
-//                         if (index !== -1) {
-//                             setActiveStep(index);
-//                         }
-//                     }
-//                 });
-//             },
-//             { threshold: 0.5 }
-//         );
-
-//         stepRefs.current.forEach((ref) => {
-//             if (ref) {
-//                 observer.observe(ref);
-//             }
-//         });
-
-//         return () => {
-//             stepRefs.current.forEach((ref) => {
-//                 if (ref) {
-//                     observer.unobserve(ref);
-//                 }
-//             });
-//         };
-//     }, []);
-
-//     return (
-//         <div className="max-w-5xl my-2 mx-auto px-4 py-12">
-//             <h2 className="text-5xl font-bold text-center mb-16">
-//                 মাত্র ৫ টি ধাপে স্টোর ক্রিয়েট করুন! 😀
-//             </h2>
-//             <div className="relative flex">
-//                 <div className="flex-1 space-y-24">
-//                     {steps.map((step, index) => (
-//                         <motion.div
-//                             key={index}
-//                             initial={{ opacity: 0, x: -100 }}
-//                             whileInView={{ opacity: 1, x: 0 }}
-//                             viewport={{ once: true, margin: "-100px" }}
-//                             transition={{ duration: 0.6, delay: index * 0.2 }}
-//                             className="flex flex-col items-start gap-4 h-screen"
-//                             ref={(el) => (stepRefs.current[index] = el)}>
-//                             <div className="space-y-4">
-//                                 <span className="inline-block text-sm font-semibold text-blue-600 dark:text-blue-300">
-//                                     Step {index + 1}
-//                                 </span>
-//                                 <h3 className="text-4xl font-bold">
-//                                     {step.title}
-//                                 </h3>
-//                                 <p className="text-gray-600 dark:text-gray-300 text-lg">
-//                                     {step.description}
-//                                 </p>
-//                             </div>
-//                         </motion.div>
-//                     ))}
-//                 </div>
-//                 <div className="sticky top-20 flex-1 flex justify-center">
-//                     <div className="w-full">
-//                         <img
-//                             src={steps[activeStep].icon}
-//                             alt={steps[activeStep].title}
-//                             className="w-full"
-//                         />
-//                     </div>
-//                 </div>
-//             </div>
-//         </div>
-//     );
-// }
 const Highlight = ({
     children,
     className,
@@ -363,12 +290,12 @@ function StepsComponent() {
                             </div>
                             <motion.div
                                 key={index}
-                                initial={{ opacity: 0, x: 100 }}
+                                initial={{ opacity: 0, x: 50 }}
                                 whileInView={{ opacity: 1, x: 0 }}
                                 viewport={{ once: true, amount: 0.4 }}
                                 transition={{
-                                    duration: 0.6,
-                                    delay: index * 0.2,
+                                    duration: 0.25,
+                                    delay: 0.25,
                                 }}
                                 className="space-y-4 md:h-screen flex justify-center items-start max-md:items-center max-md:text-center flex-col"
                                 ref={(el) => {
@@ -388,19 +315,19 @@ function StepsComponent() {
                     ))}
                 </div>
                 {/* Sticky Image Container */}
-                <div className="hidden md:block w-1/2 sticky top-[15%] h-screen">
+                <div className="hidden md:block w-1/2 sticky top-[6rem] h-screen">
                     <motion.div
                         key={steps[activeStep].title}
                         initial={{ opacity: 0, scale: 0.95 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ duration: 0.7 }}
-                        className="absolute left-0 right-0 mx-auto w-72 xl:w-96">
+                        className="absolute left-0 right-0 mx-auto">
                         <NextImage
                             src={steps[activeStep].icon}
                             alt={steps[activeStep].title}
                             width={375}
                             height={666}
-                            className="w-full"
+                            className="w-fit h-[70vh] object-contain"
                         />
                     </motion.div>
                 </div>
@@ -487,6 +414,39 @@ function CTAComponent({
                                 <ArrowRight className="w-4 h-4" />
                             </motion.button>
                         ))}
+                    </motion.div>
+                    <motion.div
+                        className="flex flex-col gap-4 justify-center mt-4"
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        transition={{ delay: 0.8 }}>
+                        <div>Have a question? Contact us at</div>
+                        <div className="flex gap-4 justify-center">
+                            <a
+                                href="https://wa.me/+8801749488497"
+                                className="bg-gradient-to-tl from-green-400 to-green-500 p-2 rounded-full flex items-center gap-2 w-12 h-12">
+                                <FaWhatsapp className="text-white h-8 w-8" />
+                                <span className="sr-only">Whatsapp</span>
+                            </a>
+                            <a
+                                href="https://m.me/haruncse22"
+                                className="bg-gradient-to-tl from-[#00b2ff] to-[#006aff]  p-2 rounded-full flex items-center gap-2 w-12 h-12">
+                                <RiMessengerLine className="text-white h-8 w-8" />
+                                <span className="sr-only">Messenger</span>
+                            </a>
+                            <a
+                                href="tel:01770383961"
+                                className="bg-gradient-to-tl from-yellow-400 to-yellow-600 p-2 rounded-full flex items-center gap-2 w-12 h-12">
+                                <FaPhoneAlt className="text-white h-6 w-8" />
+                                <span className="sr-only">Phone Number</span>
+                            </a>
+                            <a
+                                href="mailto:business.aamarstore@gmail.com "
+                                className="bg-gradient-to-tl from-[#fb9905] to-[#ea4335] p-2 rounded-full flex items-center gap-2 w-12 h-12">
+                                <SiGmail className="text-white h-6 w-8" />
+                                <span className="sr-only">Email</span>
+                            </a>
+                        </div>
                     </motion.div>
                 </div>
             </div>

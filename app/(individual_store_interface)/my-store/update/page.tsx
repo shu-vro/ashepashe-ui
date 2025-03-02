@@ -521,13 +521,13 @@ export default function Page() {
                                             props={{
                                                 inputProps: {
                                                     labelPlacement: "outside",
-                                                    startContent: (
-                                                        <>
-                                                            <span className="text-foreground-500">
-                                                                fb.com/
-                                                            </span>
-                                                        </>
-                                                    ),
+                                                    // startContent: (
+                                                    //     <>
+                                                    //         <span className="text-foreground-500">
+                                                    //             fb.com/
+                                                    //         </span>
+                                                    //     </>
+                                                    // ),
                                                     label: "Facebook Page",
                                                     value: fbPage,
                                                     onValueChange: setFbPage,

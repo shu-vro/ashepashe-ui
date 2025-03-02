@@ -46,6 +46,8 @@ function TableCellCustom({
     setItems: any;
     columnId: string;
 }) {
+    // get price, find if active offer is there or not, and find the current price
+
     if (columnId === "product") {
         return (
             <ProductTableCell
@@ -57,9 +59,15 @@ function TableCellCustom({
     } else if (columnId === "quantity") {
         return <QuantityButtons item={item} setItems={setItems} />;
     } else if (columnId === "total") {
+        const offer = item.item.offers?.find(
+            (offer) => new Date(offer.validity).getTime() > Date.now()
+        );
+        const discountPrice = !offer
+            ? item.item.price
+            : ((100 - offer.offer_percent) / 100) * item.item.price;
         return (
             <Chip color="warning" variant="flat" size="sm">
-                Price: ৳ {item.item.price * item.count}
+                Price: ৳ {Math.round(discountPrice) * item.count}
             </Chip>
         );
     } else if (columnId === "action") {
@@ -109,7 +117,15 @@ export default function OrderTable({
                 <div className="text-warning text-2xl">
                     Price:{" "}
                     {cart.reduce((prev, curr) => {
-                        return prev + curr.item.price * curr.count;
+                        const offer = curr.item.offers?.find(
+                            (offer) =>
+                                new Date(offer.validity).getTime() > Date.now()
+                        );
+                        const discountPrice = !offer
+                            ? curr.item.price
+                            : ((100 - offer.offer_percent) / 100) *
+                              curr.item.price;
+                        return prev + Math.round(discountPrice) * curr.count;
                     }, 0)}
                 </div>
             </div>

@@ -231,7 +231,7 @@ export default function UserDropdown({}: Props) {
                         <DropdownItem
                             key="store_orders"
                             onPress={() => {
-                                push("/my-store/list-orders");
+                                push("/my-store/track-orders");
                             }}
                             endContent={
                                 <Chip size="sm" color="success">

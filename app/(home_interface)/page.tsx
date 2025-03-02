@@ -423,24 +423,32 @@ function CTAComponent({
                         <div>Have a question? Contact us at</div>
                         <div className="flex gap-4 justify-center">
                             <a
+                                target="_blank"
+                                rel="noopener noreferrer"
                                 href="https://wa.me/+8801749488497"
                                 className="bg-gradient-to-tl from-green-400 to-green-500 p-2 rounded-full flex items-center gap-2 w-12 h-12">
                                 <FaWhatsapp className="text-white h-8 w-8" />
                                 <span className="sr-only">Whatsapp</span>
                             </a>
                             <a
+                                target="_blank"
+                                rel="noopener noreferrer"
                                 href="https://m.me/haruncse22"
                                 className="bg-gradient-to-tl from-[#00b2ff] to-[#006aff]  p-2 rounded-full flex items-center gap-2 w-12 h-12">
                                 <RiMessengerLine className="text-white h-8 w-8" />
                                 <span className="sr-only">Messenger</span>
                             </a>
                             <a
+                                target="_blank"
+                                rel="noopener noreferrer"
                                 href="tel:01770383961"
                                 className="bg-gradient-to-tl from-yellow-400 to-yellow-600 p-2 rounded-full flex items-center gap-2 w-12 h-12">
                                 <FaPhoneAlt className="text-white h-6 w-8" />
                                 <span className="sr-only">Phone Number</span>
                             </a>
                             <a
+                                target="_blank"
+                                rel="noopener noreferrer"
                                 href="mailto:business.aamarstore@gmail.com "
                                 className="bg-gradient-to-tl from-[#fb9905] to-[#ea4335] p-2 rounded-full flex items-center gap-2 w-12 h-12">
                                 <SiGmail className="text-white h-6 w-8" />

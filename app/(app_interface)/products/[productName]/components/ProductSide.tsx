@@ -98,7 +98,7 @@ export default function ProductSide({ product, specialized = false }: Prop) {
                         fallbackSrc={dynamicFakeImageGenerator()}
                         alt={product.name}
                         removeWrapper
-                        className="w-full lap:aspect-video object-cover object-center cursor-pointer !h-auto"
+                        className="w-full object-cover object-center cursor-pointer !h-auto"
                         onClick={() => {
                             onOpen();
                         }}

@@ -107,7 +107,13 @@ export default function ProductSide({ product, specialized = false }: Prop) {
                             }}
                         />
                     ) : (
-                        <ImageSlider images={[product.image1!]} />
+                        <ImageSlider
+                            images={[
+                                product.image1!,
+                                product.image2!,
+                                product.image3!,
+                            ]}
+                        />
                     )}
                     <Button
                         isIconOnly

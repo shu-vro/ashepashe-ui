@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { API_URL, FRONTEND_URL } from "@/lib/var";
+import { toValidUrl } from "@/lib/utils";
 
 export async function generateSitemaps() {
     // Fetch the total number of products and calculate the number of sitemaps needed
@@ -34,7 +35,7 @@ export default async function sitemap({
         return data.map((product) => ({
             url: `${FRONTEND_URL}/${product.company.slug}/${product.slug}`,
             lastModified: product.created_at,
-            images: [product.image1!],
+            images: [toValidUrl(product.image1!)],
             changeFrequency: "daily",
         }));
     } else {

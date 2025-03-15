@@ -133,6 +133,7 @@ export default function RootLayout({
                             );
                             fbq("init", "3276434292511264");
                             fbq("track", "PageView");
+                            fbq('track', 'CompleteRegistration');
                         `}
                     </Script>
                 </head>

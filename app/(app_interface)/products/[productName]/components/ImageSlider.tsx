@@ -41,26 +41,28 @@ export default function ImageSlider({ images }: { images: string[] }) {
                 thumbs={{ swiper: thumbsSwiper }}
                 modules={[FreeMode, Navigation, Thumbs]}
                 className="mySwiper !mx-0">
-                {images.map((image, i) => (
-                    <SwiperSlide
-                        key={i}
-                        className="!my-auto"
-                        onClick={() => {
-                            onOpen();
-                            setSelectedImage(image);
-                        }}>
-                        <Image
-                            src={toValidUrl(image || "")}
-                            as={NextImage}
-                            width={500}
-                            height={280}
-                            fallbackSrc={dynamicFakeImageGenerator()}
-                            alt={image}
-                            removeWrapper
-                            className="w-full object-cover object-center cursor-pointer !h-auto"
-                        />
-                    </SwiperSlide>
-                ))}
+                {images
+                    .filter((e) => e)
+                    .map((image, i) => (
+                        <SwiperSlide
+                            key={i}
+                            className="!my-auto"
+                            onClick={() => {
+                                onOpen();
+                                setSelectedImage(image);
+                            }}>
+                            <Image
+                                src={toValidUrl(image || "")}
+                                as={NextImage}
+                                width={500}
+                                height={280}
+                                fallbackSrc={dynamicFakeImageGenerator()}
+                                alt={image}
+                                removeWrapper
+                                className="w-full object-cover object-center cursor-pointer !h-auto"
+                            />
+                        </SwiperSlide>
+                    ))}
             </Swiper>
             <Swiper
                 onSwiper={setThumbsSwiper}
@@ -70,20 +72,23 @@ export default function ImageSlider({ images }: { images: string[] }) {
                 watchSlidesProgress={true}
                 className="mt-3"
                 modules={[FreeMode, Navigation, Thumbs]}>
-                {images.map((image, i) => (
-                    <SwiperSlide key={i} className="!h-16">
-                        <Image
-                            src={toValidUrl(image || "")}
-                            as={NextImage}
-                            width={500}
-                            height={280}
-                            fallbackSrc={dynamicFakeImageGenerator()}
-                            alt={image}
-                            removeWrapper
-                            className="w-fit object-contain object-center cursor-pointer !h-auto"
-                        />
-                    </SwiperSlide>
-                ))}
+                {images
+                    .filter((e) => e)
+                    .map((image, i) => (
+                        <SwiperSlide key={i} className="!h-16">
+                            <Image
+                                src={toValidUrl(image || "")}
+                                as={NextImage}
+                                width={500}
+                                height={280}
+                                fallbackSrc={dynamicFakeImageGenerator()}
+                                alt={image}
+                                removeWrapper
+                                radius="none"
+                                className="w-fit object-contain object-center cursor-pointer !h-auto"
+                            />
+                        </SwiperSlide>
+                    ))}
             </Swiper>
             <Modal
                 isOpen={isOpen}
@@ -114,7 +119,7 @@ export default function ImageSlider({ images }: { images: string[] }) {
                                                 // fill
                                                 className="h-full w-fit"
                                                 alt={
-                                                    images[selectedImage] ||
+                                                    selectedImage ||
                                                     "item image"
                                                 }
                                             />

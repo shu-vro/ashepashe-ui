@@ -25,6 +25,7 @@ import { useRouter } from "next/navigation";
 import { CartContext } from "@/contexts/CartContext";
 import ThemeButton from "../ThemeButton";
 import ThemeSwitch from "../ThemeButton";
+import { useIsMobile } from "@/hooks/use-mobile";
 type Props = {};
 
 /**
@@ -161,6 +162,7 @@ export default function UserDropdown({}: Props) {
     const useUser = use(UserContext);
     const { push } = useRouter();
     const useCart = use(CartContext);
+    const mobile_450 = useIsMobile(500);
 
     const ordersLength = useMemo(() => {
         return useUser?.orders.reduce((prev, curr) => {
@@ -197,6 +199,7 @@ export default function UserDropdown({}: Props) {
                     <Avatar
                         isBordered
                         as="button"
+                        size={mobile_450 ? "sm" : "md"}
                         className="transition-transform"
                         src={session.user?.image || ""}
                     />

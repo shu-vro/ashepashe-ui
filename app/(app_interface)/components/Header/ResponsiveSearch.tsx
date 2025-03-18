@@ -29,7 +29,7 @@ export default function ResponsiveButtons({}) {
     const { status } = useSession();
     const useOrderDrawer = use(OrderDrawerContext);
     const useCart = use(CartContext);
-    const mobile_450 = useIsMobile(450);
+    const mobile_450 = useIsMobile(500);
 
     const ordersLength = useMemo(() => {
         return useUser?.orders.reduce((prev, curr) => {
@@ -56,6 +56,7 @@ export default function ResponsiveButtons({}) {
                     isInvisible={useCart?.cart?.length === 0}>
                     <Button
                         color="primary"
+                        size={mobile_450 ? "sm" : "md"}
                         variant="flat"
                         isIconOnly
                         className="text-xl mob:text-2xl"
@@ -84,6 +85,7 @@ export default function ResponsiveButtons({}) {
                                 color="primary"
                                 variant="flat"
                                 isIconOnly
+                                size={mobile_450 ? "sm" : "md"}
                                 className="text-xl">
                                 <GoBell />
                             </Button>
@@ -105,6 +107,7 @@ export default function ResponsiveButtons({}) {
                                 color="primary"
                                 variant="flat"
                                 isIconOnly
+                                size={mobile_450 ? "sm" : "md"}
                                 className="text-xl">
                                 <CiShoppingCart />
                             </Button>

@@ -84,7 +84,7 @@ export default function RootLayout({
 }) {
     return (
         <SessionProvider>
-            <html lang="en" className="scroll-smooth max-sm:text-[12px]">
+            <html lang="en" className="scroll-smooth">
                 <head>
                     <Script
                         async

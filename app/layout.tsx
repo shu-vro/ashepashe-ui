@@ -81,7 +81,7 @@ export default function RootLayout({
     children: React.ReactNode;
 }) {
     return (
-        <html lang="en" className="scroll-smooth max-sm:text-[12px]">
+        <html lang="en" className="scroll-smooth">
             <head>
                 <Script
                     async

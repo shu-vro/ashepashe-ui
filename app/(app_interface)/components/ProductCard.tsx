@@ -121,7 +121,7 @@ export function ProductCard({
                         <p className="capitalize not-italic font-bold text-xl line-clamp-2 h-[4ch]">
                             {product.name}{" "}
                         </p>
-                        <p className="text-neutral-500 text-sm line-clamp-2 h-[4ch]">
+                        <p className="text-neutral-600 dark:text-neutral-400 text-sm line-clamp-2 h-[4ch]">
                             {product.description &&
                                 removeTags(product.description)}
                         </p>

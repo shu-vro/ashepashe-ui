@@ -19,6 +19,7 @@ import { onImageUpload } from "@/lib/utils";
 import { UserContext } from "@/contexts/UserContext";
 import { toast } from "sonner";
 import { editProductAction } from "./editProductAction";
+import { GoPlus } from "react-icons/go";
 
 type Props = {
     defaultProps: Product["product"];
@@ -168,6 +169,22 @@ export function ProductForm({
                         onChange={handleImageUpload}
                     />
                 </label>
+                <div className="flex gap-4">
+                    <Button
+                        isIconOnly
+                        color="primary"
+                        variant="flat"
+                        className="w-20 h-20 text-4xl">
+                        <GoPlus />
+                    </Button>
+                    <Button
+                        isIconOnly
+                        color="primary"
+                        variant="flat"
+                        className="w-20 h-20 text-4xl">
+                        <GoPlus />
+                    </Button>
+                </div>
                 <Input
                     isRequired
                     errorMessage="Please enter a valid product name"

@@ -264,6 +264,7 @@ export default function ReviewSide({ reviews, productId }: Props) {
                 <Tabs
                     variant="bordered"
                     color="warning"
+                    size="sm"
                     items={sortOptions}
                     onSelectionChange={setSelected}>
                     {(item) => <Tab key={item.key} title={item.title} />}

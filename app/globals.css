@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 body {
     margin: 0;
     padding: 0;
@@ -120,3 +119,7 @@ body {
     font-size: 18px;
     width: fit-content !important;
 }
+
+/* * {
+    border: 1px solid red !important;
+} */

@@ -1,21 +1,10 @@
 "use client";
 
-import { CustomDivider } from "@/app/(app_interface)/components/Header/ResponsiveSearch";
-import {
-    Button,
-    Image,
-    Navbar,
-    NavbarBrand,
-    NavbarContent,
-    NavbarItem,
-    useDisclosure,
-} from "@heroui/react";
+import { Navbar, NavbarBrand, NavbarContent, NavbarItem } from "@heroui/react";
 import Link from "next/link";
-import React, { use } from "react";
-import ThemeButton from "@/app/(app_interface)/components/ThemeButton";
+import React from "react";
 import LoginButton from "@/app/(app_interface)/components/Header/LoginButton";
-import UserDropdown from // CreateStoreModal,
-"@/app/(app_interface)/components/Header/UserDropdown";
+import UserDropdown from "@/app/(app_interface)/components/Header/UserDropdown"; // CreateStoreModal,
 // import { useRouter } from "next/navigation";
 // import { UserContext } from "@/contexts/UserContext";
 // import { useSession } from "next-auth/react";
@@ -51,9 +40,6 @@ export default function Header() {
             </NavbarContent> */}
 
             <NavbarContent justify="end">
-                <NavbarItem>
-                    <ThemeButton />
-                </NavbarItem>
                 {/* {status === "authenticated" && (
                     <>
                         <CustomDivider />

@@ -4,7 +4,7 @@ import ThemeProvider from "@/contexts/theme-provider";
 import Header from "./components/Header";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import "@smastrom/react-rating/style.css";
-import "../(app_interface)/globals.css";
+import "@/app/globals.css";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/zoom";
@@ -35,6 +35,12 @@ export const metadata: Metadata = {
         default: APP_DEFAULT_TITLE,
         template: APP_TITLE_TEMPLATE,
     },
+    icons: [
+        {
+            rel: "icon",
+            url: "/favicon.ico",
+        },
+    ],
     description: APP_DESCRIPTION,
     manifest: "/manifest.json",
     appleWebApp: {
@@ -80,7 +86,7 @@ export default function RootLayout({
 }) {
     return (
         <SessionProvider>
-            <html lang="en" className="scroll-smooth max-sm:text-[12px]">
+            <html lang="en" className="scroll-smooth">
                 <head>
                     <Script
                         async
@@ -122,6 +128,7 @@ export default function RootLayout({
                             );
                             fbq("init", "3276434292511264");
                             fbq("track", "PageView");
+                            fbq('track', 'CompleteRegistration');
                         `}
                     </Script>
                 </head>

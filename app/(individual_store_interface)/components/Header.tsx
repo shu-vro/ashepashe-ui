@@ -14,7 +14,13 @@ import React from "react";
 
 export default function Header() {
     return (
-        <Navbar isBordered maxWidth="full" className="py-3">
+        <Navbar
+            isBordered
+            maxWidth="full"
+            className="py-3"
+            classNames={{
+                wrapper: "max-sm:px-0",
+            }}>
             <NavbarContent justify="start" className="grow">
                 <NavbarItem>
                     <NavbarBrand>

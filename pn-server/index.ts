@@ -19,7 +19,7 @@ const sendNotification = async () => {
         title: "Order Received",
         message: "You have a new order.",
         // send a url to the order page
-        url: "https://aamarstore.com/my-store/list-orders",
+        url: "https://aamarstore.com/my-store/track-orders",
     });
 
     // subscriptions.forEach(async (subscription: any) => {

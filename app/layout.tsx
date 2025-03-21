@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Montserrat } from "next/font/google";
-import "./(app_interface)/globals.css";
+import "@/app/globals.css";
 import Script from "next/script";
 // import ReactPixel from "react-facebook-pixel";
 // import dynamic from "next/dynamic";
@@ -12,7 +12,6 @@ const font = Montserrat({
     weight: ["100", "300", "400", "500", "700", "900"],
 });
 
-
 const APP_NAME = "AAmarStore";
 const APP_DEFAULT_TITLE = "AAmarStore";
 const APP_TITLE_TEMPLATE = "%s • AAmarStore";
@@ -22,7 +21,8 @@ export const metadata: Metadata = {
     applicationName: APP_NAME,
     icons: [
         {
-            url: "/android/android-launchericon-48-48.png",
+            rel: "icon",
+            url: "/favicon.ico",
         },
     ],
     title: {
@@ -57,6 +57,14 @@ export const metadata: Metadata = {
         },
         description: APP_DESCRIPTION,
     },
+    keywords: [
+        "AAmarStore",
+        "Store",
+        "Ecommerce",
+        "Online Store",
+        "Free",
+        "Easy",
+    ],
 };
 
 export const viewport: Viewport = {
@@ -73,19 +81,18 @@ export default function RootLayout({
     children: React.ReactNode;
 }) {
     return (
-        <html lang="en" className="scroll-smooth max-sm:text-[12px]">
+        <html lang="en" className="scroll-smooth">
             <head>
-               
                 <Script
                     async
-                    src="https://www.googletagmanager.com/gtag/js?id=G-JB1GVQCD1G"></Script>
+                    src="https://www.googletagmanager.com/gtag/js?id=G-XS4GVCRWPB"></Script>
                 <Script id="gtag" strategy="lazyOnload">
                     {`
                         window.dataLayer = window.dataLayer || [];
                         function gtag(){dataLayer.push(arguments);}
                         gtag('js', new Date());
 
-                        gtag('config', 'G-JB1GVQCD1G');
+                        gtag('config', 'G-XS4GVCRWPB');
                     `}
                 </Script>
                 <Script id="facebook-pixel" strategy="lazyOnload">
@@ -115,10 +122,11 @@ export default function RootLayout({
                         );
                         fbq("init", "3276434292511264");
                         fbq("track", "PageView");
+                        fbq('track', 'CompleteRegistration');
                     `}
                 </Script>
             </head>
             <body className={`${font.className} antialiased`}>{children}</body>
-        </html >
+        </html>
     );
 }

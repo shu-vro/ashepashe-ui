@@ -23,7 +23,6 @@ import {
 import { CiShoppingCart } from "react-icons/ci";
 import Link from "next/link";
 import NextImage from "next/image";
-import { useRouter } from "next/navigation";
 import Ribbon from "./Ribbon";
 import { CartContext } from "@/contexts/CartContext";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -37,7 +36,6 @@ import {
     DrawerFooter,
     DrawerHeader,
     DrawerTitle,
-    DrawerTrigger,
 } from "@/components/ui/drawer";
 import { Rating } from "@smastrom/react-rating";
 
@@ -53,7 +51,6 @@ export function ProductCard({
     specialized = false,
     ...rest
 }: ProductCardProps & CardProps) {
-    const { push } = useRouter();
     const useCart = use(CartContext);
     const [isOpen, onOpenChange] = useState(false);
     const { discountPercent, discountPrice } = useMemo(() => {
@@ -124,7 +121,7 @@ export function ProductCard({
                         <p className="capitalize not-italic font-bold text-xl line-clamp-2 h-[4ch]">
                             {product.name}{" "}
                         </p>
-                        <p className="text-neutral-500 text-sm line-clamp-2 h-[4ch]">
+                        <p className="text-neutral-600 dark:text-neutral-400 text-sm line-clamp-2 h-[4ch]">
                             {product.description &&
                                 removeTags(product.description)}
                         </p>

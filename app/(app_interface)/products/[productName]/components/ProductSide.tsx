@@ -23,6 +23,8 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Zoom } from "swiper/modules";
 import confetti from "canvas-confetti";
 import { CartContext } from "@/contexts/CartContext";
+import ImageSlider from "./ImageSlider";
+import FLAGS from "@/lib/feature_flag";
 
 type Prop = {
     product: Product["product"];
@@ -85,68 +87,82 @@ export default function ProductSide({ product, specialized = false }: Prop) {
         [product.offers]
     );
     return (
-        <div className="product grid-in-product">
+        <div className="product grid-in-product max-[898px]:w-screen">
             <Card
                 className="h-full overflow-auto p-3 m-4 lap:ml-0 flex-col min-[898px]:flex-row lap:flex-col"
                 shadow="sm">
                 <CardHeader className="w-full max-lap:max-w-[250px] max-[898px]:max-w-full mx-auto group relative">
-                    <Image
-                        src={toValidUrl(product.image1 || "")}
-                        as={NextImage}
-                        width={500}
-                        height={280}
-                        fallbackSrc={dynamicFakeImageGenerator()}
-                        alt={product.name}
-                        removeWrapper
-                        className="w-full lap:aspect-video object-cover object-center cursor-pointer !h-auto"
-                        onClick={() => {
-                            onOpen();
-                        }}
-                    />
+                    {FLAGS.SINGLE_IMAGE_UPLOAD ? (
+                        <Image
+                            src={toValidUrl(product.image1 || "")}
+                            as={NextImage}
+                            width={500}
+                            height={280}
+                            fallbackSrc={dynamicFakeImageGenerator()}
+                            alt={product.name}
+                            removeWrapper
+                            className="w-full object-cover object-center cursor-pointer !h-auto"
+                            onClick={() => {
+                                onOpen();
+                            }}
+                        />
+                    ) : (
+                        <ImageSlider
+                            images={[
+                                product.image1!,
+                                product.image2!,
+                                product.image3!,
+                            ]}
+                        />
+                    )}
                     <Button
                         isIconOnly
                         variant="shadow"
                         className="absolute top-4 right-4 z-30 pointer-events-none scale-0 group-hover:scale-100">
                         <MdZoomOutMap className="text-2xl" />
                     </Button>
-                    <Modal
-                        isOpen={isOpen}
-                        onOpenChange={onOpenChange}
-                        size="4xl"
-                        scrollBehavior="outside"
-                        placement="bottom-center">
-                        <ModalContent>
-                            {(onClose) => (
-                                <>
-                                    <ModalHeader className="flex flex-col gap-1">
-                                        Image Preview
-                                    </ModalHeader>
-                                    <ModalBody>
-                                        <Swiper
-                                            slidesPerView={"auto"}
-                                            spaceBetween={0}
-                                            grabCursor
-                                            navigation
-                                            zoom
-                                            modules={[Navigation, Zoom]}
-                                            className="mySwiper !mx-0">
-                                            <SwiperSlide className="mini-slide">
-                                                <div className="swiper-zoom-container">
-                                                    <Image
-                                                        src={product.image1!}
-                                                        // as={NextImage}
-                                                        // fill
-                                                        className="h-full w-fit"
-                                                        alt={product.name}
-                                                    />
-                                                </div>
-                                            </SwiperSlide>
-                                        </Swiper>
-                                    </ModalBody>
-                                </>
-                            )}
-                        </ModalContent>
-                    </Modal>
+                    {FLAGS.SINGLE_IMAGE_UPLOAD && (
+                        <Modal
+                            isOpen={isOpen}
+                            onOpenChange={onOpenChange}
+                            size="4xl"
+                            scrollBehavior="outside"
+                            placement="bottom-center">
+                            <ModalContent>
+                                {(onClose) => (
+                                    <>
+                                        <ModalHeader className="flex flex-col gap-1">
+                                            Image Preview
+                                        </ModalHeader>
+                                        <ModalBody>
+                                            <Swiper
+                                                slidesPerView={"auto"}
+                                                spaceBetween={0}
+                                                grabCursor
+                                                navigation
+                                                zoom
+                                                modules={[Navigation, Zoom]}
+                                                className="mySwiper !mx-0">
+                                                <SwiperSlide className="mini-slide">
+                                                    <div className="swiper-zoom-container">
+                                                        <Image
+                                                            src={
+                                                                product.image1!
+                                                            }
+                                                            // as={NextImage}
+                                                            // fill
+                                                            className="h-full w-fit"
+                                                            alt={product.name}
+                                                        />
+                                                    </div>
+                                                </SwiperSlide>
+                                            </Swiper>
+                                        </ModalBody>
+                                    </>
+                                )}
+                            </ModalContent>
+                        </Modal>
+                    )}
                 </CardHeader>
                 <CardBody className="overflow-visible">
                     <h2 className="text-2xl font-bold">

@@ -106,6 +106,7 @@ export async function generateMetadata(
     return {
         title: company.name,
         description: company.description,
+        keywords: [company.map, "menu", "products", "store"],
 
         openGraph: {
             url: `https://asepashe.com/all-companies/${company.slug}`,

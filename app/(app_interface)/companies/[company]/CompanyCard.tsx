@@ -8,6 +8,7 @@ import { IoLocationOutline } from "react-icons/io5";
 import { MdOutlineCall } from "react-icons/md";
 import { PiFacebookLogoBold } from "react-icons/pi";
 import { extractIframeUrl, removeTags } from "@/lib/utils";
+import FLAGS from "@/lib/feature_flag";
 
 export default function CompanyCard({ company }: { company: Company }) {
     const iframe = extractIframeUrl(company.iframe);
@@ -50,19 +51,21 @@ export default function CompanyCard({ company }: { company: Company }) {
                     <Rating value={0} className="max-w-32" />
                     <span>(0)</span>
                 </div>
-                <div className="flex justify-around items-stretch pt-2 gap-8">
-                    {company.lati || company.longi ? (
-                        <iframe
-                            src={`${iframe}`}
-                            className="w-full"
-                            height="400"
-                            allowFullScreen
-                            loading="lazy"
-                            referrerPolicy="no-referrer-when-downgrade"></iframe>
-                    ) : (
-                        "No map available."
-                    )}
-                </div>
+                {FLAGS.KEEP_IFRAME_MAP && (
+                    <div className="flex justify-around items-stretch pt-2 gap-8">
+                        {company.lati || company.longi ? (
+                            <iframe
+                                src={`${iframe}`}
+                                className="w-full"
+                                height="400"
+                                allowFullScreen
+                                loading="lazy"
+                                referrerPolicy="no-referrer-when-downgrade"></iframe>
+                        ) : (
+                            "No map available."
+                        )}
+                    </div>
+                )}
             </CardBody>
         </Card>
     );

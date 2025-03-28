@@ -19,6 +19,8 @@ import { FaWhatsapp } from "react-icons/fa6";
 import { RiMessengerLine } from "react-icons/ri";
 import { FaPhoneAlt } from "react-icons/fa";
 import { SiGmail } from "react-icons/si";
+import ThemeSwitch from "../(app_interface)/components/ThemeButton";
+import FooterSection from "@/components/footer";
 
 interface CTAProps {
     title: string;
@@ -191,6 +193,7 @@ export default function Home() {
                     },
                 ]}
             />
+            <FooterSection />
         </div>
     );
 }
@@ -373,6 +376,9 @@ function CTAComponent({
                 `relative bg-gradient-to-r rounded-2xl shadow-xl overflow-hidden mx-4`,
                 themeColors[theme].bg
             )}>
+            <div className="absolute top-0 right-0 p-4">
+                <ThemeSwitch />
+            </div>
             <div className="max-w-7xl mx-auto px-4 py-16 sm:px-6 lg:px-8">
                 <div className="text-center">
                     <motion.h2
@@ -449,7 +455,7 @@ function CTAComponent({
                             <a
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                href="mailto:business.aamarstore@gmail.com "
+                                href="mailto:business.aamarstore@gmail.com"
                                 className="bg-gradient-to-tl from-[#fb9905] to-[#ea4335] p-2 rounded-full flex items-center gap-2 w-12 h-12">
                                 <SiGmail className="text-white h-6 w-8" />
                                 <span className="sr-only">Email</span>

@@ -12,7 +12,7 @@ const links = [
         group: "Email",
         items: [
             {
-                title: "mailto:business.aamarstore@gmail.com",
+                title: "business.aamarstore@gmail.com",
                 href: "mailto:business.aamarstore@gmail.com",
                 outside: true,
             },

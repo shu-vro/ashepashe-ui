@@ -35,7 +35,7 @@ export default async function sitemap({
         return data.map((product) => ({
             url: `${FRONTEND_URL}/${product.company.slug}/${product.slug}`,
             lastModified: product.created_at,
-            images: [toValidUrl(product.image1!)],
+            // images: [toValidUrl(product.image1!)],
             changeFrequency: "daily",
         }));
     } else {

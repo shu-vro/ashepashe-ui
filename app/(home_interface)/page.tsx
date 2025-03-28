@@ -426,7 +426,9 @@ function CTAComponent({
                         initial={{ opacity: 0 }}
                         whileInView={{ opacity: 1 }}
                         transition={{ delay: 0.8 }}>
-                        <div>Have a question? Contact us at</div>
+                        <div className="text-white">
+                            Have a question? Contact us at
+                        </div>
                         <div className="flex gap-4 justify-center">
                             <a
                                 target="_blank"

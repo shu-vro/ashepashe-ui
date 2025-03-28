@@ -138,23 +138,19 @@ export default function RootLayout({
                 f.parentNode.insertBefore(j,f);
               })(window,document,'script','dataLayer','GTM-PMRZ564N');
             `,
-                    }}
-                ></script>
-
-
+                    }}></script>
             </head>
             <body className={`${font.className} antialiased`}>
-
                 <noscript>
                     <iframe
                         src="https://www.googletagmanager.com/ns.html?id=GTM-PMRZ564N"
                         height="0"
                         width="0"
-                        style={{ display: "none", visibility: "hidden" }}
-                    ></iframe>
+                        style={{
+                            display: "none",
+                            visibility: "hidden",
+                        }}></iframe>
                 </noscript>
-
-
 
                 {children}
             </body>

@@ -2,7 +2,6 @@ import {
     Button,
     Card,
     CardBody,
-    CardFooter,
     Input,
     Modal,
     ModalBody,

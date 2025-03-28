@@ -185,7 +185,21 @@ export default function UserDropdown({}: Props) {
 
     useEffect(() => {
         const cb = (e: Event) => {
-            setDeferredPrompt(e as BeforeInstallPromptEvent);
+            const event = e as BeforeInstallPromptEvent;
+            setDeferredPrompt(event);
+            toast.success("Install the app for a better experience.", {
+                action: {
+                    label: "Install",
+                    onClick: async () => {
+                        await event.prompt();
+                        const { outcome } = await event.userChoice;
+                        if (outcome === "accepted") {
+                            setDeferredPrompt(undefined);
+                            setIsInstallable(false);
+                        }
+                    },
+                },
+            });
         };
         window.addEventListener("beforeinstallprompt", cb);
         return () => {

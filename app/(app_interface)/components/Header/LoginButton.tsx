@@ -2,7 +2,6 @@ import { Button } from "@heroui/react";
 import Link from "next/link";
 import React from "react";
 import { useSession, signIn } from "next-auth/react";
-import { API_URL } from "@/lib/var";
 
 type Props = {};
 
@@ -16,8 +15,13 @@ export default function LoginButton({}: Props) {
             variant="flat"
             size={"md"}
             onPress={async () => {
+                const currentPath = window.location.pathname;
+                const redirectTo =
+                    currentPath === "/"
+                        ? window.location.origin + "/my-store/update"
+                        : window.location.href;
                 await signIn("google", {
-                    redirectTo: location.href,
+                    redirectTo,
                     redirect: false,
                 });
             }}>

@@ -16,6 +16,7 @@ import Script from "next/script";
 import NotificationComponent from "../components/NotificationComponent";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import ProductionCodes from "@/components/ProductionCodes";
 
 const font = Montserrat({
     subsets: ["latin"],
@@ -86,20 +87,21 @@ export default function RootLayout({
         <SessionProvider>
             <html lang="en" className="scroll-smooth">
                 <head>
-                    <Script
-                        async
-                        src="https://www.googletagmanager.com/gtag/js?id=G-XS4GVCRWPB"></Script>
-                    <Script id="gtag" strategy="lazyOnload">
-                        {`
+                    <ProductionCodes>
+                        <Script
+                            async
+                            src="https://www.googletagmanager.com/gtag/js?id=G-XS4GVCRWPB"></Script>
+                        <Script id="gtag" strategy="lazyOnload">
+                            {`
                         window.dataLayer = window.dataLayer || [];
                         function gtag(){dataLayer.push(arguments);}
                         gtag('js', new Date());
 
                         gtag('config', 'G-XS4GVCRWPB');
                     `}
-                    </Script>
-                    <Script id="facebook-pixel" strategy="lazyOnload">
-                        {`
+                        </Script>
+                        <Script id="facebook-pixel" strategy="lazyOnload">
+                            {`
                             !(function (f, b, e, v, n, t, s) {
                                 if (f.fbq) return;
                                 n = f.fbq = function () {
@@ -127,12 +129,12 @@ export default function RootLayout({
                             fbq("track", "PageView");
                             fbq('track', 'CompleteRegistration');
                         `}
-                    </Script>
+                        </Script>
 
-                    {/* Google Tag Manager - head part */}
-                    <script
-                        dangerouslySetInnerHTML={{
-                            __html: `
+                        {/* Google Tag Manager - head part */}
+                        <script
+                            dangerouslySetInnerHTML={{
+                                __html: `
               (function(w,d,s,l,i){
                 w[l] = w[l] || []; 
                 w[l].push({'gtm.start': new Date().getTime(), event: 'gtm.js'}); 
@@ -142,7 +144,8 @@ export default function RootLayout({
                 f.parentNode.insertBefore(j,f);
               })(window,document,'script','dataLayer','GTM-PMRZ564N');
             `,
-                        }}></script>
+                            }}></script>
+                    </ProductionCodes>
                 </head>
                 <body className={`${font.className} antialiased`}>
                     <ThemeProvider

@@ -34,7 +34,10 @@ export default function EditProductBtn({ defaultProps }: Props) {
             <Button isIconOnly onPress={onOpen}>
                 <LuPencilLine />
             </Button>
-            <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+            <Modal
+                isOpen={isOpen}
+                onOpenChange={onOpenChange}
+                scrollBehavior="outside">
                 <ModalContent>
                     {(onClose) => (
                         <>

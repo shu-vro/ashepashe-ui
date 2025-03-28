@@ -63,7 +63,10 @@ export default function OfferProductBtn({
                 <MdOutlineLocalOffer />
             </Button>
 
-            <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+            <Modal
+                isOpen={isOpen}
+                onOpenChange={onOpenChange}
+                scrollBehavior="outside">
                 <ModalContent>
                     {(onClose) => (
                         <Form

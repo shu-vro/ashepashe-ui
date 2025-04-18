@@ -21,6 +21,7 @@ import { FaPhoneAlt } from "react-icons/fa";
 import { SiGmail } from "react-icons/si";
 import ThemeSwitch from "../(app_interface)/components/ThemeButton";
 import FooterSection from "@/components/footer";
+import { useRouter } from "next/navigation";
 
 interface CTAProps {
     title: string;
@@ -68,6 +69,7 @@ const steps = [
 
 export default function Home() {
     const useUser = use(UserContext);
+    const router = useRouter();
     const [showVideo, setShowVideo] = useState(false);
     const isMobile_500 = useIsMobile(500);
 
@@ -89,12 +91,29 @@ export default function Home() {
                             className="bg-gradient-to-r from-blue-500 to-purple-500 hover:opacity-90 transition-opacity"
                             as={useUser?.user ? Link : Button}
                             onPress={async () => {
-                                if (!useUser?.user)
+                                if (!useUser?.user) {
                                     await signIn("google", {
                                         redirectTo:
                                             location.href + "/my-store/create",
                                         redirect: false,
                                     });
+                                } else {
+                                    const path = `/my-store/${
+                                        useUser?.userCompany
+                                            ? "update"
+                                            : "create"
+                                    }`;
+                                    router.push(path);
+                                }
+                                // if (!useUser?.user)
+                                //     await signIn("google", {
+                                //         redirectTo:
+                                //             location.href + "/my-store/create",
+                                //         redirect: false,
+                                //     });
+                                // else {
+                                //     window.location.href = "/my-store/create";
+                                // }
                             }}
                             href={
                                 useUser?.user

@@ -113,7 +113,6 @@ export function CreateStoreModal({
                                             );
                                             useUser.ticktock();
                                             push("/my-store/update");
-                                            onClose();
                                         } else {
                                             toast.error(
                                                 `Error(${ans.status}): ${ans.message}`
@@ -183,29 +182,29 @@ export default function UserDropdown({}: Props) {
         }
     }, [deferredPrompt]);
 
-    useEffect(() => {
-        const cb = (e: Event) => {
-            const event = e as BeforeInstallPromptEvent;
-            setDeferredPrompt(event);
-            toast.success("Install the app for a better experience.", {
-                action: {
-                    label: "Install",
-                    onClick: async () => {
-                        await event.prompt();
-                        const { outcome } = await event.userChoice;
-                        if (outcome === "accepted") {
-                            setDeferredPrompt(undefined);
-                            setIsInstallable(false);
-                        }
-                    },
-                },
-            });
-        };
-        window.addEventListener("beforeinstallprompt", cb);
-        return () => {
-            window.removeEventListener("beforeinstallprompt", cb);
-        };
-    }, []);
+    // useEffect(() => {
+    //     const cb = (e: Event) => {
+    //         const event = e as BeforeInstallPromptEvent;
+    //         setDeferredPrompt(event);
+    //         toast.success("Install the app for a better experience.", {
+    //             action: {
+    //                 label: "Install",
+    //                 onClick: async () => {
+    //                     await event.prompt();
+    //                     const { outcome } = await event.userChoice;
+    //                     if (outcome === "accepted") {
+    //                         setDeferredPrompt(undefined);
+    //                         setIsInstallable(false);
+    //                     }
+    //                 },
+    //             },
+    //         });
+    //     };
+    //     window.addEventListener("beforeinstallprompt", cb);
+    //     return () => {
+    //         window.removeEventListener("beforeinstallprompt", cb);
+    //     };
+    // }, []);
     return status === "authenticated" ? (
         <>
             <Dropdown placement="bottom-end">

@@ -20,6 +20,8 @@ import { UserContext } from "@/contexts/UserContext";
 import { toast } from "sonner";
 import { editProductAction } from "./editProductAction";
 import { GoPlus } from "react-icons/go";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { EffectCards, EffectCoverflow, Pagination } from "swiper/modules";
 
 type Props = {
     defaultProps: Product["product"];
@@ -35,6 +37,7 @@ export default function EditProductBtn({ defaultProps }: Props) {
                 <LuPencilLine />
             </Button>
             <Modal
+                size="lg"
                 isOpen={isOpen}
                 onOpenChange={onOpenChange}
                 scrollBehavior="outside">
@@ -73,10 +76,13 @@ export default function EditProductBtn({ defaultProps }: Props) {
                                         description: payload.description,
                                         price: parseFloat(payload.price),
                                         section_id: defaultProps.section_id,
-                                        image1: payload.image,
+                                        image1: payload.image1,
+                                        image2: payload.image2,
+                                        image3: payload.image3,
                                         user_id: useUser?.user?.id,
                                         company_id: useUser?.userCompany?.id,
                                     };
+                                    console.log(customPayload);
                                     const data = await editProductAction(
                                         customPayload,
                                         defaultProps.slug
@@ -98,6 +104,23 @@ export default function EditProductBtn({ defaultProps }: Props) {
     );
 }
 
+function AddImageButton({ image }: { image?: Product["product"]["image1"] }) {
+    return image ? (
+        <img src={image} alt="preview image" className="w-20 h-20 rounded-md" />
+    ) : (
+        <>
+            <Button
+                isIconOnly
+                color="primary"
+                variant="flat"
+                as={"span"}
+                className="w-20 h-20 text-4xl">
+                <GoPlus />
+            </Button>
+        </>
+    );
+}
+
 export function ProductForm({
     submitText = "Submit",
     onClose,
@@ -108,7 +131,9 @@ export function ProductForm({
     onClose: () => void;
     onSubmit: (arg0: any) => Promise<any>;
 } & Partial<Props>) {
-    const [imageUrl, setImageUrl] = useState("");
+    const [image1Url, setImage1Url] = useState(defaultProps?.image1 || "");
+    const [image2Url, setImage2Url] = useState(defaultProps?.image2 || "");
+    const [image3Url, setImage3Url] = useState(defaultProps?.image3 || "");
     const [loading, setLoading] = useState(false);
     const validatePrice = (value: string) => {
         const regex = /(^\d*$)/;
@@ -120,9 +145,10 @@ export function ProductForm({
     };
 
     const handleImageUpload = async (
-        e: React.ChangeEvent<HTMLInputElement>
+        e: React.ChangeEvent<HTMLInputElement>,
+        setImageFile: React.Dispatch<React.SetStateAction<string>>
     ) => {
-        onImageUpload({ e, setImageFile: setImageUrl, DIM: 1000 });
+        onImageUpload({ e, setImageFile: setImageFile, DIM: 1000 });
     };
     return (
         <Form
@@ -132,7 +158,23 @@ export function ProductForm({
                 setLoading(true);
                 const formData = new FormData(e.target as HTMLFormElement);
                 const payload = Object.fromEntries(formData);
-                payload["image"] = imageUrl;
+
+                let imgs = [image1Url, image2Url, image3Url].map(
+                    (img) => img || ""
+                );
+
+                // Add images to payload
+                payload["image1"] = imgs[0];
+                payload["image2"] = imgs[1];
+                payload["image3"] = imgs[2];
+
+                // Validate at least one image is present
+                if (!image1Url && !image2Url && !image3Url) {
+                    toast.error("Please upload at least one image");
+                    setLoading(false);
+                    return;
+                }
+
                 try {
                     await onSubmit(payload);
                     onClose();
@@ -143,7 +185,7 @@ export function ProductForm({
                 }
             }}>
             <ModalBody>
-                <label htmlFor="image1" className="cursor-pointer">
+                {/* <label htmlFor="image1" className="cursor-pointer">
                     <div className="relative">
                         <Image
                             isBlurred
@@ -187,6 +229,140 @@ export function ProductForm({
                         className="w-20 h-20 text-4xl">
                         <GoPlus />
                     </Button>
+                </div> */}
+                <Swiper
+                    effect={"coverflow"}
+                    centeredSlides={true}
+                    slidesPerView={"auto"}
+                    coverflowEffect={{
+                        rotate: 50,
+                        stretch: 0,
+                        depth: 100,
+                        modifier: 1,
+                        slideShadows: true,
+                    }}
+                    pagination={true}
+                    modules={[EffectCoverflow, Pagination]}
+                    className="!p-[0_6rem]">
+                    <SwiperSlide>
+                        <label htmlFor="image1">
+                            <img
+                                src={
+                                    image1Url ||
+                                    "https://placehold.co/400x300/2e2d51/3b82f6?text=4x3"
+                                }
+                                alt="Product image 1"
+                            />
+                        </label>
+                    </SwiperSlide>
+                    <SwiperSlide>
+                        <label htmlFor="image2">
+                            <img
+                                src={
+                                    image2Url ||
+                                    "https://placehold.co/400x300/153d1f/43b05e?text=4x3"
+                                }
+                                alt="Product image 2"
+                            />
+                        </label>
+                    </SwiperSlide>
+                    <SwiperSlide>
+                        <label htmlFor="image3">
+                            <img
+                                src={
+                                    image3Url ||
+                                    "https://placehold.co/400x300/3b133a/ed42e9?text=4x3"
+                                }
+                                alt="Product image 3"
+                            />
+                        </label>
+                    </SwiperSlide>
+                </Swiper>
+
+                <div className="flex gap-4">
+                    <label htmlFor="image1" className="cursor-pointer">
+                        <div className="relative">
+                            {image1Url ? (
+                                <img
+                                    src={image1Url}
+                                    alt="Product image 1"
+                                    className="w-20 h-20 rounded-md object-cover"
+                                />
+                            ) : (
+                                <Button
+                                    isIconOnly
+                                    color="primary"
+                                    variant="flat"
+                                    as={"span"}
+                                    className="w-20 h-20 text-4xl">
+                                    <GoPlus />
+                                </Button>
+                            )}
+                        </div>
+                        <input
+                            type="file"
+                            id="image1"
+                            className="sr-only"
+                            accept="image/*"
+                            onChange={(e) => handleImageUpload(e, setImage1Url)}
+                        />
+                    </label>
+
+                    <label htmlFor="image2" className="cursor-pointer">
+                        <div className="relative">
+                            {image2Url ? (
+                                <img
+                                    src={image2Url}
+                                    alt="Product image 2"
+                                    className="w-20 h-20 rounded-md object-cover"
+                                />
+                            ) : (
+                                <Button
+                                    isIconOnly
+                                    color="primary"
+                                    variant="flat"
+                                    as={"span"}
+                                    className="w-20 h-20 text-4xl">
+                                    <GoPlus />
+                                </Button>
+                            )}
+                        </div>
+                        <input
+                            type="file"
+                            id="image2"
+                            className="sr-only"
+                            accept="image/*"
+                            onChange={(e) => handleImageUpload(e, setImage2Url)}
+                        />
+                    </label>
+
+                    <label htmlFor="image3" className="cursor-pointer">
+                        <div className="relative">
+                            {image3Url ? (
+                                <img
+                                    src={image3Url}
+                                    alt="Product image 3"
+                                    className="w-20 h-20 rounded-md object-cover"
+                                />
+                            ) : (
+                                <Button
+                                    isIconOnly
+                                    color="primary"
+                                    variant="flat"
+                                    as={"span"}
+                                    className="w-20 h-20 text-4xl">
+                                    <GoPlus />
+                                </Button>
+                            )}
+                        </div>
+                        <input
+                            type="file"
+                            id="image3"
+                            className="sr-only"
+                            accept="image/*"
+                            onChange={(e) => handleImageUpload(e, setImage3Url)}
+                        />
+                    </label>
                 </div>
                 <Input
                     isRequired

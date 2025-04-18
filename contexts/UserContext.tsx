@@ -6,6 +6,7 @@ import { toast } from "sonner";
 
 export type UserContextType = {
     user: User | null;
+    loading: boolean;
     setUser: React.Dispatch<React.SetStateAction<UserContextType["user"]>>;
     userCompany: Company | null;
     setUserCompany: React.Dispatch<
@@ -48,6 +49,7 @@ export default function UserProvider({
     children: React.ReactNode;
 }) {
     const [user, setUser] = useState<UserContextType["user"]>(null);
+    const [loading, setLoading] = useState(false);
     const [userCompany, setUserCompany] =
         useState<UserContextType["userCompany"]>(null);
     const [companySections, setCompanySections] = useState<
@@ -72,6 +74,7 @@ export default function UserProvider({
         }
         (async () => {
             try {
+                setLoading(true);
                 const res = await fetch(`${API_URL}/user/${data.user?.email}`);
                 const x = await res.json();
                 const userData = x.user as User;
@@ -153,6 +156,8 @@ export default function UserProvider({
             } catch (error) {
                 toast.error("Error fetching user data");
                 console.log(error);
+            } finally {
+                setLoading(false);
             }
         })();
 
@@ -163,6 +168,7 @@ export default function UserProvider({
         <UserContext.Provider
             value={{
                 user,
+                loading,
                 setUser,
                 userCompany,
                 setUserCompany,

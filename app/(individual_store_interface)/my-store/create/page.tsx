@@ -20,6 +20,9 @@ export default function page() {
             onOpenChange={() => {
                 router.push("/my-store/update");
             }}
+            onClose={() => {
+                router.push("/");
+            }}
         />
     ) : (
         "Redirecting to Update Page..."
